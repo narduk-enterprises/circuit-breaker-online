@@ -257,7 +257,11 @@ All plugins **no-op gracefully** when their keys are empty — safe for dev with
 
 **Automated setup:** The examples repo includes `tools/setup-analytics.ts` which bootstraps GA4 and GSC via API.
 
-**Doppler architecture:** Universal management keys live in the `narduk-analytics` Doppler project. Per-app keys go in the app's own Doppler project. You must reference the exact `POSTHOG_PUBLIC_KEY` from the analytics hub.
+**Doppler architecture:** Universal management keys live in the `narduk-analytics` Doppler project. Per-app keys go in the app's own Doppler project. You must reference the exact `POSTHOG_PUBLIC_KEY` and `POSTHOG_PROJECT_ID` from the analytics hub.
+
+> **⚠️ WARNING: PostHog Workspaces**
+> Do not create a separate project workspace inside PostHog for each new app unless specifically requested! The expected behavior is that ALL template apps log to the single "Narduk Analytics" master project in PostHog. The apps are differentiated using the `app:` property attached to every event by the client plugin.
+> Ensure your Doppler environment references the `narduk-analytics` keys directly.
 
 ---
 

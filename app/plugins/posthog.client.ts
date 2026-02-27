@@ -30,7 +30,14 @@ export default defineNuxtPlugin(() => {
     }
   })
 
-  // Manual pageview tracking on route changes
+  // Capture initial pageview since Nuxt router.afterEach does not fire on SSR hydration
+  nextTick(() => {
+    posthog.capture('$pageview', {
+      $current_url: window.location.href
+    })
+  })
+
+  // Manual pageview tracking on subsequent route changes
   const router = useRouter()
   router.afterEach((to) => {
     nextTick(() => {
