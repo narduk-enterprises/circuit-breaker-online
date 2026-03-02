@@ -1,0 +1,32 @@
+<script setup lang="ts">
+useSeoMeta({
+  description: 'New and reconditioned medium voltage load break switches and load interrupter switches. For safe isolation of electrical circuits in substations and switchgear.',
+})
+useHead({ script: [{ type: 'application/ld+json', innerHTML: JSON.stringify({ '@context': 'https://schema.org', '@type': 'Product', name: 'Load Break Switches', description: 'Medium voltage load break and load interrupter switches.', brand: { '@type': 'Organization', name: 'Circuit Breaker Sales' }, category: 'Electrical Equipment > Load Break Switches' }) }] })
+
+const pageData = {
+  breadcrumb: 'Load Break Switches',
+  title: 'Medium Voltage',
+  titleHighlight: 'Load Break Switches',
+  description: 'New and reconditioned medium voltage load break switches and load interrupter switches for safe isolation of electrical circuits. Essential components for switchgear, substations, and pad-mount applications.',
+  catalogLink: '/products?category=Load%20Break%20Switches',
+  catalogLabel: 'Browse Switches',
+  contentTitle: 'Load Break Switch Solutions',
+  contentParagraphs: [
+    'Load break switches provide a safe means of opening and closing circuits under load conditions. They are essential for isolation, maintenance switching, and sectionalizing in medium voltage distribution systems.',
+    'Circuit Breaker Sales carries a full range of load break switches including bolted pressure switches, oil-filled switches, SF6 switches, and vacuum load interrupters from all major manufacturers.',
+  ],
+  types: [
+    { name: 'Bolted Pressure Switches', description: 'High-pressure contact type switches for utility and industrial switchgear applications.' },
+    { name: 'Load Interrupter Switches', description: 'Vacuum or puffer-type switches for interrupting load current in medium voltage systems.' },
+    { name: 'Pad-Mount Switches', description: 'Enclosed switches for underground distribution systems and commercial installations.' },
+    { name: 'Disconnect Switches', description: 'Non-load-break isolating switches for visible isolation and maintenance lockout.' },
+  ],
+  brands: ['GE', 'S&C Electric', 'Westinghouse', 'Siemens', 'ABB', 'Eaton'],
+  services: ['Switch reconditioning', 'Contact replacement', 'Mechanism service', 'On-site testing', 'Installation support', 'Emergency sourcing'],
+}
+</script>
+
+<template>
+  <EquipmentPage v-bind="pageData" />
+</template>

@@ -1,0 +1,214 @@
+/* ─── Circuit Breaker Sales: App-Specific Styles ─── */
+/* Base tailwind/nuxt-ui imports, glass, body/heading fonts, form layouts,
+   page transitions, and animations are provided by the layer's CSS. */
+
+@theme {
+  /* Industrial Color Palette */
+  --color-brand-50: #fef2f2;
+  --color-brand-100: #fee2e2;
+  --color-brand-200: #fecaca;
+  --color-brand-300: #fca5a5;
+  --color-brand-400: #f87171;
+  --color-brand-500: #ef4444;
+  --color-brand-600: #cc0000;
+  --color-brand-700: #b91c1c;
+  --color-brand-800: #991b1b;
+  --color-brand-900: #7f1d1d;
+  --color-brand-950: #450a0a;
+
+  /* Fonts — override layer defaults with industrial feel */
+  --font-display: 'Montserrat', 'Outfit', sans-serif;
+  --font-body: 'Inter', sans-serif;
+  --font-sans: 'Inter', sans-serif;
+
+  /* Semantic Colors */
+  --color-text-default: #1a2332;
+  --color-text-muted: #4b5563;
+  --color-text-dimmed: #9ca3af;
+  --color-text-primary: #cc0000;
+
+  --color-bg-default: #ffffff;
+  --color-bg-muted: #f3f4f6;
+  --color-bg-elevated: #ffffff;
+
+  --color-border-default: #e5e7eb;
+  --color-border-primary: #cc0000;
+}
+
+/* ─── Semantic Utility Classes ─── */
+.text-default {
+  color: var(--color-text-default);
+}
+.text-muted {
+  color: var(--color-text-muted);
+}
+.text-dimmed {
+  color: var(--color-text-dimmed);
+}
+.text-primary {
+  color: var(--color-text-primary);
+}
+
+.bg-default {
+  background-color: var(--color-bg-default);
+}
+.bg-muted {
+  background-color: var(--color-bg-muted);
+}
+.bg-elevated {
+  background-color: var(--color-bg-elevated);
+}
+
+.border-default {
+  border-color: var(--color-border-default);
+}
+.border-primary {
+  border-color: var(--color-border-primary);
+}
+
+/* ─── Glass Strong (layer provides .glass, this is app-specific) ─── */
+.glass-strong {
+  background: rgba(255, 255, 255, 0.06);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+/* ─── Light Card ─── */
+.light-card {
+  background: #ffffff;
+  border: 1px solid #e5e7eb;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06);
+  transition: all 0.3s ease;
+}
+.light-card:hover {
+  border-color: #cc0000;
+  box-shadow: 0 4px 16px rgba(204, 0, 0, 0.08);
+  transform: translateY(-2px);
+}
+
+/* ─── Industrial Accent Border ─── */
+.accent-border {
+  border-left: 4px solid #cc0000;
+}
+
+/* ─── Hero Grid Pattern ─── */
+.hero-grid {
+  background-image:
+    linear-gradient(rgba(204, 0, 0, 0.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(204, 0, 0, 0.03) 1px, transparent 1px);
+  background-size: 40px 40px;
+}
+
+/* ─── Gradient Overlays ─── */
+.gradient-industrial {
+  background: linear-gradient(135deg, #0a0a0f 0%, #1a0a0a 50%, #0a0a0f 100%);
+}
+.gradient-fade-bottom {
+  background: linear-gradient(to bottom, transparent, #0a0a0f);
+}
+
+/* ─── Section Backgrounds ─── */
+.section-light {
+  background-color: #ffffff;
+}
+.section-gray {
+  background-color: #f8f9fa;
+}
+.section-dark {
+  background-color: #0f172a;
+  color: #ffffff;
+}
+
+/* ─── Animations ─── */
+@keyframes fade-in-up {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+.animate-fade-in-up {
+  animation: fade-in-up 0.6s ease-out forwards;
+}
+.animate-delay-100 {
+  animation-delay: 0.1s;
+}
+.animate-delay-200 {
+  animation-delay: 0.2s;
+}
+.animate-delay-300 {
+  animation-delay: 0.3s;
+}
+.animate-delay-400 {
+  animation-delay: 0.4s;
+}
+
+/* ─── Product Card Hover ─── */
+.product-card {
+  transition: all 0.3s ease;
+}
+.product-card:hover {
+  border-color: rgba(204, 0, 0, 0.5);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 32px rgba(204, 0, 0, 0.1);
+}
+.product-card img {
+  transition: transform 0.5s ease;
+}
+.product-card:hover img {
+  transform: scale(1.05);
+}
+
+/* ─── Category Card ─── */
+.category-card {
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+  background: #ffffff;
+  border: 1px solid #e5e7eb;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+}
+.category-card::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 0;
+  height: 3px;
+  background: #cc0000;
+  transition: width 0.3s ease;
+}
+.category-card:hover::after {
+  width: 100%;
+}
+.category-card:hover {
+  border-color: #cc0000;
+  box-shadow: 0 4px 16px rgba(204, 0, 0, 0.08);
+  transform: translateY(-2px);
+}
+
+/* ─── Scrollbar ─── */
+::-webkit-scrollbar {
+  width: 8px;
+}
+::-webkit-scrollbar-track {
+  background: #f1f5f9;
+}
+::-webkit-scrollbar-thumb {
+  background: #94a3b8;
+  border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--color-text-dimmed);
+}
+.scrollbar-thin::-webkit-scrollbar {
+  width: 4px;
+}
+.scrollbar-thin {
+  scrollbar-width: thin;
+  scrollbar-color: #cbd5e1 transparent;
+}

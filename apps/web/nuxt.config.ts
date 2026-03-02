@@ -1,11 +1,9 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
-  // Extend the published Narduk Nuxt Layer
+  // Extend the Narduk Nuxt Layer (relative path within monorepo)
   extends: ['@loganrenz/narduk-nuxt-template-layer'],
 
-  future: {
-    compatibilityVersion: 4
-  },
+  css: ['~/assets/css/main.css'],
 
   runtimeConfig: {
     // Server-only (admin API routes)
@@ -14,8 +12,8 @@ export default defineNuxtConfig({
     gaPropertyId: process.env.GA_PROPERTY_ID || '',
     posthogProjectId: process.env.POSTHOG_PROJECT_ID || '',
     public: {
-      appUrl: process.env.SITE_URL || 'https://narduk-nuxt-template.workers.dev',
-      appName: process.env.APP_NAME || 'Nuxt 4 Demo',
+      appUrl: process.env.SITE_URL || 'https://circuitbreaker.online',
+      appName: process.env.APP_NAME || 'Circuit Breaker Sales',
       // Analytics
       posthogPublicKey: process.env.POSTHOG_PUBLIC_KEY || '',
       posthogHost: process.env.POSTHOG_HOST || 'https://us.i.posthog.com',
@@ -27,24 +25,57 @@ export default defineNuxtConfig({
   },
 
   site: {
-    url: process.env.SITE_URL || 'https://narduk-nuxt-template.workers.dev',
-    name: 'Nuxt 4 Demo',
-    description: 'A production-ready demo template showcasing Nuxt 4, Nuxt UI 4, Tailwind CSS 4, and Cloudflare Workers with D1 database.',
+    url: process.env.SITE_URL || 'https://circuitbreaker.online',
+    name: 'Circuit Breaker Sales',
+    description: 'A Group CBS Company. Leading the industry in circuit breaker sales, service, and supply since 1981.',
     defaultLocale: 'en',
   },
 
   schemaOrg: {
     identity: {
       type: 'Organization',
-      name: 'Nuxt 4 Demo',
-      url: process.env.SITE_URL || 'https://narduk-nuxt-template.workers.dev',
+      name: 'Circuit Breaker Sales',
+      url: process.env.SITE_URL || 'https://circuitbreaker.online',
       logo: '/favicon.svg',
     },
   },
 
   image: {
     cloudflare: {
-      baseURL: process.env.SITE_URL || 'https://narduk-nuxt-template.workers.dev',
+      baseURL: process.env.SITE_URL || 'https://circuitbreaker.online',
     },
   },
+
+  sitemap: {
+    sources: [
+      '/api/__sitemap__/urls',
+    ],
+  },
+
+  robots: {
+    sitemap: ['/sitemap.xml'],
+    groups: [
+      {
+        userAgent: '*',
+        allow: '/',
+      },
+    ],
+  },
+
+  app: {
+    head: {
+      htmlAttrs: { lang: 'en' },
+      meta: [
+        { name: 'theme-color', content: '#CC0000' },
+      ],
+      link: [
+        { rel: 'icon', type: 'image/svg+xml', href: '/favicon.svg' },
+        { rel: 'icon', type: 'image/png', sizes: '32x32', href: '/favicon-32x32.png' },
+        { rel: 'icon', type: 'image/png', sizes: '16x16', href: '/favicon-16x16.png' },
+        { rel: 'apple-touch-icon', sizes: '180x180', href: '/apple-touch-icon.png' },
+        { rel: 'manifest', href: '/site.webmanifest' },
+      ],
+    },
+    pageTransition: { name: 'page', mode: 'out-in' }
+  }
 })
