@@ -6,52 +6,73 @@ on:
   pull_request:
     branches: [main]
 
+concurrency:
+  group: ci-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+env:
+  NUXT_TELEMETRY_DISABLED: 1
+
 jobs:
-  lint:
+  setup:
     runs-on: ubuntu-latest
+    timeout-minutes: 10
     steps:
       - uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
       - uses: pnpm/action-setup@v4
       - uses: actions/setup-node@v4
         with:
           node-version: 22
           cache: pnpm
-      - run: pnpm install --frozen-lockfile
+      - name: Cache node_modules
+        id: cache-node-modules
+        uses: actions/cache@v4
+        with:
+          path: |
+            node_modules
+            apps/*/node_modules
+            layers/*/node_modules
+            packages/*/node_modules
+          key: deps-node-modules-${{ hashFiles('pnpm-lock.yaml') }}
+      - name: Install Dependencies
+        if: steps.cache-node-modules.outputs.cache-hit != 'true'
+        run: pnpm install --frozen-lockfile
+
+  quality:
+    needs: setup
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+      - uses: pnpm/action-setup@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: pnpm
+      - name: Restore node_modules
+        uses: actions/cache/restore@v4
+        with:
+          path: |
+            node_modules
+            apps/*/node_modules
+            layers/*/node_modules
+            packages/*/node_modules
+          key: deps-node-modules-${{ hashFiles('pnpm-lock.yaml') }}
       - name: Prepare Nuxt
         run: pnpm nuxt prepare
-      - name: Lint
-        run: pnpm lint
-
-  typecheck:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - uses: pnpm/action-setup@v4
-      - uses: actions/setup-node@v4
-        with:
-          node-version: 22
-          cache: pnpm
-      - run: pnpm install --frozen-lockfile
-      - name: Prepare Nuxt
-        run: pnpm nuxt prepare
-      - name: Typecheck
-        run: pnpm typecheck
-
-  test:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - uses: pnpm/action-setup@v4
-      - uses: actions/setup-node@v4
-        with:
-          node-version: 22
-          cache: pnpm
-      - run: pnpm install --frozen-lockfile
-      - name: Test
+      - name: Lint and Typecheck
+        run: pnpm quality
+      - name: Unit Tests
         run: pnpm -r test:unit --if-present
 
   build:
+    needs: setup
     runs-on: ubuntu-latest
+    timeout-minutes: 20
     strategy:
       matrix:
         app:
@@ -66,6 +87,8 @@ jobs:
           ]
     steps:
       - uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
 
       - uses: pnpm/action-setup@v4
 
@@ -74,7 +97,15 @@ jobs:
           node-version: 22
           cache: pnpm
 
-      - run: pnpm install --frozen-lockfile
+      - name: Restore node_modules
+        uses: actions/cache/restore@v4
+        with:
+          path: |
+            node_modules
+            apps/*/node_modules
+            layers/*/node_modules
+            packages/*/node_modules
+          key: deps-node-modules-${{ hashFiles('pnpm-lock.yaml') }}
 
       - name: Check Doppler Token
         id: check_doppler
@@ -95,7 +126,6 @@ jobs:
           inject-env-vars: true
 
       - name: Build ${{ matrix.app }}
-        working-directory: apps/${{ matrix.app }}
         env:
           NITRO_PRESET: cloudflare-module
-        run: pnpm build
+        run: turbo run build --filter=${{ matrix.app }}

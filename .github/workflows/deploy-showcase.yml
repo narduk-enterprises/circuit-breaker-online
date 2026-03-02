@@ -18,6 +18,7 @@ env:
 jobs:
   deploy:
     runs-on: ubuntu-latest
+    timeout-minutes: 20
     permissions:
       contents: read
       deployments: write
@@ -79,7 +80,8 @@ jobs:
             export CLOUDFLARE_ACCOUNT_ID=$FALLBACK_ACCOUNT
           fi
 
-          if [ -z "$CLOUDFLARE_API_TOKEN" ] || [ -z "$CLOUDFLARE_ACCOUNT_ID" ]; then
+          if { [ -z "$CLOUDFLARE_API_TOKEN" ] && [ -z "$FALLBACK_API" ]; } || \
+             { [ -z "$CLOUDFLARE_ACCOUNT_ID" ] && [ -z "$FALLBACK_ACCOUNT" ]; }; then
             echo "Error: CLOUDFLARE_API_TOKEN or CLOUDFLARE_ACCOUNT_ID is completely missing."
             exit 1
           fi

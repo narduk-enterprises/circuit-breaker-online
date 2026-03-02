@@ -16,6 +16,7 @@ env:
 jobs:
   deploy:
     runs-on: ubuntu-latest
+    timeout-minutes: 20
     permissions:
       contents: read
       deployments: write
@@ -40,7 +41,7 @@ jobs:
             apps/web/.nuxt
             apps/web/.output
             node_modules/.cache
-          key: nuxt-build-${{ hashFiles('pnpm-lock.yaml') }}-${{ hashFiles('apps/web/app/**', 'apps/web/server/**', 'apps/web/nuxt.config.ts') }}
+          key: nuxt-build-${{ hashFiles('pnpm-lock.yaml') }}-${{ hashFiles('apps/web/app/**', 'apps/web/server/**', 'apps/web/nuxt.config.ts', 'layers/**', 'packages/**', 'pnpm-workspace.yaml') }}
           restore-keys: |
             nuxt-build-${{ hashFiles('pnpm-lock.yaml') }}-
             nuxt-build-
@@ -85,7 +86,8 @@ jobs:
             export CLOUDFLARE_ACCOUNT_ID=$FALLBACK_ACCOUNT
           fi
 
-          if [ -z "$CLOUDFLARE_API_TOKEN" ] || [ -z "$CLOUDFLARE_ACCOUNT_ID" ]; then
+          if { [ -z "$CLOUDFLARE_API_TOKEN" ] && [ -z "$FALLBACK_API" ]; } || \
+             { [ -z "$CLOUDFLARE_ACCOUNT_ID" ] && [ -z "$FALLBACK_ACCOUNT" ]; }; then
             echo "Error: CLOUDFLARE_API_TOKEN or CLOUDFLARE_ACCOUNT_ID is completely missing."
             exit 1
           fi
