@@ -112,6 +112,16 @@ runtimeConfig: {
 
 The layer includes `server/middleware/csrf.ts` which blocks POST/PUT/PATCH/DELETE requests missing the `X-Requested-With` header. The client-side `fetch.client.ts` plugin automatically adds this header to all requests. Routes under `/api/webhooks/`, `/api/cron/`, and `/api/callbacks/` are excluded.
 
+### Security Headers
+
+The layer includes `server/middleware/securityHeaders.ts` which sets protective HTTP headers on every response:
+
+- **Content-Security-Policy** — restricts resource loading to trusted origins (self, Google Analytics, PostHog)
+- **X-Content-Type-Options: nosniff** — prevents MIME-type sniffing
+- **X-Frame-Options: DENY** — blocks framing (clickjacking protection)
+- **Referrer-Policy: strict-origin-when-cross-origin** — limits referrer leakage
+- **Permissions-Policy** — disables camera, microphone, and geolocation by default
+
 ## Nuxt UI 4 Rules
 
 - `UDivider` → renamed to **`USeparator`** in v4
@@ -192,12 +202,12 @@ Run these during development (Antigravity slash-commands):
 
 These workspace-local ESLint plugins enforce patterns at lint time. Many checks from `.agents/workflows` (SEO, data-fetching, SSR/hydration, plugin lifecycle, UI styling, architecture) are now enforced by these plugins so issues are caught at edit time. Run `pnpm run build:plugins` after cloning to build the TypeScript plugins.
 
-| Plugin                                      | Rules | What It Enforces                                                                 |
-| ------------------------------------------- | ----- | -------------------------------------------------------------------------------- |
-| `eslint-plugin-nuxt-ui`                     | 8     | Nuxt UI v4 props, slots, events, variants, deprecated components (UDivider→USeparator), deprecated API usage |
-| `eslint-plugin-nuxt-guardrails`             | 16    | SSR DOM access, legacy head/fetch, no raw `$fetch`, `import.meta.client`/`import.meta.dev`, `useAsyncData`/`useFetch`; **SEO:** require useSeo/Schema on pages, prefer useSeo over bare useHead; **server:** no `.map(async)` (N+1); **stores:** useAppFetch, no Map/Set state, plugin `.client.ts` for browser APIs |
-| `eslint-plugin-atx`                         | 30    | Design system: UButton/ULink, no inline hex, Lucide icons, no Tailwind v3 deprecated (fixable), no invalid Nuxt UI tokens, Zod validation; **hydration:** ClientOnly for USwitch/UNavigationMenu/UColorMode*; no @apply in scoped style; **architecture:** no module-scope ref in composables/utils, no inline types in stores |
-| `eslint-plugin-vue-official-best-practices` | 13    | Composition API, Pinia patterns, typed defineProps, `use` prefix                 |
+| Plugin                                      | Rules | What It Enforces                                                                                                                                                                                                                                                                                                                |
+| ------------------------------------------- | ----- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `eslint-plugin-nuxt-ui`                     | 8     | Nuxt UI v4 props, slots, events, variants, deprecated components (UDivider→USeparator), deprecated API usage                                                                                                                                                                                                                    |
+| `eslint-plugin-nuxt-guardrails`             | 16    | SSR DOM access, legacy head/fetch, no raw `$fetch`, `import.meta.client`/`import.meta.dev`, `useAsyncData`/`useFetch`; **SEO:** require useSeo/Schema on pages, prefer useSeo over bare useHead; **server:** no `.map(async)` (N+1); **stores:** useAppFetch, no Map/Set state, plugin `.client.ts` for browser APIs            |
+| `eslint-plugin-atx`                         | 30    | Design system: UButton/ULink, no inline hex, Lucide icons, no Tailwind v3 deprecated (fixable), no invalid Nuxt UI tokens, Zod validation; **hydration:** ClientOnly for USwitch/UNavigationMenu/UColorMode\*; no @apply in scoped style; **architecture:** no module-scope ref in composables/utils, no inline types in stores |
+| `eslint-plugin-vue-official-best-practices` | 13    | Composition API, Pinia patterns, typed defineProps, `use` prefix                                                                                                                                                                                                                                                                |
 
 **Build:** `pnpm run build:plugins` (ATX plugin is plain `.mjs` — no build needed).
 
@@ -224,7 +234,7 @@ These are opt-in feature recipes. Follow them when the project needs a specific 
 2. Configure your Doppler secrets (see Secrets & Env below).
 3. Pull Doppler secrets and initialize the local database schema (non-interactive):
    ```bash
-   doppler setup --project <app-name> --config dev && npm run db:migrate
+   doppler setup --project <app-name> --config dev && pnpm run db:migrate
    ```
 4. Commit the initialization.
 
@@ -242,7 +252,7 @@ These are opt-in feature recipes. Follow them when the project needs a specific 
 2. Wire Doppler into your dev workflow (generates `doppler.yaml`):
    ```bash
    doppler setup --project <app-name> --config dev
-   doppler run -- npm run dev  # Injects env vars at runtime
+   doppler run -- pnpm run dev  # Injects env vars at runtime
    ```
 3. In `nuxt.config.ts`, declare all secrets in `runtimeConfig` with explicit `process.env.KEY` access:
    ```ts
@@ -324,7 +334,7 @@ doppler secrets set CLOUDFLARE_API_TOKEN='${narduk-enterprise-apps.prd.CLOUDFLAR
 1. Install dependencies:
 
    ```bash
-   npm install -D vitest @nuxt/test-utils happy-dom playwright @playwright/test
+   pnpm install -D vitest @nuxt/test-utils happy-dom playwright @playwright/test
    npx playwright install chromium
    ```
 
@@ -438,7 +448,7 @@ All plugins **no-op gracefully** when their keys are empty — safe for dev with
 
 **Steps:**
 
-1. Install: `npm install -D @nuxt/eslint eslint`
+1. Install: `pnpm install -D @nuxt/eslint eslint`
 2. Add to `nuxt.config.ts` modules: `'@nuxt/eslint'`
 3. Create `eslint.config.mjs`:
    ```js

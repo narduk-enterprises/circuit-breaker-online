@@ -18,6 +18,57 @@ description: Migrate a flat Nuxt 4 app from ~/code into the nuxt-v4-template mon
 
 ---
 
+## 🚨 Layer Issue Escalation Protocol
+
+> **This rule applies to EVERY phase below.** If at any point during the migration you encounter an issue that is **attributable to the layer itself** (`layers/narduk-nuxt-layer/`) rather than to the app being migrated, you must:
+
+1. **STOP all migration work immediately.** Do not attempt to work around the issue.
+2. **Diagnose and document** the exact error, the file(s) in the layer that cause it, and why it is the layer's responsibility (not the app's).
+3. **Output the following prompt block** for the user to copy-paste to the layer maintainer:
+
+   ```
+   ---
+   **🚨 Layer Bug Report — Migration Blocked**
+
+   **Reporter:** AI migration agent (running `/migrate-to-monorepo`)
+   **Source app:** <source-repo-name>
+   **Template version:** <commit hash or date of nuxt-v4-template clone>
+
+   **Issue:**
+   <One-sentence summary of the problem>
+
+   **Details:**
+   <Full error message / stack trace>
+
+   **Layer file(s) involved:**
+   - `layers/narduk-nuxt-layer/<path>`
+
+   **Why this is a layer issue (not an app issue):**
+   <Explain why this cannot be fixed in the app — e.g., the layer exports a broken type,
+   a missing module registration, an incompatible plugin, etc.>
+
+   **Steps to reproduce:**
+   1. Clone `nuxt-v4-template` at the commit above
+   2. Run `<exact command that triggers the error>`
+
+   **Expected behavior:**
+   <What should happen>
+
+   **Actual behavior:**
+   <What actually happens>
+
+   **Suggested fix (if obvious):**
+   <Optional — point to the line or pattern that needs to change>
+   ---
+   ```
+
+4. **Wait for the user to confirm the fix has been applied** to the layer before resuming migration work. Do NOT proceed to the next phase, do NOT attempt a workaround.
+
+> [!IMPORTANT]
+> Common layer-attributable issues include: missing or broken auto-imports, type errors originating from layer composables or server utils, CSS import conflicts from the layer's `main.css`, plugin registration failures, incompatible module versions pinned by the layer, and Nitro preset misconfigurations.
+
+---
+
 ## Phase 0: Scaffold the New Repo
 
 All migration work happens in `/tmp` to keep `~/code` clean.

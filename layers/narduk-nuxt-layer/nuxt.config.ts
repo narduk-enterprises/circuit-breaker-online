@@ -14,6 +14,12 @@ export default defineNuxtConfig({
   ],
   css: [fileURLToPath(new URL('./app/assets/css/main.css', import.meta.url))],
 
+  site: {
+    url: process.env.SITE_URL || 'http://localhost:3000',
+    name: process.env.APP_NAME || 'Nuxt 4 App',
+    description: 'A Nuxt 4 application deployed on Cloudflare Workers.',
+  },
+
   compatibilityDate: '2025-07-15',
 
   hooks: {

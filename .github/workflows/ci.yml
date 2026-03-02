@@ -29,3 +29,11 @@ jobs:
 
       - name: Typecheck
         run: pnpm typecheck
+
+      - name: Build
+        run: pnpm build
+        env:
+          NITRO_PRESET: cloudflare-module
+
+      - name: Test
+        run: pnpm -r test:unit --if-present
