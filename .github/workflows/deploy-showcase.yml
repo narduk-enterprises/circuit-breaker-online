@@ -42,7 +42,8 @@ jobs:
             exit 1
           fi
 
-  deploy:
+  # Phase 1: Deploy all example apps in parallel
+  deploy-apps:
     name: Deploy ${{ matrix.app }}
     needs: preflight
     runs-on: ubuntu-latest
@@ -54,7 +55,6 @@ jobs:
       fail-fast: false
       matrix:
         app:
-          - showcase
           - example-auth
           - example-blog
           - example-marketing
@@ -92,13 +92,61 @@ jobs:
         run: |
           if [ -z "$CLOUDFLARE_API_TOKEN" ] || [ -z "$CLOUDFLARE_ACCOUNT_ID" ]; then
             echo "::error::Cloudflare credentials missing after secret resolution."
-            echo "If using Doppler, ensure hub references exist in the spoke project (prd config)."
             exit 1
           fi
-          echo "✓ Cloudflare credentials validated"
 
       - name: Build & Deploy
         working-directory: apps/${{ matrix.app }}
+        run: |
+          pnpm build
+          pnpm exec wrangler deploy
+
+  # Phase 2: Deploy showcase AFTER all example apps (it has Service Bindings to them)
+  deploy-showcase:
+    name: Deploy showcase
+    needs: [preflight, deploy-apps]
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    permissions:
+      contents: read
+      deployments: write
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: pnpm/action-setup@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: pnpm
+
+      - run: pnpm install --frozen-lockfile
+
+      - name: Fetch secrets from Doppler
+        if: needs.preflight.outputs.method == 'doppler'
+        uses: dopplerhq/secrets-fetch-action@v1.3.1
+        with:
+          doppler-token: ${{ secrets.DOPPLER_TOKEN }}
+          inject-env-vars: true
+
+      - name: Set direct Cloudflare credentials
+        if: needs.preflight.outputs.method == 'direct'
+        env:
+          CF_API: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CF_ACCOUNT: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+        run: |
+          echo "CLOUDFLARE_API_TOKEN=$CF_API" >> "$GITHUB_ENV"
+          echo "CLOUDFLARE_ACCOUNT_ID=$CF_ACCOUNT" >> "$GITHUB_ENV"
+
+      - name: Validate Cloudflare credentials
+        run: |
+          if [ -z "$CLOUDFLARE_API_TOKEN" ] || [ -z "$CLOUDFLARE_ACCOUNT_ID" ]; then
+            echo "::error::Cloudflare credentials missing after secret resolution."
+            exit 1
+          fi
+
+      - name: Build & Deploy
+        working-directory: apps/showcase
         run: |
           pnpm build
           pnpm exec wrangler deploy
