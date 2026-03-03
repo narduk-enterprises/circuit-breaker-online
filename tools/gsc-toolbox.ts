@@ -77,7 +77,7 @@ async function addSite(url: string) {
 async function getVerificationToken(url: string) {
   const auth = await getAuth()
   const siteVerification = google.siteVerification({ version: 'v1', auth })
-  
+
   console.log(`🔍 Getting verification token for ${url}...`)
   const response = await siteVerification.webResource.getToken({
     requestBody: {
@@ -85,14 +85,14 @@ async function getVerificationToken(url: string) {
       verificationMethod: 'FILE'
     }
   })
-  
+
   return response.data.token
 }
 
 async function verifySite(url: string) {
   const auth = await getAuth()
   const siteVerification = google.siteVerification({ version: 'v1', auth })
-  
+
   console.log(`🛡️  Verifying ownership of ${url}...`)
   await siteVerification.webResource.insert({
     verificationMethod: 'FILE',
@@ -106,7 +106,7 @@ async function verifySite(url: string) {
 async function grantAccess(url: string, email: string) {
   const auth = await getAuth()
   const siteVerification = google.siteVerification({ version: 'v1', auth })
-  
+
   console.log(`👤 Granting "Owner" access to ${email}...`)
   // First get current owners to avoid overwriting them
   const resource = await siteVerification.webResource.get({
@@ -131,8 +131,8 @@ async function grantAccess(url: string, email: string) {
 async function submitSitemap(url: string) {
   const auth = await getAuth()
   const searchconsole = google.searchconsole({ version: 'v1', auth })
-  const sitemapUrl = `${url.endsWith('/') ? url : url + '/' }sitemap.xml`
-  
+  const sitemapUrl = `${url.endsWith('/') ? url : url + '/'}sitemap.xml`
+
   console.log(`🚀 Submitting sitemap: ${sitemapUrl}`)
   await searchconsole.sitemaps.submit({
     siteUrl: url,
@@ -141,8 +141,8 @@ async function submitSitemap(url: string) {
   console.log('✅ Sitemap submitted.')
 }
 
-/** Fetch up to `limit` product URLs from the live sitemap. */
-async function getProductUrlsFromSitemap(baseUrl: string, limit: number): Promise<string[]> {
+/** Fetch ALL URLs from the sitemap (handles both sitemap index and single sitemap). */
+async function getAllSitemapUrls(baseUrl: string): Promise<string[]> {
   const base = baseUrl.replace(/\/$/, '')
   let allUrls: string[] = []
   let xml: string
@@ -156,34 +156,39 @@ async function getProductUrlsFromSitemap(baseUrl: string, limit: number): Promis
   const topLocs = xml.match(/<loc>([^<]+)<\/loc>/g)?.map(s => s.replace(/<\/?loc>/g, '').trim()) || []
   if (xml.includes('<sitemap>')) {
     for (const childUrl of topLocs) {
-      const childRes = await fetch(childUrl)
-      if (!childRes.ok) continue
-      const childXml = await childRes.text()
-      const childLocs = childXml.match(/<loc>([^<]+)<\/loc>/g)?.map(s => s.replace(/<\/?loc>/g, '').trim()) || []
-      allUrls = allUrls.concat(childLocs)
-      if (allUrls.filter(u => u.includes('/products/')).length >= limit) break
+      try {
+        const childRes = await fetch(childUrl)
+        if (!childRes.ok) continue
+        const childXml = await childRes.text()
+        const childLocs = childXml.match(/<loc>([^<]+)<\/loc>/g)?.map(s => s.replace(/<\/?loc>/g, '').trim()) || []
+        allUrls = allUrls.concat(childLocs)
+      } catch { /* skip broken child sitemaps */ }
     }
   } else {
     allUrls = topLocs
   }
+  return allUrls
+}
+
+/** Fetch up to `limit` product URLs from the live sitemap. */
+async function getProductUrlsFromSitemap(baseUrl: string, limit: number): Promise<string[]> {
+  const allUrls = await getAllSitemapUrls(baseUrl)
   const productUrls = allUrls.filter(u => u.includes('/products/') && !u.includes('category='))
   return productUrls.slice(0, limit)
 }
 
-/** Submit up to 100 product URLs to GSC via URL Inspection API (surfaces URLs for recrawl). */
-async function inspectProductUrls(siteUrl: string, limit: number) {
-  const baseUrl = siteUrl.endsWith('/') ? siteUrl : siteUrl + '/'
-  console.log(`📡 Fetching up to ${limit} product URLs from sitemap...`)
-  const urls = await getProductUrlsFromSitemap(baseUrl, limit)
+/** Submit URLs to GSC via URL Inspection API (surfaces URLs for recrawl). */
+async function inspectUrls(siteUrl: string, urls: string[]) {
   if (urls.length === 0) {
-    console.log('⚠️  No product URLs found in sitemap. Ensure the site is deployed and sitemap includes /products/*.')
+    console.log('⚠️  No URLs to inspect.')
     return
   }
-  console.log(`   Found ${urls.length} product URLs. Submitting to Google Search Console (URL Inspection)...`)
+  console.log(`   Submitting ${urls.length} URLs to Google Search Console (URL Inspection)...`)
   const auth = await getAuth()
   const authClient = await auth.getClient()
   const token = await authClient.getAccessToken()
   if (!token.token) throw new Error('Failed to get access token')
+  const baseUrl = siteUrl.endsWith('/') ? siteUrl : siteUrl + '/'
   const gscSiteUrl = siteUrl.startsWith('sc-domain:') ? siteUrl : baseUrl
   const delayMs = 250
   let ok = 0
@@ -219,9 +224,32 @@ async function inspectProductUrls(siteUrl: string, limit: number) {
   console.log(`✅ Submitted ${ok} URLs to Google Search Console (${err} errors).`)
 }
 
+/** Submit up to `limit` product URLs to GSC via URL Inspection API. */
+async function inspectProductUrls(siteUrl: string, limit: number) {
+  const baseUrl = siteUrl.endsWith('/') ? siteUrl : siteUrl + '/'
+  console.log(`📡 Fetching up to ${limit} product URLs from sitemap...`)
+  const urls = await getProductUrlsFromSitemap(baseUrl, limit)
+  if (urls.length === 0) {
+    console.log('⚠️  No product URLs found in sitemap. Ensure the site is deployed and sitemap includes /products/*.')
+    return
+  }
+  console.log(`   Found ${urls.length} product URLs.`)
+  await inspectUrls(siteUrl, urls)
+}
+
+/** Submit ALL sitemap URLs to GSC via URL Inspection API. */
+async function inspectAllUrls(siteUrl: string, limit: number) {
+  const baseUrl = siteUrl.endsWith('/') ? siteUrl : siteUrl + '/'
+  console.log(`📡 Fetching ALL URLs from sitemap (limit: ${limit})...`)
+  const allUrls = await getAllSitemapUrls(baseUrl)
+  const urls = allUrls.slice(0, limit)
+  console.log(`   Found ${allUrls.length} total URLs. Submitting ${urls.length}...`)
+  await inspectUrls(siteUrl, urls)
+}
+
 async function main() {
   const cmd = process.argv[2]
-  
+
   if (!siteUrl) {
     console.error('❌ SITE_URL is required.')
     process.exit(1)
@@ -266,7 +294,7 @@ async function main() {
         }
         break
       }
-      
+
       case 'verify': {
         await verifySite(siteUrl)
         const userEmail = process.env.GSC_USER_EMAIL
@@ -294,8 +322,19 @@ async function main() {
         break
       }
 
+      case 'inspect-all': {
+        const gscSiteUrl = process.env.SITE_URL || siteUrl
+        if (!gscSiteUrl) {
+          console.error('❌ SITE_URL is required.')
+          process.exit(1)
+        }
+        const limit = Math.min(2000, Math.max(1, parseInt(process.argv[3] || '2000', 10)))
+        await inspectAllUrls(gscSiteUrl, limit)
+        break
+      }
+
       default:
-        console.log('Usage: npx tsx tools/gsc-toolbox.ts [init|verify|submit|inspect-urls [limit]]')
+        console.log('Usage: npx jiti tools/gsc-toolbox.ts [init|verify|submit|inspect-urls|inspect-all] [limit]')
     }
   } catch (error: any) {
     console.error('❌ Error:', error.response?.data?.error?.message || error.message)
