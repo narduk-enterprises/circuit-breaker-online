@@ -19,7 +19,8 @@
     "db:migrate": "pnpm --filter web run db:migrate",
     "deploy": "pnpm --filter web run deploy",
     "dev:kill": "sh scripts/dev-kill.sh",
-    "generate:favicons": "npx tsx tools/generate-favicons.ts"
+    "generate:favicons": "npx tsx tools/generate-favicons.ts",
+    "gsc:inspect-urls": "doppler run -- npx tsx tools/gsc-toolbox.ts inspect-urls"
   },
   "pnpm": {
     "overrides": {
@@ -44,6 +45,8 @@
   },
   "devDependencies": {
     "@types/node": "^22.19.13",
+    "google-auth-library": "^9.0.0",
+    "googleapis": "^144.0.0",
     "sharp": "^0.34.5",
     "turbo": "^2.8.12"
   }

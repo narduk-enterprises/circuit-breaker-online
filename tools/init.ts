@@ -439,9 +439,8 @@ Pushes to \`main\` are automatically built and deployed via the GitHub Actions C
       }
     }
 
-    // Only set hub references for keys that aren't already configured
+    // Only set hub references for keys that aren't already configured (hub-spoke pattern)
     try {
-      const existing = getDopplerSecretNames(APP_NAME, 'prd')
       const hubSecrets: Record<string, string> = {
         CLOUDFLARE_API_TOKEN: '${narduk-nuxt-template.prd.CLOUDFLARE_API_TOKEN}',
         CLOUDFLARE_ACCOUNT_ID: '${narduk-nuxt-template.prd.CLOUDFLARE_ACCOUNT_ID}',
@@ -454,15 +453,21 @@ Pushes to \`main\` are automatically built and deployed via the GitHub Actions C
         GSC_SERVICE_ACCOUNT_JSON: '${narduk-nuxt-template.prd.GSC_SERVICE_ACCOUNT_JSON}'
       }
 
-      const toSet = Object.entries(hubSecrets)
-        .filter(([key]) => !existing.has(key))
-        .map(([key, val]) => `${key}='${val}'`)
+      let anySet = false
+      for (const config of ['prd', 'dev']) {
+        const existing = getDopplerSecretNames(APP_NAME, config)
+        const toSet = Object.entries(hubSecrets)
+          .filter(([key]) => !existing.has(key))
+          .map(([key, val]) => `${key}='${val}'`)
 
-      if (toSet.length > 0) {
-        execSync(`doppler secrets set ${toSet.join(' ')} --project ${APP_NAME} --config prd`, { stdio: 'pipe' })
-        console.log(`  ✅ Synced ${toSet.length} hub credentials: ${toSet.map(s => s.split('=')[0]).join(', ')}`)
-      } else {
-        console.log(`  ⏭ All core credentials already configured.`)
+        if (toSet.length > 0) {
+          execSync(`doppler secrets set ${toSet.join(' ')} --project ${APP_NAME} --config ${config}`, { stdio: 'pipe' })
+          console.log(`  ✅ Synced ${toSet.length} hub credentials to ${config}: ${toSet.map(s => s.split('=')[0]).join(', ')}`)
+          anySet = true
+        }
+      }
+      if (!anySet) {
+        console.log(`  ⏭ All core hub credentials already configured (prd + dev).`)
       }
     } catch (error: any) {
       console.warn(`  ⚠️ Failed to sync hub credentials: ${error.message}`)

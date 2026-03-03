@@ -2,7 +2,7 @@
 import { google } from 'googleapis'
 import { writeFileSync, readFileSync, existsSync, mkdirSync } from 'node:fs'
 import { join, resolve } from 'node:path'
-import 'dotenv/config'
+// Env from Doppler when run via: doppler run -- npx tsx tools/gsc-toolbox.ts ...
 
 /**
  * GSC Toolbox: Programmatically manage Google Search Console properties.
@@ -29,15 +29,29 @@ function loadCredentials(): Record<string, any> {
   // Option B: inline JSON or base64
   const inline = process.env.GSC_SERVICE_ACCOUNT_JSON?.trim()
   if (inline) {
+    if (inline.startsWith('${') && inline.includes('}')) {
+      throw new Error(
+        'GSC_SERVICE_ACCOUNT_JSON looks like an unresolved Doppler reference (e.g. ${hub.prd.KEY}). Add the secret in the Doppler dashboard or set it as a cross-project ref that resolves in your config.'
+      )
+    }
     let str = inline
     if (!str.startsWith('{')) {
-      str = Buffer.from(str, 'base64').toString('utf8')
+      const b64 = str.replace(/\s/g, '')
+      try {
+        str = Buffer.from(b64, 'base64').toString('utf8')
+      } catch {
+        throw new Error('GSC_SERVICE_ACCOUNT_JSON is set but failed to decode as base64. Use raw JSON (starts with {) or valid base64.')
+      }
     }
-    return JSON.parse(str)
+    try {
+      return JSON.parse(str)
+    } catch {
+      throw new Error('GSC_SERVICE_ACCOUNT_JSON is set but failed to parse as JSON. Check for valid JSON or base64-encoded JSON.')
+    }
   }
 
   throw new Error(
-    'No service account credentials found. Set GSC_SERVICE_ACCOUNT_JSON_PATH (path to key file) or GSC_SERVICE_ACCOUNT_JSON (inline JSON/base64) in your .env'
+    'No service account credentials found. Set GSC_SERVICE_ACCOUNT_JSON_PATH (path to key file) or GSC_SERVICE_ACCOUNT_JSON (inline JSON/base64) in Doppler or .env'
   )
 }
 
@@ -127,6 +141,84 @@ async function submitSitemap(url: string) {
   console.log('✅ Sitemap submitted.')
 }
 
+/** Fetch up to `limit` product URLs from the live sitemap. */
+async function getProductUrlsFromSitemap(baseUrl: string, limit: number): Promise<string[]> {
+  const base = baseUrl.replace(/\/$/, '')
+  let allUrls: string[] = []
+  let xml: string
+  try {
+    const res = await fetch(`${base}/sitemap.xml`)
+    if (!res.ok) throw new Error(`HTTP ${res.status}`)
+    xml = await res.text()
+  } catch (e: any) {
+    throw new Error(`Failed to fetch sitemap: ${e.message}`)
+  }
+  const topLocs = xml.match(/<loc>([^<]+)<\/loc>/g)?.map(s => s.replace(/<\/?loc>/g, '').trim()) || []
+  if (xml.includes('<sitemap>')) {
+    for (const childUrl of topLocs) {
+      const childRes = await fetch(childUrl)
+      if (!childRes.ok) continue
+      const childXml = await childRes.text()
+      const childLocs = childXml.match(/<loc>([^<]+)<\/loc>/g)?.map(s => s.replace(/<\/?loc>/g, '').trim()) || []
+      allUrls = allUrls.concat(childLocs)
+      if (allUrls.filter(u => u.includes('/products/')).length >= limit) break
+    }
+  } else {
+    allUrls = topLocs
+  }
+  const productUrls = allUrls.filter(u => u.includes('/products/') && !u.includes('category='))
+  return productUrls.slice(0, limit)
+}
+
+/** Submit up to 100 product URLs to GSC via URL Inspection API (surfaces URLs for recrawl). */
+async function inspectProductUrls(siteUrl: string, limit: number) {
+  const baseUrl = siteUrl.endsWith('/') ? siteUrl : siteUrl + '/'
+  console.log(`📡 Fetching up to ${limit} product URLs from sitemap...`)
+  const urls = await getProductUrlsFromSitemap(baseUrl, limit)
+  if (urls.length === 0) {
+    console.log('⚠️  No product URLs found in sitemap. Ensure the site is deployed and sitemap includes /products/*.')
+    return
+  }
+  console.log(`   Found ${urls.length} product URLs. Submitting to Google Search Console (URL Inspection)...`)
+  const auth = await getAuth()
+  const authClient = await auth.getClient()
+  const token = await authClient.getAccessToken()
+  if (!token.token) throw new Error('Failed to get access token')
+  const gscSiteUrl = siteUrl.startsWith('sc-domain:') ? siteUrl : baseUrl
+  const delayMs = 250
+  let ok = 0
+  let err = 0
+  for (let i = 0; i < urls.length; i++) {
+    try {
+      const res = await fetch('https://searchconsole.googleapis.com/v1/urlInspection/index:inspect', {
+        method: 'POST',
+        headers: {
+          Authorization: `Bearer ${token.token}`,
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          inspectionUrl: urls[i],
+          siteUrl: gscSiteUrl,
+          languageCode: 'en-US',
+        }),
+      })
+      if (res.ok) {
+        ok++
+        if ((i + 1) % 10 === 0) console.log(`   Inspected ${i + 1}/${urls.length}...`)
+      } else {
+        const body = await res.text()
+        if (err < 3) console.warn(`   ⚠ ${urls[i]} → ${res.status} ${body.slice(0, 120)}`)
+        err++
+      }
+    } catch (e: any) {
+      if (err < 3) console.warn(`   ⚠ ${urls[i]} → ${e.message}`)
+      err++
+    }
+    if (i < urls.length - 1) await new Promise(r => setTimeout(r, delayMs))
+  }
+  console.log(`✅ Submitted ${ok} URLs to Google Search Console (${err} errors).`)
+}
+
 async function main() {
   const cmd = process.argv[2]
   
@@ -191,8 +283,19 @@ async function main() {
         await submitSitemap(siteUrl)
         break
 
+      case 'inspect-urls': {
+        const gscSiteUrl = process.env.SITE_URL || siteUrl
+        if (!gscSiteUrl) {
+          console.error('❌ SITE_URL is required (set in Doppler or pass as argument).')
+          process.exit(1)
+        }
+        const limit = Math.min(1000, Math.max(1, parseInt(process.argv[3] || '100', 10)))
+        await inspectProductUrls(gscSiteUrl, limit)
+        break
+      }
+
       default:
-        console.log('Usage: npx jiti tools/gsc-toolbox.ts [init|verify|submit]')
+        console.log('Usage: npx tsx tools/gsc-toolbox.ts [init|verify|submit|inspect-urls [limit]]')
     }
   } catch (error: any) {
     console.error('❌ Error:', error.response?.data?.error?.message || error.message)
