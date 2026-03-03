@@ -19,7 +19,7 @@
     "quality": "pnpm run lint && pnpm run typecheck"
   },
   "dependencies": {
-    "@loganrenz/narduk-nuxt-template-layer": "workspace:*",
+    "@narduk-enterprises/narduk-nuxt-template-layer": "workspace:*",
     "@narduk/eslint-config": "workspace:*",
     "cheerio": "^1.2.0",
     "drizzle-orm": "^0.45.1",
