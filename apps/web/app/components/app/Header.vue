@@ -44,7 +44,7 @@ watch(() => route.path, () => {
       </div>
 
       <!-- Brand Accent Line — subtle red gradient separator -->
-      <div class="h-[2px] bg-gradient-to-r from-transparent via-brand-500/60 to-transparent" />
+      <div class="h-[2px] bg-linear-to-r from-transparent via-brand-500/60 to-transparent" />
 
       <!-- Main Navigation -->
       <div class="mx-auto flex max-w-7xl items-center justify-between px-4 py-3 sm:px-6">
@@ -92,7 +92,7 @@ watch(() => route.path, () => {
       </div>
 
       <!-- Bottom edge line for depth -->
-      <div class="h-px bg-gradient-to-r from-transparent via-white/[0.08] to-transparent" />
+      <div class="h-px bg-linear-to-r from-transparent via-white/[0.08] to-transparent" />
     </div>
 
     <!-- Mobile Menu — premium dark drawer -->
