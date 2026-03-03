@@ -1,8 +1,14 @@
 <script setup lang="ts">
-useSeoMeta({
+useSeo({
   title: 'Resources & Knowledge Base — Technical Articles | Circuit Breaker Sales',
   description: 'Technical articles and guides on circuit breaker maintenance, arc flash safety, switchgear modernization, protective relay testing, and electrical equipment best practices.',
+  keywords: ['circuit breaker maintenance', 'arc flash safety', 'switchgear modernization', 'relay testing', 'electrical equipment guide'],
+  ogImage: { title: 'Technical Resources', description: 'Knowledge Base & Industry Guides', icon: '📚' },
 })
+useBreadcrumbSchema([
+  { name: 'Home', url: 'https://circuitbreaker.online/' },
+  { name: 'Resources', url: 'https://circuitbreaker.online/resources' },
+])
 
 const articles = [
   { slug: 'circuit-breaker-maintenance-guide', title: 'The Complete Guide to Circuit Breaker Maintenance', excerpt: 'Learn the essential maintenance intervals, testing procedures, and best practices for extending circuit breaker life and ensuring reliable protection.', category: 'Maintenance', accentClass: 'bg-brand-600', tagClass: 'text-brand-600' },

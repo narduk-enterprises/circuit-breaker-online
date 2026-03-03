@@ -1,7 +1,19 @@
 <script setup lang="ts">
-useSeoMeta({
+useSeo({
+  title: 'Remote Racking & Switching Systems | Circuit Breaker Sales',
   description: 'Remote racking and switching devices for safe circuit breaker operation from outside the arc flash boundary. Reduce arc flash risk and improve worker safety.',
+  keywords: ['remote racking', 'arc flash safety', 'NFPA 70E', 'remote switching', 'circuit breaker racking'],
+  ogImage: { title: 'Remote Racking', description: 'Arc Flash Safety Solutions', icon: '🛡️' },
 })
+useBreadcrumbSchema([
+  { name: 'Home', url: 'https://circuitbreaker.online/' },
+  { name: 'Equipment', url: 'https://circuitbreaker.online/equipment' },
+  { name: 'Remote Racking', url: 'https://circuitbreaker.online/equipment/remote-racking' },
+])
+useFAQSchema([
+  { question: 'Why is remote racking important for arc flash safety?', answer: 'Racking a circuit breaker in or out of a switchgear cubicle creates one of the highest arc flash hazard exposure scenarios for electrical workers. Remote racking systems allow technicians to operate from outside the arc flash boundary — typically 10+ feet away — dramatically reducing the risk of injury. NFPA 70E and OSHA increasingly recommend remote racking as an engineering control.' },
+  { question: 'Can remote racking systems work with any circuit breaker?', answer: 'Circuit Breaker Sales offers remote racking solutions for virtually all types of low and medium voltage drawout circuit breakers including GE, Siemens, ABB, Eaton, and Westinghouse. Our portable, battery-powered systems can be customized and adapted for specific switchgear configurations.' },
+])
 useHead({ script: [{ type: 'application/ld+json', innerHTML: JSON.stringify({ '@context': 'https://schema.org', '@type': 'Product', name: 'Remote Racking & Switching Systems', description: 'Remote racking and switching devices for safe circuit breaker operation.', brand: { '@type': 'Organization', name: 'Circuit Breaker Sales' }, category: 'Electrical Equipment > Remote Racking Systems' }) }] })
 
 const pageData = {

@@ -1,9 +1,19 @@
 <script setup lang="ts">
-useSeoMeta({
+useSeo({
+  title: 'Low & Medium Voltage Circuit Breakers | Circuit Breaker Sales',
   description: 'Buy new and reconditioned low voltage and medium voltage power circuit breakers. Air, vacuum, SF6 breakers from GE, Westinghouse, Siemens, Cutler-Hammer, Square D, ABB. Tested & certified.',
-  ogDescription: 'The largest independent inventory of power circuit breakers in North America. All major brands, tested and certified.',
+  keywords: ['circuit breakers', 'power circuit breaker', 'vacuum circuit breaker', 'air circuit breaker', 'medium voltage breaker', 'low voltage breaker'],
+  ogImage: { title: 'Circuit Breakers', description: 'Low & Medium Voltage Power Circuit Breakers', icon: '⚡' },
 })
-
+useBreadcrumbSchema([
+  { name: 'Home', url: 'https://circuitbreaker.online/' },
+  { name: 'Equipment', url: 'https://circuitbreaker.online/equipment' },
+  { name: 'Circuit Breakers', url: 'https://circuitbreaker.online/equipment/circuit-breakers' },
+])
+useFAQSchema([
+  { question: 'What types of circuit breakers does Circuit Breaker Sales carry?', answer: 'We carry a comprehensive selection including low voltage air circuit breakers, medium voltage vacuum breakers, SF6 circuit breakers, molded case circuit breakers (MCCB), insulated case circuit breakers (ICCB), and motor circuit protectors. Available in drawout and fixed-mount configurations from all major manufacturers.' },
+  { question: 'Are reconditioned circuit breakers as reliable as new ones?', answer: 'Yes, when properly reconditioned by factory-trained technicians. Circuit Breaker Sales restores reconditioned breakers to original OEM specifications with complete testing and certification. All reconditioned breakers come with a comprehensive warranty and are tested to ANSI/IEEE standards before shipment.' },
+])
 useHead({
   script: [{
     type: 'application/ld+json',

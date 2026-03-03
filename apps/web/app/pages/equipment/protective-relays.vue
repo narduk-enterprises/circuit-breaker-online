@@ -1,7 +1,19 @@
 <script setup lang="ts">
-useSeoMeta({
+useSeo({
+  title: 'Protective Relays — Electromechanical & Digital | Circuit Breaker Sales',
   description: 'New and reconditioned protective relays for overcurrent, differential, distance, and frequency protection. GE, Westinghouse, ABB, SEL, Basler, and more.',
+  keywords: ['protective relays', 'overcurrent relay', 'differential relay', 'digital relay', 'relay testing'],
+  ogImage: { title: 'Protective Relays', description: 'Electromechanical & Digital Relays', icon: '🛡️' },
 })
+useBreadcrumbSchema([
+  { name: 'Home', url: 'https://circuitbreaker.online/' },
+  { name: 'Equipment', url: 'https://circuitbreaker.online/equipment' },
+  { name: 'Protective Relays', url: 'https://circuitbreaker.online/equipment/protective-relays' },
+])
+useFAQSchema([
+  { question: 'Can I replace an electromechanical relay with a digital relay?', answer: 'In many cases, yes. Modern digital multifunction relays can replace multiple electromechanical relays while providing additional features like event recording, remote communication, and programmable logic. Circuit Breaker Sales can help assess compatibility and provide the correct replacement relay for your application.' },
+  { question: 'How often should protective relays be tested?', answer: 'NFPA 70B recommends testing protective relays every 3 to 5 years, depending on the criticality of the equipment being protected. Electromechanical relays may need more frequent calibration than digital relays. Circuit Breaker Sales offers on-site relay testing and calibration services.' },
+])
 useHead({ script: [{ type: 'application/ld+json', innerHTML: JSON.stringify({ '@context': 'https://schema.org', '@type': 'Product', name: 'Protective Relays', description: 'Electromechanical, solid-state, and digital protective relays.', brand: { '@type': 'Organization', name: 'Circuit Breaker Sales' }, category: 'Electrical Equipment > Protective Relays' }) }] })
 
 const pageData = {

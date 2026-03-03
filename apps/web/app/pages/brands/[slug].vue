@@ -55,10 +55,21 @@ if (!currentBrand.value) {
   throw createError({ statusCode: 404, statusMessage: 'Brand not found' })
 }
 
-useSeoMeta({
+useSeo({
   title: `${currentBrand.value.name} Circuit Breakers & Parts | Circuit Breaker Sales`,
   description: currentBrand.value.description,
+  keywords: [currentBrand.value.name, 'circuit breakers', 'parts', 'reconditioning', 'industrial power equipment'],
+  ogImage: {
+    title: currentBrand.value.name,
+    description: 'Circuit Breakers & Parts',
+    icon: '⚡',
+  },
 })
+useBreadcrumbSchema([
+  { name: 'Home', url: 'https://circuitbreaker.online/' },
+  { name: 'Brands', url: 'https://circuitbreaker.online/brands' },
+  { name: currentBrand.value.name, url: `https://circuitbreaker.online/brands/${slug}` },
+])
 
 useHead({
   script: [{

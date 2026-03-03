@@ -1,7 +1,19 @@
 <script setup lang="ts">
-useSeoMeta({
+useSeo({
+  title: 'Vacuum Interrupter Replacements & Testing | Circuit Breaker Sales',
   description: 'OEM and aftermarket vacuum interrupter replacements with predictive testing using MAC-TS4. All major brands including Eaton, Siemens, ABB. Full testing and certification.',
+  keywords: ['vacuum interrupter', 'vacuum bottle', 'MAC testing', 'vacuum circuit breaker', 'interrupter replacement'],
+  ogImage: { title: 'Vacuum Interrupters', description: 'OEM Replacements & Predictive Testing', icon: '🔬' },
 })
+useBreadcrumbSchema([
+  { name: 'Home', url: 'https://circuitbreaker.online/' },
+  { name: 'Equipment', url: 'https://circuitbreaker.online/equipment' },
+  { name: 'Vacuum Interrupters', url: 'https://circuitbreaker.online/equipment/vacuum-interrupters' },
+])
+useFAQSchema([
+  { question: 'What is MAC testing for vacuum interrupters?', answer: 'MAC (Magnetron Atmospheric Condition) testing uses a magnetic field to detect loss of vacuum in interrupters more reliably than traditional HiPot (high-potential) testing. HiPot tests can pass bad interrupters because the test voltage may not be sufficient to reveal degraded vacuum. Circuit Breaker Sales uses the MAC-TS4 tester for predictive vacuum interrupter evaluation.' },
+  { question: 'How do I know when to replace a vacuum interrupter?', answer: 'Signs include increased fault clearing times, visible damage to contacts through the glass envelope, and failed vacuum integrity tests. Circuit Breaker Sales recommends periodic MAC testing to identify degraded interrupters before they fail in service, preventing costly outages.' },
+])
 useHead({ script: [{ type: 'application/ld+json', innerHTML: JSON.stringify({ '@context': 'https://schema.org', '@type': 'Product', name: 'Vacuum Interrupters', description: 'OEM and aftermarket vacuum interrupter replacements.', brand: { '@type': 'Organization', name: 'Circuit Breaker Sales' }, category: 'Electrical Equipment > Vacuum Interrupters' }) }] })
 
 const pageData = {

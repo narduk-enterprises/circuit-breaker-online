@@ -122,11 +122,22 @@ if (!currentArticle.value) {
   throw createError({ statusCode: 404, statusMessage: 'Article not found' })
 }
 
-useSeoMeta({
+useSeo({
   title: `${currentArticle.value.title} | Circuit Breaker Sales`,
   description: currentArticle.value.excerpt,
-  ogType: 'article',
+  type: 'article',
+  keywords: [currentArticle.value.category, 'circuit breaker', 'electrical equipment', 'technical guide'],
+  ogImage: {
+    title: currentArticle.value.title,
+    description: currentArticle.value.category,
+    icon: '📄',
+  },
 })
+useBreadcrumbSchema([
+  { name: 'Home', url: 'https://circuitbreaker.online/' },
+  { name: 'Resources', url: 'https://circuitbreaker.online/resources' },
+  { name: currentArticle.value.title, url: `https://circuitbreaker.online/resources/${slug}` },
+])
 
 // Extract FAQ pairs from article h2s for FAQ schema
 const faqPairs = computed(() => {

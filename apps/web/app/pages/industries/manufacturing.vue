@@ -1,8 +1,15 @@
 <script setup lang="ts">
-useSeoMeta({
+useSeo({
   title: 'Manufacturing Power Equipment & Services | Circuit Breaker Sales',
   description: 'Industrial electrical equipment for manufacturing facilities. Motor controls, switchgear, circuit breakers, and preventive maintenance to maximize production uptime.',
+  keywords: ['manufacturing electrical', 'industrial power', 'motor control center', 'production uptime', 'preventive maintenance'],
+  ogImage: { title: 'Manufacturing', description: 'Industrial Power Equipment', icon: '🏭' },
 })
+useBreadcrumbSchema([
+  { name: 'Home', url: 'https://circuitbreaker.online/' },
+  { name: 'Industries', url: 'https://circuitbreaker.online/industries' },
+  { name: 'Manufacturing', url: 'https://circuitbreaker.online/industries/manufacturing' },
+])
 useHead({ script: [{ type: 'application/ld+json', innerHTML: JSON.stringify({ '@context': 'https://schema.org', '@type': 'Service', name: 'Manufacturing Power Equipment', provider: { '@type': 'Organization', name: 'Circuit Breaker Sales' }, areaServed: 'US' }) }] })
 
 const pageData = {

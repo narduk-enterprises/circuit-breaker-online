@@ -1,8 +1,15 @@
 <script setup lang="ts">
-useSeoMeta({
+useSeo({
   title: 'Data Center Power Equipment & Services | Circuit Breaker Sales',
   description: 'Mission-critical electrical equipment for data centers. Circuit breakers, switchgear, and UPS components with 24/7 emergency support for Tier III & IV facilities.',
+  keywords: ['data center power', 'critical power', 'UPS switchgear', 'PDU components', 'Tier IV data center'],
+  ogImage: { title: 'Data Centers', description: 'Mission-Critical Power Infrastructure', icon: '🏢' },
 })
+useBreadcrumbSchema([
+  { name: 'Home', url: 'https://circuitbreaker.online/' },
+  { name: 'Industries', url: 'https://circuitbreaker.online/industries' },
+  { name: 'Data Centers', url: 'https://circuitbreaker.online/industries/data-centers' },
+])
 useHead({ script: [{ type: 'application/ld+json', innerHTML: JSON.stringify({ '@context': 'https://schema.org', '@type': 'Service', name: 'Data Center Power Equipment & Services', provider: { '@type': 'Organization', name: 'Circuit Breaker Sales' }, areaServed: 'US', description: 'Mission-critical electrical equipment and services for data center power infrastructure.' }) }] })
 
 const solutions = [

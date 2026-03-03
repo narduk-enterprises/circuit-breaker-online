@@ -1,7 +1,19 @@
 <script setup lang="ts">
-useSeoMeta({
+useSeo({
+  title: 'Load Tap Changer Parts & Service | Circuit Breaker Sales',
   description: 'Load tap changer (LTC) parts, components, and service for all major transformer manufacturers. Preventive maintenance and emergency repair for tap changers nationwide.',
+  keywords: ['load tap changer', 'LTC parts', 'tap changer maintenance', 'LTC contacts', 'transformer voltage regulation'],
+  ogImage: { title: 'Load Tap Changers', description: 'Parts & Service for All Major LTC Types', icon: '🔧' },
 })
+useBreadcrumbSchema([
+  { name: 'Home', url: 'https://circuitbreaker.online/' },
+  { name: 'Equipment', url: 'https://circuitbreaker.online/equipment' },
+  { name: 'Load Tap Changers', url: 'https://circuitbreaker.online/equipment/load-tap-changers' },
+])
+useFAQSchema([
+  { question: 'How often should load tap changers be serviced?', answer: 'Most manufacturers recommend LTC maintenance every 50,000 to 100,000 operations or every 3 to 7 years, whichever comes first. Regular oil sampling and dissolved gas analysis can help determine the right maintenance interval for your specific installation.' },
+  { question: 'What are common signs of load tap changer problems?', answer: 'Common indicators include abnormal dissolved gas levels in the LTC oil compartment, unusual sounds during tap changes, increased transition time, contact resistance readings outside specifications, and oil discoloration. Circuit Breaker Sales can perform comprehensive LTC evaluations to identify issues before failure.' },
+])
 useHead({ script: [{ type: 'application/ld+json', innerHTML: JSON.stringify({ '@context': 'https://schema.org', '@type': 'Product', name: 'Load Tap Changers', description: 'Load tap changer parts, components, and service.', brand: { '@type': 'Organization', name: 'Circuit Breaker Sales' }, category: 'Electrical Equipment > Load Tap Changers' }) }] })
 
 const pageData = {

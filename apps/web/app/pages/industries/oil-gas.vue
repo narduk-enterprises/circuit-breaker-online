@@ -1,8 +1,15 @@
 <script setup lang="ts">
-useSeoMeta({
+useSeo({
   title: 'Oil & Gas Electrical Equipment | Circuit Breaker Sales',
   description: 'Electrical equipment for refineries, pipelines, offshore platforms, and petrochemical facilities. Hazardous area rated equipment with emergency support.',
+  keywords: ['oil gas electrical', 'refinery switchgear', 'hazardous area equipment', 'NEC 500', 'turnaround support'],
+  ogImage: { title: 'Oil & Gas', description: 'Power Equipment for Energy Operations', icon: '🛢️' },
 })
+useBreadcrumbSchema([
+  { name: 'Home', url: 'https://circuitbreaker.online/' },
+  { name: 'Industries', url: 'https://circuitbreaker.online/industries' },
+  { name: 'Oil & Gas', url: 'https://circuitbreaker.online/industries/oil-gas' },
+])
 useHead({ script: [{ type: 'application/ld+json', innerHTML: JSON.stringify({ '@context': 'https://schema.org', '@type': 'Service', name: 'Oil & Gas Electrical Equipment', provider: { '@type': 'Organization', name: 'Circuit Breaker Sales' }, areaServed: 'US' }) }] })
 
 const pageData = {

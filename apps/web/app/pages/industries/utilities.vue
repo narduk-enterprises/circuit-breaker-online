@@ -1,8 +1,15 @@
 <script setup lang="ts">
-useSeoMeta({
+useSeo({
   title: 'Utility & Transmission Power Equipment | Circuit Breaker Sales',
   description: 'Substation equipment, circuit breakers, switchgear, and protective relays for electric utilities. Expert field services and emergency storm damage support.',
+  keywords: ['utility equipment', 'substation switchgear', 'transmission breakers', 'storm restoration', 'utility relay testing'],
+  ogImage: { title: 'Utilities', description: 'Transmission & Distribution Equipment', icon: '⚡' },
 })
+useBreadcrumbSchema([
+  { name: 'Home', url: 'https://circuitbreaker.online/' },
+  { name: 'Industries', url: 'https://circuitbreaker.online/industries' },
+  { name: 'Utilities', url: 'https://circuitbreaker.online/industries/utilities' },
+])
 useHead({ script: [{ type: 'application/ld+json', innerHTML: JSON.stringify({ '@context': 'https://schema.org', '@type': 'Service', name: 'Utility Power Equipment & Services', provider: { '@type': 'Organization', name: 'Circuit Breaker Sales' }, areaServed: 'US', description: 'Substation equipment, parts, and services for electric utility transmission and distribution systems.' }) }] })
 
 const solutions = [

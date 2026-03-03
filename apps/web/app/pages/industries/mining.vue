@@ -1,8 +1,15 @@
 <script setup lang="ts">
-useSeoMeta({
+useSeo({
   title: 'Mining Electrical Equipment & Services | Circuit Breaker Sales',
   description: 'Rugged electrical distribution equipment for surface and underground mining operations. MSHA compliant equipment with emergency support for remote mining sites.',
+  keywords: ['mining electrical', 'MSHA compliant', 'mine power center', 'mining switchgear', 'ground fault relay'],
+  ogImage: { title: 'Mining', description: 'Heavy-Duty Power Systems', icon: '⛏️' },
 })
+useBreadcrumbSchema([
+  { name: 'Home', url: 'https://circuitbreaker.online/' },
+  { name: 'Industries', url: 'https://circuitbreaker.online/industries' },
+  { name: 'Mining', url: 'https://circuitbreaker.online/industries/mining' },
+])
 useHead({ script: [{ type: 'application/ld+json', innerHTML: JSON.stringify({ '@context': 'https://schema.org', '@type': 'Service', name: 'Mining Electrical Equipment', provider: { '@type': 'Organization', name: 'Circuit Breaker Sales' }, areaServed: 'US' }) }] })
 
 const pageData = {

@@ -1,7 +1,19 @@
 <script setup lang="ts">
-useSeoMeta({
+useSeo({
+  title: 'Power & Distribution Transformers | Circuit Breaker Sales',
   description: 'Buy new and reconditioned power transformers and distribution transformers. Dry-type and oil-filled configurations. All major brands. Full testing and certification.',
+  keywords: ['power transformers', 'distribution transformers', 'dry-type transformer', 'oil-filled transformer', 'unit substation'],
+  ogImage: { title: 'Transformers', description: 'Power & Distribution Transformers', icon: '⚡' },
 })
+useBreadcrumbSchema([
+  { name: 'Home', url: 'https://circuitbreaker.online/' },
+  { name: 'Equipment', url: 'https://circuitbreaker.online/equipment' },
+  { name: 'Transformers', url: 'https://circuitbreaker.online/equipment/transformers' },
+])
+useFAQSchema([
+  { question: 'What is the difference between dry-type and oil-filled transformers?', answer: 'Dry-type transformers use air for cooling and are typically used for indoor installations up to about 10MVA. Oil-filled transformers use mineral oil or synthetic fluid for insulation and cooling, allowing higher voltage and kVA ratings. Oil-filled units require secondary containment but offer better efficiency at larger sizes.' },
+  { question: 'Does Circuit Breaker Sales offer transformer oil analysis?', answer: 'Yes, we provide dissolved gas analysis (DGA), oil quality testing, and comprehensive transformer evaluation services. Regular oil analysis is essential for detecting incipient faults and planning maintenance before costly failures occur.' },
+])
 useHead({ script: [{ type: 'application/ld+json', innerHTML: JSON.stringify({ '@context': 'https://schema.org', '@type': 'Product', name: 'Power Transformers', description: 'New and reconditioned power and distribution transformers.', brand: { '@type': 'Organization', name: 'Circuit Breaker Sales' }, category: 'Electrical Equipment > Transformers' }) }] })
 
 const pageData = {

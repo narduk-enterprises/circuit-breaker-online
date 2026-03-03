@@ -1,8 +1,15 @@
 <script setup lang="ts">
-useSeoMeta({
+useSeo({
   title: 'Healthcare Facility Power Equipment | Circuit Breaker Sales',
   description: 'Critical power equipment for hospitals, medical centers, and healthcare facilities. Life safety and essential power systems meeting NEC 517 and NFPA 110 requirements.',
+  keywords: ['healthcare power', 'hospital electrical', 'NEC 517', 'NFPA 110', 'life safety systems'],
+  ogImage: { title: 'Healthcare', description: 'Critical Power for Healthcare Facilities', icon: '🏥' },
 })
+useBreadcrumbSchema([
+  { name: 'Home', url: 'https://circuitbreaker.online/' },
+  { name: 'Industries', url: 'https://circuitbreaker.online/industries' },
+  { name: 'Healthcare', url: 'https://circuitbreaker.online/industries/healthcare' },
+])
 useHead({ script: [{ type: 'application/ld+json', innerHTML: JSON.stringify({ '@context': 'https://schema.org', '@type': 'Service', name: 'Healthcare Power Equipment', provider: { '@type': 'Organization', name: 'Circuit Breaker Sales' }, areaServed: 'US' }) }] })
 
 const pageData = {
