@@ -66,7 +66,7 @@ export default defineNuxtConfig({
     head: {
       htmlAttrs: { lang: 'en' },
       meta: [
-        { name: 'theme-color', content: '#CC0000' },
+        { name: 'theme-color', content: '#b91c1c' },
       ],
       link: [
         { rel: 'icon', type: 'image/svg+xml', href: '/favicon.svg' },
@@ -76,7 +76,7 @@ export default defineNuxtConfig({
         { rel: 'manifest', href: '/site.webmanifest' },
       ],
     },
-    pageTransition: { name: 'page', mode: 'out-in' }
+    pageTransition: false,
   },
 
   modules: [

@@ -40,7 +40,7 @@ defineProps<{
     </div>
 
     <!-- Content -->
-    <div class="p-4">
+    <div class="p-3 sm:p-4">
       <!-- Manufacturer Tag -->
       <p v-if="product.manufacturer" class="mb-1 text-[10px] font-semibold uppercase tracking-wider text-brand-600">
         {{ product.manufacturer }}
@@ -68,10 +68,10 @@ defineProps<{
       </div>
 
       <!-- SKU & CTA -->
-      <div class="flex items-center justify-between border-t border-default pt-3">
-        <span v-if="product.sku" class="text-[10px] font-mono text-dimmed">{{ product.sku }}</span>
-        <span v-else class="text-[10px] text-dimmed">—</span>
-        <span class="text-xs font-medium text-brand-600 transition-colors group-hover:text-brand-500">
+      <div class="flex items-center justify-between border-t border-default pt-2.5 sm:pt-3">
+        <span v-if="product.sku" class="text-[10px] font-mono text-dimmed hidden sm:inline">{{ product.sku }}</span>
+        <span v-else class="text-[10px] text-dimmed hidden sm:inline">—</span>
+        <span class="text-xs font-medium text-brand-600 transition-colors group-hover:text-brand-500 py-1">
           Details →
         </span>
       </div>

@@ -1,9 +1,24 @@
 <script setup lang="ts">
-useSeoMeta({
+useSeo({
+  title: 'Industrial Power Equipment — Circuit Breakers, Switchgear & Transformers | Circuit Breaker Sales',
   description: 'Browse our inventory of new and reconditioned circuit breakers, switchgear, transformers, protective relays, and industrial power equipment. All major brands. Tested and certified.',
-
-  ogDescription: 'One of the largest independent inventories of industrial power distribution equipment in North America.',
+  ogImage: {
+    title: 'Industrial Power Equipment',
+    description: 'Circuit Breakers · Switchgear · Transformers · Relays',
+    icon: '⚡',
+  },
 })
+
+useWebPageSchema({
+  type: 'CollectionPage',
+  name: 'Industrial Power Equipment',
+  description: 'One of the largest independent inventories of industrial power distribution equipment in North America.',
+})
+
+useBreadcrumbSchema([
+  { name: 'Home', url: 'https://circuitbreaker.online/' },
+  { name: 'Equipment', url: 'https://circuitbreaker.online/equipment' },
+])
 
 useHead({
   script: [{

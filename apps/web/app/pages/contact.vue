@@ -11,6 +11,11 @@ useSeo({
 
 useWebPageSchema({ type: 'ContactPage', name: 'Contact Circuit Breaker Sales', description: 'Request a quote on industrial power equipment. Toll-free: 800-232-5809.' })
 
+useBreadcrumbSchema([
+  { name: 'Home', url: 'https://circuitbreaker.online/' },
+  { name: 'Contact', url: 'https://circuitbreaker.online/contact' },
+])
+
 const form = reactive({
   name: '',
   email: '',
@@ -48,7 +53,7 @@ const handleSubmit = async () => {
 </script>
 
 <template>
-  <div class="mx-auto max-w-7xl px-4 py-12">
+  <div class="mx-auto max-w-7xl px-4 py-8 sm:py-12">
     <!-- Page Header -->
     <div class="mb-8">
       <h1 class="mb-2 font-display text-3xl font-bold text-default">Contact Us / Request a Quote</h1>
@@ -59,7 +64,7 @@ const handleSubmit = async () => {
     <div class="grid gap-12 lg:grid-cols-3">
       <!-- Form -->
       <div class="lg:col-span-2">
-        <UForm class="light-card accent-border rounded-xl p-8 sm:p-10" @submit.prevent="handleSubmit">
+        <UForm class="light-card accent-border rounded-xl p-5 sm:p-8 lg:p-10" @submit.prevent="handleSubmit">
           <!-- Name & Email row -->
           <div class="grid gap-6 sm:grid-cols-2">
             <UFormField label="Full Name" required>
@@ -96,9 +101,9 @@ const handleSubmit = async () => {
             />
           </UFormField>
 
-          <div class="mt-8 flex items-center justify-between">
-            <p class="text-sm text-dimmed">We typically respond within 24 hours.</p>
-            <UButton type="submit" color="primary" size="xl" :loading="submitting">
+          <div class="mt-6 sm:mt-8 flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-4">
+            <p class="text-sm text-dimmed text-center sm:text-left">We typically respond within 24 hours.</p>
+            <UButton type="submit" color="primary" size="xl" :loading="submitting" class="w-full sm:w-auto justify-center">
               Send Message
             </UButton>
           </div>

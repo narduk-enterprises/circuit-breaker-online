@@ -1,8 +1,19 @@
 <script setup lang="ts">
-useSeoMeta({
+useSeo({
+  title: '24/7 Emergency Electrical Service — Rapid Deployment | Circuit Breaker Sales',
   description: 'Emergency circuit breaker and switchgear repair available 24/7. Rapid deployment nationwide with mobile workshop capabilities and access to the largest independent equipment inventory.',
-  ogDescription: 'When electrical equipment fails, call CBS. 24/7 emergency service with rapid deployment, mobile workshops, and the largest independent equipment inventory.',
+  ogImage: {
+    title: '24/7 Emergency Response',
+    description: 'Rapid Deployment · Mobile Workshops · Nationwide',
+    icon: '🚨',
+  },
 })
+
+useBreadcrumbSchema([
+  { name: 'Home', url: 'https://circuitbreaker.online/' },
+  { name: 'Services', url: 'https://circuitbreaker.online/services' },
+  { name: 'Emergency Response', url: 'https://circuitbreaker.online/services/emergency-response' },
+])
 
 useHead({
   script: [{

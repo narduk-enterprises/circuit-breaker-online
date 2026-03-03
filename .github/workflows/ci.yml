@@ -78,7 +78,7 @@ jobs:
 
   deploy:
     name: Deploy web
-    needs: [preflight]
+    needs: [quality, preflight]
     runs-on: ubuntu-latest
     timeout-minutes: 10
     permissions:
@@ -122,14 +122,12 @@ jobs:
       - name: Run D1 migrations (remote)
         working-directory: apps/web
         run: |
-          echo "Running remote migrations..."
-          cmd=$(node -p "require('./package.json').scripts['db:migrate']?.replace('--local', '--remote') || ''")
-          if [ -z "$cmd" ]; then
-            echo "No db:migrate script found!"
-            exit 1
-          fi
+          echo "Running remote schema migrations..."
           export PATH="$(pnpm bin):$PATH"
-          sh -c "$cmd"
+          for f in drizzle/[0-9]*.sql; do
+            echo "  → Applying $f"
+            wrangler d1 execute circuit-breaker-online-db --remote --file="$f"
+          done
 
       - name: Build & Deploy
         id: deploy

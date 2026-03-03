@@ -1,9 +1,18 @@
 <script setup lang="ts">
-useSeoMeta({
+useSeo({
   title: 'Technical Videos — Circuit Breaker Testing & Maintenance | Circuit Breaker Sales',
   description: 'Watch circuit breaker assembly timelapses, slow-motion breaker operations, and technical demonstrations from Circuit Breaker Sales — a Group CBS company.',
-  ogImage: 'https://img.youtube.com/vi/R5AxGp_cFqk/maxresdefault.jpg',
+  ogImage: {
+    title: 'Technical Video Library',
+    description: 'Circuit Breaker Assembly, Testing & Demonstrations',
+    icon: '🎬',
+  },
 })
+
+useBreadcrumbSchema([
+  { name: 'Home', url: 'https://circuitbreaker.online/' },
+  { name: 'Videos', url: 'https://circuitbreaker.online/videos' },
+])
 
 interface Video {
   id: string

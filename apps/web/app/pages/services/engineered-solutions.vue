@@ -1,8 +1,19 @@
 <script setup lang="ts">
-useSeoMeta({
+useSeo({
+  title: 'Engineered Solutions — Retrofit & Life Extension | Circuit Breaker Sales',
   description: 'Extend the life of aging electrical equipment with retrofit, retrofill, and modernization solutions. Custom engineering for circuit breaker upgrades, switchgear renovations, and more.',
-  ogDescription: 'Custom engineering solutions for life extension, retrofit, and modernization of electrical power distribution systems.',
+  ogImage: {
+    title: 'Engineered Solutions',
+    description: 'Retrofit · Life Extension · Modernization',
+    icon: '⚙️',
+  },
 })
+
+useBreadcrumbSchema([
+  { name: 'Home', url: 'https://circuitbreaker.online/' },
+  { name: 'Services', url: 'https://circuitbreaker.online/services' },
+  { name: 'Engineered Solutions', url: 'https://circuitbreaker.online/services/engineered-solutions' },
+])
 
 useHead({
   script: [{

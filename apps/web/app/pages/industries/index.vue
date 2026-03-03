@@ -1,9 +1,24 @@
 <script setup lang="ts">
-useSeoMeta({
+useSeo({
   title: 'Industries We Serve — Data Centers, Utilities, Manufacturing & More | Circuit Breaker Sales',
   description: 'Circuit Breaker Sales provides electrical equipment and services to data centers, utilities, petrochemical, mining, healthcare, manufacturing, and more.',
+  ogImage: {
+    title: 'Industries We Serve',
+    description: 'Data Centers · Utilities · Manufacturing · Healthcare',
+    icon: '🏭',
+  },
 })
 
+useWebPageSchema({
+  type: 'CollectionPage',
+  name: 'Industries We Serve',
+  description: 'Industrial power equipment and services for data centers, utilities, manufacturing, healthcare, oil & gas, and mining.',
+})
+
+useBreadcrumbSchema([
+  { name: 'Home', url: 'https://circuitbreaker.online/' },
+  { name: 'Industries', url: 'https://circuitbreaker.online/industries' },
+])
 const industries = [
   { name: 'Data Centers', slug: 'data-centers', icon: 'i-lucide-server-stack', bgClass: 'bg-muted', iconClass: 'text-primary', description: 'Mission-critical power infrastructure for hyperscale, colocation, and enterprise data centers. Redundant systems with guaranteed uptime.', tags: ['Tier III/IV', 'Redundancy', 'UPS Systems'] },
   { name: 'Utilities', slug: 'utilities', icon: 'i-lucide-bolt', bgClass: 'bg-muted', iconClass: 'text-primary', description: 'Transmission and distribution equipment for investor-owned utilities, co-ops, and municipal power authorities.', tags: ['Substations', 'T&D', 'Grid Reliability'] },

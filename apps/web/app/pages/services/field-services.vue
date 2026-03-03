@@ -1,8 +1,19 @@
 <script setup lang="ts">
-useSeoMeta({
+useSeo({
+  title: 'On-Site Field Services — NETA Certified Testing & Maintenance | Circuit Breaker Sales',
   description: 'NETA-certified on-site field services for circuit breaker testing, switchgear maintenance, installation, and emergency repair. Available nationwide with rapid deployment.',
-  ogDescription: 'NETA-certified technicians for on-site electrical equipment testing, maintenance, and repair at your facility.',
+  ogImage: {
+    title: 'On-Site Field Services',
+    description: 'NETA Certified · Nationwide · Rapid Deployment',
+    icon: '🚛',
+  },
 })
+
+useBreadcrumbSchema([
+  { name: 'Home', url: 'https://circuitbreaker.online/' },
+  { name: 'Services', url: 'https://circuitbreaker.online/services' },
+  { name: 'Field Services', url: 'https://circuitbreaker.online/services/field-services' },
+])
 
 useHead({
   script: [{

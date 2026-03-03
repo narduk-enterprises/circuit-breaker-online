@@ -1,27 +1,43 @@
 <script setup lang="ts">
-useSeoMeta({
-  description: 'Complete electrical equipment services including shop repair, field services, remanufacturing, reconditioning, life extension, and 24/7 emergency response from Circuit Breaker Sales.',
-  ogDescription: 'Full life-cycle services for circuit breakers, switchgear, transformers, and power distribution equipment. ISO 9001 certified.',
+useSeo({
+  title: 'Electrical Equipment Services | Circuit Breaker Sales',
+  description: 'Complete electrical equipment services: shop repair, field services, remanufacturing, reconditioning, life extension, and 24/7 emergency response. ISO 9001 certified.',
+  ogImage: {
+    title: 'Expert Equipment Services',
+    description: 'Shop Repair · Field Services · Emergency Response',
+    icon: '🔧',
+  },
 })
 
-useHead({
-  script: [{
-    type: 'application/ld+json',
-    innerHTML: JSON.stringify({
-      '@context': 'https://schema.org',
-      '@type': 'Service',
-      name: 'Electrical Equipment Services',
-      provider: {
-        '@type': 'Organization',
-        name: 'Circuit Breaker Sales',
-        url: 'https://circuitbreaker.online',
-      },
-      description: 'Complete life-cycle services for electrical power distribution equipment including repair, remanufacturing, field services, and emergency response.',
-      areaServed: 'United States',
-      serviceType: ['Equipment Repair', 'Remanufacturing', 'Field Services', 'Emergency Response'],
-    }),
-  }],
+useWebPageSchema({
+  type: 'CollectionPage',
+  name: 'Electrical Equipment Services',
+  description: 'Complete life-cycle services for circuit breakers, switchgear, transformers, and power distribution equipment.',
 })
+
+useBreadcrumbSchema([
+  { name: 'Home', url: 'https://circuitbreaker.online/' },
+  { name: 'Services', url: 'https://circuitbreaker.online/services' },
+])
+
+useFAQSchema([
+  {
+    question: 'What types of electrical equipment does Circuit Breaker Sales service?',
+    answer: 'We service circuit breakers, switchgear, transformers, protective relays, motor controls, and all types of electrical power distribution equipment from major manufacturers.',
+  },
+  {
+    question: 'Do you offer 24/7 emergency electrical service?',
+    answer: 'Yes, Circuit Breaker Sales offers 24/7 emergency response with rapid nationwide deployment and mobile workshop capabilities for critical electrical equipment failures.',
+  },
+  {
+    question: 'Is Circuit Breaker Sales ISO certified?',
+    answer: 'Yes, our shop services are ISO 9001 certified, ensuring all equipment is remanufactured and tested to OEM specifications with full quality assurance.',
+  },
+  {
+    question: 'Do you provide on-site field services?',
+    answer: 'Yes, our NETA-certified technicians provide on-site installation, maintenance, testing, and repair services at facilities anywhere in the United States.',
+  },
+])
 
 const services = [
   {
@@ -67,21 +83,21 @@ const reasons = [
     <!-- Hero -->
     <section class="gradient-industrial hero-grid relative overflow-hidden">
       <div class="absolute inset-0 bg-linear-to-b from-brand-950/20 via-transparent to-transparent" />
-      <div class="relative mx-auto max-w-7xl px-4 pb-16 pt-20 sm:pb-24 sm:pt-28">
+      <div class="relative mx-auto max-w-7xl px-4 pb-12 pt-14 sm:pb-24 sm:pt-28">
         <div class="mb-4 flex items-center gap-2">
           <div class="h-px w-8 bg-brand-600" />
           <span class="font-display text-xs font-semibold uppercase tracking-[0.2em] text-brand-500">Complete Life Cycle Solutions</span>
         </div>
-        <h1 class="mb-6 max-w-4xl font-display text-4xl font-bold leading-[1.1] text-white sm:text-5xl">
+        <h1 class="mb-4 sm:mb-6 max-w-4xl font-display text-2xl sm:text-4xl font-bold leading-[1.1] text-white lg:text-5xl">
           Expert Electrical Equipment <span class="text-brand-500">Services</span>
         </h1>
-        <p class="mb-8 max-w-2xl text-lg leading-relaxed text-white/60">
+        <p class="mb-6 sm:mb-8 max-w-2xl text-base sm:text-lg leading-relaxed text-white/60">
           From emergency field repairs to complete remanufacturing, Circuit Breaker Sales delivers
           full life-cycle support for your electrical power distribution systems.
         </p>
-        <div class="flex flex-wrap gap-4">
-          <UButton to="/contact" size="lg" color="primary">Request a Service Quote</UButton>
-          <UButton href="tel:8002325809" size="lg" variant="outline" color="neutral">
+        <div class="flex flex-col sm:flex-row gap-3 sm:gap-4">
+          <UButton to="/contact" size="lg" color="primary" class="w-full sm:w-auto justify-center">Request a Service Quote</UButton>
+          <UButton href="tel:8002325809" size="lg" variant="outline" color="neutral" class="w-full sm:w-auto justify-center">
             <template #leading><UIcon name="i-lucide-phone" class="size-4" /></template>
             800-232-5809
           </UButton>
@@ -91,9 +107,9 @@ const reasons = [
 
     <!-- Services Grid -->
     <section class="bg-default">
-      <div class="mx-auto max-w-7xl px-4 py-20">
-        <div class="mb-12 text-center">
-          <h2 class="mb-3 font-display text-3xl font-bold text-default">Our Service Offerings</h2>
+      <div class="mx-auto max-w-7xl px-4 py-12 sm:py-20">
+        <div class="mb-8 sm:mb-12 text-center">
+          <h2 class="mb-3 font-display text-2xl sm:text-3xl font-bold text-default">Our Service Offerings</h2>
           <p class="mx-auto max-w-2xl text-dimmed">
             Circuit Breaker Sales provides a comprehensive suite of services to keep your electrical
             infrastructure operating safely and reliably.
@@ -105,7 +121,7 @@ const reasons = [
             v-for="service in services"
             :key="service.slug"
             :to="service.slug"
-            class="group light-card accent-border rounded-xl p-8 transition-all duration-300"
+            class="group light-card accent-border rounded-xl p-5 sm:p-8 transition-all duration-300"
           >
             <div class="mb-4 flex size-12 items-center justify-center rounded-xl bg-brand-600/10">
               <UIcon :name="service.icon" class="size-6 text-brand-500" />
@@ -127,15 +143,15 @@ const reasons = [
 
     <!-- Why CBS for Services -->
     <section class="bg-muted border-y border-default">
-      <div class="mx-auto max-w-7xl px-4 py-20">
-        <div class="mb-12 text-center">
-          <h2 class="mb-3 font-display text-3xl font-bold text-default">Why Choose CBS Services</h2>
+      <div class="mx-auto max-w-7xl px-4 py-12 sm:py-20">
+        <div class="mb-8 sm:mb-12 text-center">
+          <h2 class="mb-3 font-display text-2xl sm:text-3xl font-bold text-default">Why Choose CBS Services</h2>
         </div>
-        <div class="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
-          <div v-for="reason in reasons" :key="reason.title" class="light-card rounded-xl p-6 text-center">
-            <p class="mb-2 font-display text-3xl font-bold text-brand-600">{{ reason.stat }}</p>
-            <h3 class="mb-1 font-display text-sm font-semibold text-default">{{ reason.title }}</h3>
-            <p class="text-xs text-dimmed">{{ reason.description }}</p>
+        <div class="grid gap-4 sm:gap-6 grid-cols-2 lg:grid-cols-4">
+          <div v-for="reason in reasons" :key="reason.title" class="light-card rounded-xl p-4 sm:p-6 text-center">
+            <p class="mb-1 sm:mb-2 font-display text-2xl sm:text-3xl font-bold text-brand-600">{{ reason.stat }}</p>
+            <h3 class="mb-0.5 sm:mb-1 font-display text-xs sm:text-sm font-semibold text-default">{{ reason.title }}</h3>
+            <p class="text-[10px] sm:text-xs text-dimmed">{{ reason.description }}</p>
           </div>
         </div>
       </div>
@@ -143,13 +159,13 @@ const reasons = [
 
     <!-- CTA -->
     <section class="bg-default">
-      <div class="mx-auto max-w-7xl px-4 py-20">
-        <div class="rounded-2xl bg-muted p-8 text-center sm:p-12">
-          <h2 class="mb-3 font-display text-2xl font-bold text-default sm:text-3xl">Need Emergency Service?</h2>
-          <p class="mb-6 text-dimmed">Our technicians are available 24/7 for emergency electrical equipment repair and replacement.</p>
-          <div class="flex flex-wrap items-center justify-center gap-4">
-            <UButton to="/services/emergency-response" size="lg" color="primary">Emergency Services</UButton>
-            <UButton to="/contact" size="lg" variant="outline" color="neutral">Schedule Service</UButton>
+      <div class="mx-auto max-w-7xl px-4 py-12 sm:py-20">
+        <div class="rounded-2xl bg-muted p-6 sm:p-8 text-center lg:p-12">
+          <h2 class="mb-3 font-display text-xl sm:text-2xl font-bold text-default lg:text-3xl">Need Emergency Service?</h2>
+          <p class="mb-5 sm:mb-6 text-sm sm:text-base text-dimmed">Our technicians are available 24/7 for emergency electrical equipment repair and replacement.</p>
+          <div class="flex flex-col sm:flex-row sm:flex-wrap items-stretch sm:items-center justify-center gap-3 sm:gap-4">
+            <UButton to="/services/emergency-response" size="lg" color="primary" class="w-full sm:w-auto justify-center">Emergency Services</UButton>
+            <UButton to="/contact" size="lg" variant="outline" color="neutral" class="w-full sm:w-auto justify-center">Schedule Service</UButton>
           </div>
         </div>
       </div>

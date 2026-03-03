@@ -20,5 +20,34 @@ useSeoMeta({
       </NuxtLayout>
     </div>
     <AppFooter />
+
+    <!-- Sticky Mobile CTA Bar — always visible on mobile -->
+    <div class="mobile-cta-bar lg:hidden">
+      <UButton
+        to="tel:8002325809"
+        color="neutral"
+        variant="outline"
+        size="xl"
+        class="font-bold justify-center"
+      >
+        <template #leading>
+          <UIcon name="i-lucide-phone" class="size-5" />
+        </template>
+        Call Now
+      </UButton>
+      <UButton
+        to="/contact"
+        color="primary"
+        size="xl"
+        class="font-bold justify-center"
+      >
+        <template #leading>
+          <UIcon name="i-lucide-message-square" class="size-5" />
+        </template>
+        Get a Quote
+      </UButton>
+    </div>
+    <!-- Spacer so footer content isn't hidden behind the sticky bar -->
+    <div class="mobile-bottom-spacer lg:hidden" />
   </UApp>
 </template>

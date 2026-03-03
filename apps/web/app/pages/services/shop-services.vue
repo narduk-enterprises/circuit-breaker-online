@@ -1,8 +1,19 @@
 <script setup lang="ts">
-useSeoMeta({
+useSeo({
+  title: 'Shop Services — Circuit Breaker Repair & Reconditioning | Circuit Breaker Sales',
   description: 'Expert circuit breaker repair, remanufacturing, and reconditioning services. ISO 9001 certified shop with full testing capabilities. One-year warranty on all work.',
-  ogDescription: 'Factory-level repair and reconditioning for circuit breakers, switchgear, transformers, and all electrical distribution equipment.',
+  ogImage: {
+    title: 'Shop Services',
+    description: 'Repair · Remanufacturing · Reconditioning',
+    icon: '🔧',
+  },
 })
+
+useBreadcrumbSchema([
+  { name: 'Home', url: 'https://circuitbreaker.online/' },
+  { name: 'Services', url: 'https://circuitbreaker.online/services' },
+  { name: 'Shop Services', url: 'https://circuitbreaker.online/services/shop-services' },
+])
 
 useHead({
   script: [{

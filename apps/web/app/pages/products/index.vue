@@ -11,6 +11,11 @@ useSeo({
 
 useWebPageSchema({ type: 'CollectionPage', name: 'Product Catalog', description: 'Browse our full inventory of industrial power equipment.' })
 
+useBreadcrumbSchema([
+  { name: 'Home', url: 'https://circuitbreaker.online/' },
+  { name: 'Products', url: 'https://circuitbreaker.online/products' },
+])
+
 interface Product {
   id: number
   name: string
@@ -634,7 +639,7 @@ function updateUrl() {
               :disabled="currentPage <= 1"
               variant="outline"
               color="neutral"
-              size="sm"
+              size="md"
               @click="goToPage(currentPage - 1)"
             >
               Previous
@@ -646,7 +651,7 @@ function updateUrl() {
               :disabled="currentPage >= data.totalPages"
               variant="outline"
               color="neutral"
-              size="sm"
+              size="md"
               @click="goToPage(currentPage + 1)"
             >
               Next

@@ -11,6 +11,11 @@ useSeo({
 
 useWebPageSchema({ type: 'AboutPage', name: 'About Circuit Breaker Sales', description: 'A Group CBS company providing industrial power equipment since 1981.' })
 
+useBreadcrumbSchema([
+  { name: 'Home', url: 'https://circuitbreaker.online/' },
+  { name: 'About', url: 'https://circuitbreaker.online/about' },
+])
+
 const capabilities = [
   {
     title: 'Equipment Sales',

@@ -17,6 +17,7 @@ logs
 .DS_Store
 .fleet
 .idea
+.agent
 
 # Local env files — use Doppler, not .env files
 .env
