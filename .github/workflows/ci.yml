@@ -123,14 +123,13 @@ jobs:
         working-directory: apps/web
         run: |
           echo "Running remote migrations..."
-          # Dynamically run the db:migrate script against the remote database
           cmd=$(node -p "require('./package.json').scripts['db:migrate']?.replace('--local', '--remote') || ''")
-          if [ -n "$cmd" ]; then
-            pnpm exec $cmd
-          else
+          if [ -z "$cmd" ]; then
             echo "No db:migrate script found!"
             exit 1
           fi
+          export PATH="$(pnpm bin):$PATH"
+          sh -c "$cmd"
 
       - name: Build & Deploy
         id: deploy
