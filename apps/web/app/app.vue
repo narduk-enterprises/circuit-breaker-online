@@ -15,7 +15,9 @@ useSeoMeta({
   <UApp>
     <AppHeader />
     <div class="min-h-screen">
-      <NuxtPage />
+      <NuxtLayout>
+        <NuxtPage />
+      </NuxtLayout>
     </div>
     <AppFooter />
   </UApp>

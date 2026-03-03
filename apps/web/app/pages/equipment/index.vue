@@ -26,13 +26,13 @@ useHead({
 
 const categories = [
   { name: 'Circuit Breakers', slug: 'circuit-breakers', icon: 'i-lucide-bolt', link: '/equipment/circuit-breakers', description: 'Low and medium voltage power circuit breakers from all major manufacturers. Air, vacuum, and SF6 types available.' },
-  { name: 'Switchgear', slug: 'switchgear', icon: 'i-lucide-checkpu', link: '/equipment/switchgear', description: 'Metal-clad and metal-enclosed switchgear assemblies and components for utility and industrial applications.' },
-  { name: 'Power Transformers', slug: 'transformers', icon: 'i-lucide-arrow-rightrrows-right-left', link: '/equipment/transformers', description: 'Dry-type and liquid-filled distribution and power transformers. Unit substation configurations available.' },
+  { name: 'Switchgear', slug: 'switchgear', icon: 'i-lucide-cpu', link: '/equipment/switchgear', description: 'Metal-clad and metal-enclosed switchgear assemblies and components for utility and industrial applications.' },
+  { name: 'Power Transformers', slug: 'transformers', icon: 'i-lucide-arrows-right-left', link: '/equipment/transformers', description: 'Dry-type and liquid-filled distribution and power transformers. Unit substation configurations available.' },
   { name: 'Protective Relays', slug: 'protective-relays', icon: 'i-lucide-shield-check', link: '/equipment/protective-relays', description: 'Electromechanical, solid-state, and digital protective relays for overcurrent, differential, and distance protection.' },
   { name: 'Vacuum Interrupters', slug: 'vacuum-interrupters', icon: 'i-lucide-layers', link: '/equipment/vacuum-interrupters', description: 'OEM and aftermarket vacuum interrupter replacements with predictive testing capabilities.' },
   { name: 'Motor Controls', slug: 'motor-controls', icon: 'i-lucide-settings', link: '/equipment/motor-controls', description: 'Motor control centers, starters, contactors, and associated components for industrial motor applications.' },
   { name: 'Load Tap Changers', slug: 'load-tap-changers', icon: 'i-lucide-sliders-horizontal', link: '/equipment/load-tap-changers', description: 'Load tap changer components, parts, and complete assemblies for transformer voltage regulation.' },
-  { name: 'Load Break Switches', slug: 'load-break-switches', icon: 'i-lucide-phoneower', link: '/equipment/load-break-switches', description: 'Medium voltage load break and load interrupter switches for safe isolation of electrical circuits.' },
+  { name: 'Load Break Switches', slug: 'load-break-switches', icon: 'i-lucide-power', link: '/equipment/load-break-switches', description: 'Medium voltage load break and load interrupter switches for safe isolation of electrical circuits.' },
   { name: 'Remote Racking', slug: 'remote-racking', icon: 'i-lucide-signal', link: '/equipment/remote-racking', description: 'Remote racking and switching systems for safe operation of circuit breakers from outside the arc flash boundary.' },
 ]
 
@@ -41,7 +41,7 @@ const brands = ['GE', 'Westinghouse', 'Siemens', 'Cutler-Hammer', 'Square D', 'A
 const conditions = [
   { title: 'New', icon: 'i-lucide-sparkles', bgClass: 'bg-muted', iconClass: 'text-primary', description: 'Factory-new equipment with full manufacturer warranty.' },
   { title: 'Remanufactured', icon: 'i-lucide-wrench', bgClass: 'bg-brand-600/10', iconClass: 'text-brand-500', description: 'Fully restored to like-new condition with 1-year warranty.' },
-  { title: 'Reconditioned', icon: 'i-lucide-circle-check-circle', bgClass: 'bg-muted', iconClass: 'text-primary', description: 'Tested and repaired for safe, reliable operation.' },
+  { title: 'Reconditioned', icon: 'i-lucide-circle-check', bgClass: 'bg-muted', iconClass: 'text-primary', description: 'Tested and repaired for safe, reliable operation.' },
   { title: 'As-Is', icon: 'i-lucide-tag', bgClass: 'bg-zinc-600/10', iconClass: 'text-dimmed', description: 'Sold in current condition for your own repair or parts use.' },
 ]
 </script>

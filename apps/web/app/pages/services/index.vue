@@ -41,7 +41,7 @@ const services = [
   {
     title: 'Engineered Solutions',
     slug: '/services/engineered-solutions',
-    icon: 'i-lucide-checkalculator',
+    icon: 'i-lucide-calculator',
     description: 'Custom engineering solutions for life extension, retrofit, retrofill, and modernization of aging electrical infrastructure.',
     highlights: ['Life extension programs', 'Retrofit & retrofill', 'Circuit breaker modernization', 'Custom bus fabrication'],
   },

@@ -11,7 +11,7 @@ const BARE_META = new Set(['useSeoMeta', 'useHead'])
 
 export default {
   meta: {
-    type: 'suggestion',
+    type: 'suggestion' as const,
     docs: {
       description: 'prefer useSeo() over bare useSeoMeta/useHead in pages',
       category: 'Best Practices',
@@ -22,7 +22,7 @@ export default {
       preferUseSeo: 'Use useSeo() instead of {{ name }}() for consistent SEO. See template SEO docs.',
     },
   },
-  create(context: Rule.RuleContext<string, any[]>): Rule.RuleListener {
+  create(context: Rule.RuleContext): Rule.RuleListener {
     const filename = context.filename ?? (context as any).getFilename?.() ?? ''
     const normalized = filename.replace(/\\/g, '/')
     if (!normalized.includes('/app/pages/') || !normalized.endsWith('.vue')) return {}

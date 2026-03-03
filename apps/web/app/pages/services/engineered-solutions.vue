@@ -27,7 +27,7 @@ const solutions = [
   },
   {
     title: 'Retrofill Solutions',
-    icon: 'i-lucide-checkpu',
+    icon: 'i-lucide-cpu',
     description: 'Install new switchgear components into existing enclosures, extending the life of your infrastructure while upgrading protection and control capabilities.',
     benefits: ['Reuse existing enclosures & bus', 'Minimized installation downtime', 'Updated protection schemes', 'Compliance with current standards'],
   },

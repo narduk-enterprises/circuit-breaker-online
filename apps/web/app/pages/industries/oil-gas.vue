@@ -12,8 +12,8 @@ const pageData = {
   description: 'Electrical distribution equipment and services for upstream, midstream, and downstream oil and gas operations. From offshore platforms to inland refineries, we deliver the equipment you need.',
   accentColor: 'orange',
   solutions: [
-    { title: 'Refinery Switchgear', icon: 'i-lucide-checkpu', description: 'Medium voltage switchgear and MCCs for refinery and processing plant applications.' },
-    { title: 'Pipeline Equipment', icon: 'i-lucide-arrow-rightrrows-right-left', description: 'Motor starters, VFDs, and power distribution for compressor stations and pump stations.' },
+    { title: 'Refinery Switchgear', icon: 'i-lucide-cpu', description: 'Medium voltage switchgear and MCCs for refinery and processing plant applications.' },
+    { title: 'Pipeline Equipment', icon: 'i-lucide-arrows-right-left', description: 'Motor starters, VFDs, and power distribution for compressor stations and pump stations.' },
     { title: 'Hazardous Area', icon: 'i-lucide-fire', description: 'Equipment rated for Class I, Division 1 and 2 hazardous locations per NEC 500.' },
     { title: 'Turnaround Support', icon: 'i-lucide-wrench', description: 'Pre-staged equipment and standby technicians for planned shutdowns and turnarounds.' },
   ],

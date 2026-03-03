@@ -1,3 +1,205 @@
+<script setup lang="ts">
+useSeo({
+  title: 'Full Product Catalog | Circuit Breaker Sales',
+  description: 'Browse our full inventory of new and reconditioned circuit breakers, switchgear, transformers, protective relays, and industrial power equipment.',
+  ogImage: {
+    title: 'Product Catalog',
+    description: 'Browse 1,000+ Industrial Power Equipment Items',
+    icon: '🔍',
+  },
+})
+
+useWebPageSchema({ type: 'CollectionPage', name: 'Product Catalog', description: 'Browse our full inventory of industrial power equipment.' })
+
+interface Product {
+  id: number
+  name: string
+  slug: string
+  sku: string
+  manufacturer: string
+  model: string
+  category: string
+  subcategory: string
+  condition: string
+  voltage: string
+  amperage: string
+  type: string
+  short_description: string
+  images: string[]
+}
+
+interface ProductResponse {
+  products: Product[]
+  total: number
+  page: number
+  limit: number
+  totalPages: number
+}
+
+interface Subcategory {
+  name: string
+  slug: string
+  count: number
+}
+
+interface Category {
+  name: string
+  slug: string
+  count: number
+  subcategories: Subcategory[]
+}
+
+interface FilterData {
+  manufacturers: string[]
+  voltages: string[]
+  amperages: string[]
+}
+
+const route = useRoute()
+const router = useRouter()
+
+// State
+const searchInput = ref((route.query.search as string) || '')
+const searchQuery = ref((route.query.search as string) || '')
+const activeCategory = ref((route.query.category as string) || '')
+const activeSubcategory = ref((route.query.subcategory as string) || '')
+const activeManufacturer = ref((route.query.manufacturer as string) || '')
+const activeVoltage = ref((route.query.voltage as string) || '')
+const activeAmperage = ref((route.query.amperage as string) || '')
+const activeSort = ref((route.query.sort as string) || 'name-asc')
+const currentPage = ref(Number.parseInt(route.query.page as string) || 1)
+const mobileFiltersOpen = ref(false)
+
+// Track total products
+const totalProducts = ref(0)
+
+const hasActiveFilters = computed(() =>
+  activeCategory.value || activeSubcategory.value || activeManufacturer.value || activeVoltage.value || activeAmperage.value || searchQuery.value
+)
+
+const activeFilterCount = computed(() => {
+  let count = 0
+  if (activeCategory.value) count++
+  if (activeSubcategory.value) count++
+  if (activeManufacturer.value) count++
+  if (activeVoltage.value) count++
+  if (activeAmperage.value) count++
+  return count
+})
+
+// Fetch categories
+const { data: categories } = await useFetch<Category[]>('/api/categories')
+
+// Fetch filters
+const { data: filters } = await useFetch<FilterData>('/api/filters')
+
+// Fetch products
+const { data, status } = await useFetch<ProductResponse>('/api/products', {
+  query: computed(() => ({
+    ...(searchQuery.value ? { search: searchQuery.value } : {}),
+    ...(activeCategory.value ? { category: activeCategory.value } : {}),
+    ...(activeSubcategory.value ? { subcategory: activeSubcategory.value } : {}),
+    ...(activeManufacturer.value ? { manufacturer: activeManufacturer.value } : {}),
+    ...(activeVoltage.value ? { voltage: activeVoltage.value } : {}),
+    ...(activeAmperage.value ? { amperage: activeAmperage.value } : {}),
+    ...(activeSort.value !== 'name-asc' ? { sort: activeSort.value } : {}),
+    page: currentPage.value,
+    limit: 24,
+  })),
+  watch: [searchQuery, activeCategory, activeSubcategory, activeManufacturer, activeVoltage, activeAmperage, activeSort, currentPage],
+})
+
+// Get total products count
+const { data: allData } = await useFetch<ProductResponse>('/api/products', { query: { limit: 1 } })
+if (allData.value) totalProducts.value = allData.value.total
+
+// Methods
+function performSearch() {
+  searchQuery.value = searchInput.value
+  currentPage.value = 1
+  updateUrl()
+}
+
+function clearSearch() {
+  searchInput.value = ''
+  searchQuery.value = ''
+  currentPage.value = 1
+  updateUrl()
+}
+
+function selectCategory(category: string) {
+  activeCategory.value = category
+  activeSubcategory.value = ''
+  currentPage.value = 1
+  updateUrl()
+}
+
+function selectSubcategory(category: string, subcategory: string) {
+  activeCategory.value = category
+  activeSubcategory.value = subcategory
+  currentPage.value = 1
+  updateUrl()
+}
+
+function clearCategory() {
+  activeCategory.value = ''
+  activeSubcategory.value = ''
+  currentPage.value = 1
+  updateUrl()
+}
+
+function clearSubcategory() {
+  activeSubcategory.value = ''
+  currentPage.value = 1
+  updateUrl()
+}
+
+function clearAllFilters() {
+  activeManufacturer.value = ''
+  activeVoltage.value = ''
+  activeAmperage.value = ''
+  currentPage.value = 1
+  updateUrl()
+}
+
+function applyFilter() {
+  currentPage.value = 1
+  updateUrl()
+}
+
+function resetFilters() {
+  searchInput.value = ''
+  searchQuery.value = ''
+  activeCategory.value = ''
+  activeSubcategory.value = ''
+  activeManufacturer.value = ''
+  activeVoltage.value = ''
+  activeAmperage.value = ''
+  activeSort.value = 'name-asc'
+  currentPage.value = 1
+  updateUrl()
+}
+
+function goToPage(page: number) {
+  currentPage.value = page
+  updateUrl()
+  window.scrollTo({ top: 0, behavior: 'smooth' })
+}
+
+function updateUrl() {
+  const query: Record<string, string> = {}
+  if (searchQuery.value) query.search = searchQuery.value
+  if (activeCategory.value) query.category = activeCategory.value
+  if (activeSubcategory.value) query.subcategory = activeSubcategory.value
+  if (activeManufacturer.value) query.manufacturer = activeManufacturer.value
+  if (activeVoltage.value) query.voltage = activeVoltage.value
+  if (activeAmperage.value) query.amperage = activeAmperage.value
+  if (activeSort.value !== 'name-asc') query.sort = activeSort.value
+  if (currentPage.value > 1) query.page = String(currentPage.value)
+  router.replace({ query })
+}
+</script>
+
 <template>
   <div class="mx-auto max-w-7xl px-4 py-6 lg:py-12">
     <!-- Page Header -->
@@ -465,208 +667,6 @@
     </div>
   </div>
 </template>
-
-<script setup lang="ts">
-useSeo({
-  title: 'Full Product Catalog | Circuit Breaker Sales',
-  description: 'Browse our full inventory of new and reconditioned circuit breakers, switchgear, transformers, protective relays, and industrial power equipment.',
-  ogImage: {
-    title: 'Product Catalog',
-    description: 'Browse 1,000+ Industrial Power Equipment Items',
-    icon: '🔍',
-  },
-})
-
-useWebPageSchema({ type: 'CollectionPage', name: 'Product Catalog', description: 'Browse our full inventory of industrial power equipment.' })
-
-interface Product {
-  id: number
-  name: string
-  slug: string
-  sku: string
-  manufacturer: string
-  model: string
-  category: string
-  subcategory: string
-  condition: string
-  voltage: string
-  amperage: string
-  type: string
-  short_description: string
-  images: string[]
-}
-
-interface ProductResponse {
-  products: Product[]
-  total: number
-  page: number
-  limit: number
-  totalPages: number
-}
-
-interface Subcategory {
-  name: string
-  slug: string
-  count: number
-}
-
-interface Category {
-  name: string
-  slug: string
-  count: number
-  subcategories: Subcategory[]
-}
-
-interface FilterData {
-  manufacturers: string[]
-  voltages: string[]
-  amperages: string[]
-}
-
-const route = useRoute()
-const router = useRouter()
-
-// State
-const searchInput = ref((route.query.search as string) || '')
-const searchQuery = ref((route.query.search as string) || '')
-const activeCategory = ref((route.query.category as string) || '')
-const activeSubcategory = ref((route.query.subcategory as string) || '')
-const activeManufacturer = ref((route.query.manufacturer as string) || '')
-const activeVoltage = ref((route.query.voltage as string) || '')
-const activeAmperage = ref((route.query.amperage as string) || '')
-const activeSort = ref((route.query.sort as string) || 'name-asc')
-const currentPage = ref(parseInt(route.query.page as string) || 1)
-const mobileFiltersOpen = ref(false)
-
-// Track total products
-const totalProducts = ref(0)
-
-const hasActiveFilters = computed(() =>
-  activeCategory.value || activeSubcategory.value || activeManufacturer.value || activeVoltage.value || activeAmperage.value || searchQuery.value
-)
-
-const activeFilterCount = computed(() => {
-  let count = 0
-  if (activeCategory.value) count++
-  if (activeSubcategory.value) count++
-  if (activeManufacturer.value) count++
-  if (activeVoltage.value) count++
-  if (activeAmperage.value) count++
-  return count
-})
-
-// Fetch categories
-const { data: categories } = await useFetch<Category[]>('/api/categories')
-
-// Fetch filters
-const { data: filters } = await useFetch<FilterData>('/api/filters')
-
-// Fetch products
-const { data, status } = await useFetch<ProductResponse>('/api/products', {
-  query: computed(() => ({
-    ...(searchQuery.value ? { search: searchQuery.value } : {}),
-    ...(activeCategory.value ? { category: activeCategory.value } : {}),
-    ...(activeSubcategory.value ? { subcategory: activeSubcategory.value } : {}),
-    ...(activeManufacturer.value ? { manufacturer: activeManufacturer.value } : {}),
-    ...(activeVoltage.value ? { voltage: activeVoltage.value } : {}),
-    ...(activeAmperage.value ? { amperage: activeAmperage.value } : {}),
-    ...(activeSort.value !== 'name-asc' ? { sort: activeSort.value } : {}),
-    page: currentPage.value,
-    limit: 24,
-  })),
-  watch: [searchQuery, activeCategory, activeSubcategory, activeManufacturer, activeVoltage, activeAmperage, activeSort, currentPage],
-})
-
-// Get total products count
-const { data: allData } = await useFetch<ProductResponse>('/api/products', { query: { limit: 1 } })
-if (allData.value) totalProducts.value = allData.value.total
-
-// Methods
-function performSearch() {
-  searchQuery.value = searchInput.value
-  currentPage.value = 1
-  updateUrl()
-}
-
-function clearSearch() {
-  searchInput.value = ''
-  searchQuery.value = ''
-  currentPage.value = 1
-  updateUrl()
-}
-
-function selectCategory(category: string) {
-  activeCategory.value = category
-  activeSubcategory.value = ''
-  currentPage.value = 1
-  updateUrl()
-}
-
-function selectSubcategory(category: string, subcategory: string) {
-  activeCategory.value = category
-  activeSubcategory.value = subcategory
-  currentPage.value = 1
-  updateUrl()
-}
-
-function clearCategory() {
-  activeCategory.value = ''
-  activeSubcategory.value = ''
-  currentPage.value = 1
-  updateUrl()
-}
-
-function clearSubcategory() {
-  activeSubcategory.value = ''
-  currentPage.value = 1
-  updateUrl()
-}
-
-function clearAllFilters() {
-  activeManufacturer.value = ''
-  activeVoltage.value = ''
-  activeAmperage.value = ''
-  currentPage.value = 1
-  updateUrl()
-}
-
-function applyFilter() {
-  currentPage.value = 1
-  updateUrl()
-}
-
-function resetFilters() {
-  searchInput.value = ''
-  searchQuery.value = ''
-  activeCategory.value = ''
-  activeSubcategory.value = ''
-  activeManufacturer.value = ''
-  activeVoltage.value = ''
-  activeAmperage.value = ''
-  activeSort.value = 'name-asc'
-  currentPage.value = 1
-  updateUrl()
-}
-
-function goToPage(page: number) {
-  currentPage.value = page
-  updateUrl()
-  window.scrollTo({ top: 0, behavior: 'smooth' })
-}
-
-function updateUrl() {
-  const query: Record<string, string> = {}
-  if (searchQuery.value) query.search = searchQuery.value
-  if (activeCategory.value) query.category = activeCategory.value
-  if (activeSubcategory.value) query.subcategory = activeSubcategory.value
-  if (activeManufacturer.value) query.manufacturer = activeManufacturer.value
-  if (activeVoltage.value) query.voltage = activeVoltage.value
-  if (activeAmperage.value) query.amperage = activeAmperage.value
-  if (activeSort.value !== 'name-asc') query.sort = activeSort.value
-  if (currentPage.value > 1) query.page = String(currentPage.value)
-  router.replace({ query })
-}
-</script>
 
 <style scoped>
 .drawer-enter-active,

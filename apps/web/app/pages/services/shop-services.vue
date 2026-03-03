@@ -48,11 +48,11 @@ const serviceLevels = [
 
 const equipmentTypes = [
   { name: 'Circuit Breakers', slug: 'circuit-breakers', icon: 'i-lucide-bolt', note: 'Low & medium voltage', link: '/equipment/circuit-breakers' },
-  { name: 'Switchgear', slug: 'switchgear', icon: 'i-lucide-checkpu', note: 'Metal-clad & metal-enclosed', link: '/equipment/switchgear' },
+  { name: 'Switchgear', slug: 'switchgear', icon: 'i-lucide-cpu', note: 'Metal-clad & metal-enclosed', link: '/equipment/switchgear' },
   { name: 'Protective Relays', slug: 'relays', icon: 'i-lucide-shield-check', note: 'All major brands', link: '/equipment/protective-relays' },
   { name: 'Motor Controls', slug: 'motor-controls', icon: 'i-lucide-settings', note: 'Starters & contactors', link: '/equipment/motor-controls' },
-  { name: 'Power Transformers', slug: 'transformers', icon: 'i-lucide-arrow-rightrrows-right-left', note: 'Dry type & oil-filled', link: '/equipment/transformers' },
-  { name: 'Load Break Switches', slug: 'switches', icon: 'i-lucide-phoneower', note: 'Medium voltage', link: '/equipment/load-break-switches' },
+  { name: 'Power Transformers', slug: 'transformers', icon: 'i-lucide-arrows-right-left', note: 'Dry type & oil-filled', link: '/equipment/transformers' },
+  { name: 'Load Break Switches', slug: 'switches', icon: 'i-lucide-power', note: 'Medium voltage', link: '/equipment/load-break-switches' },
   { name: 'Load Tap Changers', slug: 'ltc', icon: 'i-lucide-sliders-horizontal', note: 'Parts & service', link: '/equipment/load-tap-changers' },
   { name: 'Vacuum Interrupters', slug: 'vi', icon: 'i-lucide-layers', note: 'OEM replacement bottles', link: '/equipment/vacuum-interrupters' },
   { name: 'Renewal Parts', slug: 'parts', icon: 'i-lucide-wrench', note: 'All manufacturers', link: '/products?category=Renewal%20Parts' },
@@ -105,7 +105,7 @@ const certifications = [
           <p class="mb-4 text-sm leading-relaxed text-dimmed">{{ level.description }}</p>
           <ul class="space-y-2">
             <li v-for="item in level.includes" :key="item" class="flex items-start gap-2 text-xs text-dimmed">
-              <UIcon name="i-lucide-circle-check-circle" class="mt-0.5 size-3.5 shrink-0 text-brand-600" />
+              <UIcon name="i-lucide-circle-check" class="mt-0.5 size-3.5 shrink-0 text-brand-600" />
               {{ item }}
             </li>
           </ul>

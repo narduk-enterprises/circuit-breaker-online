@@ -14,7 +14,7 @@ const pageData = {
   solutions: [
     { title: 'Life Safety Systems', icon: 'i-lucide-heart', description: 'Circuit breakers and switchgear for NEC Article 517 life safety and critical branch circuits.' },
     { title: 'Essential Power', icon: 'i-lucide-bolt', description: 'Equipment power branch components for diagnostic imaging, surgical suites, and ICU power.' },
-    { title: 'Generator Switchgear', icon: 'i-lucide-arrow-rightrrows-right-left', description: 'Generator paralleling switchgear, ATS components, and automatic transfer equipment.' },
+    { title: 'Generator Switchgear', icon: 'i-lucide-arrows-right-left', description: 'Generator paralleling switchgear, ATS components, and automatic transfer equipment.' },
     { title: 'Code Compliance', icon: 'i-lucide-shield-check', description: 'NFPA 110, NEC 517, and Joint Commission compliance support for electrical systems.' },
   ],
   services: ['Quarterly breaker maintenance', 'Annual shutdown testing', 'ATS maintenance & testing', 'Generator switchgear service', 'Arc flash hazard studies', 'Emergency equipment sourcing', 'Equipment life assessments', 'Retrofill programs'],

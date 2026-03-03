@@ -14,7 +14,7 @@ const industries = [
 ]
 
 const capabilities = [
-  { title: '24/7 Emergency Response', icon: 'i-lucide-checklock', description: 'Round-the-clock availability for emergency equipment needs and field service.', link: '/services/emergency-response' },
+  { title: '24/7 Emergency Response', icon: 'i-lucide-clock', description: 'Round-the-clock availability for emergency equipment needs and field service.', link: '/services/emergency-response' },
   { title: 'Nationwide Coverage', icon: 'i-lucide-map-pin', description: 'Field service teams deployed across the continental United States.', link: '/services/field-services' },
   { title: 'Multi-Brand Expertise', icon: 'i-lucide-wrench', description: 'Certified to work on equipment from all major manufacturers.', link: '/equipment' },
   { title: 'Custom Engineering', icon: 'i-lucide-settings', description: 'In-house engineering for retrofit, modernization, and life extension.', link: '/services/engineered-solutions' },

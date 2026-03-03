@@ -32,7 +32,7 @@ const capabilities = [
   },
   {
     title: 'Engineering',
-    icon: 'i-lucide-checkalculator',
+    icon: 'i-lucide-calculator',
     description: 'Technical consultation and engineering support for your power systems.',
     link: '/services/engineered-solutions',
   },
@@ -111,23 +111,23 @@ const capabilities = [
           <h3 class="mb-3 font-display text-sm font-semibold uppercase tracking-wider text-brand-600">Key Facts</h3>
           <ul class="space-y-2.5 text-base text-muted">
             <li class="flex items-start gap-2">
-              <UIcon name="i-lucide-circle-check-circle" class="mt-0.5 size-4 shrink-0 text-brand-500" />
+              <UIcon name="i-lucide-circle-check" class="mt-0.5 size-4 shrink-0 text-brand-500" />
               <span>40+ years of industry experience</span>
             </li>
             <li class="flex items-start gap-2">
-              <UIcon name="i-lucide-circle-check-circle" class="mt-0.5 size-4 shrink-0 text-brand-500" />
+              <UIcon name="i-lucide-circle-check" class="mt-0.5 size-4 shrink-0 text-brand-500" />
               <span>Part of the Group CBS network</span>
             </li>
             <li class="flex items-start gap-2">
-              <UIcon name="i-lucide-circle-check-circle" class="mt-0.5 size-4 shrink-0 text-brand-500" />
+              <UIcon name="i-lucide-circle-check" class="mt-0.5 size-4 shrink-0 text-brand-500" />
               <span>1,000+ products in inventory</span>
             </li>
             <li class="flex items-start gap-2">
-              <UIcon name="i-lucide-circle-check-circle" class="mt-0.5 size-4 shrink-0 text-brand-500" />
+              <UIcon name="i-lucide-circle-check" class="mt-0.5 size-4 shrink-0 text-brand-500" />
               <span>Factory-trained technicians</span>
             </li>
             <li class="flex items-start gap-2">
-              <UIcon name="i-lucide-circle-check-circle" class="mt-0.5 size-4 shrink-0 text-brand-500" />
+              <UIcon name="i-lucide-circle-check" class="mt-0.5 size-4 shrink-0 text-brand-500" />
               <span>Nationwide service &amp; delivery</span>
             </li>
           </ul>

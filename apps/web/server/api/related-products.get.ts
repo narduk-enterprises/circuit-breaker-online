@@ -4,10 +4,11 @@ const querySchema = z.object({
   slug: z.string().nonempty(),
 })
 
+type Query = { slug?: string }
 export default defineEventHandler(async (event) => {
   const db = useD1(event)
-  const query = await getValidatedQuery(event, querySchema.parse)
-  const slug = query.slug
+  const query = (await getValidatedQuery(event, querySchema.parse)) as Query
+  const slug = query?.slug
 
   if (!slug) {
     return { products: [] }
@@ -44,10 +45,11 @@ export default defineEventHandler(async (event) => {
     product.manufacturer
   ).all()
 
+  interface RelatedRow { images?: string; [key: string]: unknown }
   return {
-    products: (related.results || []).map((p: any) => ({
+    products: (related.results || []).map((p: RelatedRow) => ({
       ...p,
-      images: p.images ? JSON.parse(p.images) : [],
+      images: p.images ? JSON.parse(String(p.images)) : [],
     })),
   }
 })

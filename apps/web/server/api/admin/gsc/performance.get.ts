@@ -20,12 +20,13 @@ export default defineEventHandler(async (event) => {
   }
 
   const gscSiteUrl = `sc-domain:${new URL(siteUrl).hostname}`
-  const query = await getValidatedQuery(event, querySchema.parse)
+  const query = (await getValidatedQuery(event, querySchema.parse)) as { startDate?: string; endDate?: string; dimension?: string }
 
-  const endDate = query.endDate ? String(query.endDate) : new Date().toISOString().split('T')[0]
-  const start = new Date(endDate as string)
+  const endDate = (query?.endDate ? String(query.endDate) : new Date().toISOString().split('T')[0]) as string
+  const start = new Date(endDate)
   start.setDate(start.getDate() - 30)
-  const startDate = query.startDate ? String(query.startDate) : start.toISOString().split('T')[0]
+  const startDate = query?.startDate ? String(query.startDate) : start.toISOString().split('T')[0]
+  const dimension = query?.dimension ?? 'query'
 
   try {
     const data = await googleApiFetch(
@@ -36,19 +37,20 @@ export default defineEventHandler(async (event) => {
         body: JSON.stringify({
           startDate,
           endDate,
-          dimensions: [query.dimension],
+          dimensions: [dimension],
           rowLimit: 50,
         }),
       },
     )
 
-    const rows = data.rows as Array<Record<string, unknown>> | undefined
+    const payload = data as { rows?: Array<Record<string, unknown>> }
+    const rows = payload.rows
 
     return {
-      rows: rows || [],
+      rows: rows ?? [],
       startDate,
       endDate,
-      dimension: query.dimension,
+      dimension,
     }
   } catch (error: unknown) {
     const err = error as { statusCode?: number; statusMessage?: string; message?: string }

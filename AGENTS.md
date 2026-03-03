@@ -25,8 +25,8 @@ This is a **minimal Nuxt 4 + Nuxt UI 4** boilerplate deployed to **Cloudflare Wo
 | **Package**       | A workspace package (`packages/eslint-config/`) — standalone npm packages consumed by apps. Lives in `packages/`.                                                             |
 | **Isolate**       | A Cloudflare Workers V8 isolate — a lightweight, stateless execution environment. Each request may hit a different isolate, so in-memory state is not shared across requests. |
 | **Per-isolate**   | Scoped to a single V8 isolate instance. Per-isolate rate limiting, for example, only tracks requests within one isolate's memory.                                             |
-| **Hub project**   | A Doppler project that stores shared infrastructure secrets (e.g. `narduk-enterprise-apps`). You do NOT create these.                                                         |
-| **Spoke project** | A Doppler project for a specific app that references hub secrets via cross-project references. Created by `init.ts`.                                                          |
+| **Hub project**   | A Doppler project that stores shared infrastructure secrets (e.g. `narduk-nuxt-template`). You do NOT create these.                                                           |
+| **Spoke project** | A Doppler project for a specific app that references hub secrets via cross-project references. Created by `init.ts` (via `pnpm run setup`).                                   |
 
 For full-featured example implementations, see the **Showcase** apps in `apps/showcase/`, `apps/example-auth/`, `apps/example-blog/`, `apps/example-marketing/`, `apps/example-og-image/`, and `apps/example-apple-maps/`.
 
@@ -71,25 +71,25 @@ _You can create `app/components/`, `server/api/`, etc., in `apps/web/`, but ensu
 
 The layer at `layers/narduk-nuxt-layer/` provides all of the following out-of-the-box. **Do not copy or recreate these in your app.**
 
-| Category        | Files                                                                              | What You Get                                                            |
-| --------------- | ---------------------------------------------------------------------------------- | ----------------------------------------------------------------------- |
-| **Modules**     | `nuxt.config.ts`                                                                   | `@nuxt/ui`, `@nuxt/fonts`, `@nuxt/image`, `@nuxtjs/seo`, `@nuxt/eslint` |
-| **Nitro**       | `nuxt.config.ts`                                                                   | `cloudflare-module` preset, esbuild target, Drizzle inline              |
-| **UI/Color**    | `nuxt.config.ts` + `app/app.config.ts`                                             | colorMode, ogImage defaults, image provider                             |
-| **SEO**         | `app/composables/useSeo.ts`, `useSchemaOrg.ts`                                     | `useSeo()`, `useWebPageSchema()`, `useArticleSchema()`, etc.            |
-| **OG Images**   | `app/components/OgImage/*`                                                         | Dynamic OG image templates (Satori)                                     |
-| **Analytics**   | `app/plugins/gtag.client.ts`, `posthog.client.ts`                                  | PostHog + GA4 (no-op without keys)                                      |
-| **CSRF**        | `app/plugins/fetch.client.ts`, `server/middleware/csrf.ts`                         | Auto `X-Requested-With` header + server validation                      |
-| **Security**    | `server/middleware/cors.ts`, `securityHeaders.ts`                                  | CORS, CSP, X-Frame-Options, Referrer-Policy                             |
-| **Rate Limit**  | `server/utils/rateLimit.ts`                                                        | Per-isolate sliding-window IP limiter                                   |
-| **Database**    | `server/utils/database.ts`, `server/middleware/d1.ts`, `server/database/schema.ts` | D1 bindings, Drizzle connection, base schema                            |
-| **Storage**     | `server/utils/kv.ts`, `server/utils/r2.ts`                                         | KV and R2 binding helpers                                               |
-| **Auth**        | `server/utils/auth.ts`                                                             | `requireAdmin`, PBKDF2 password hashing                                 |
-| **Health**      | `server/api/health.get.ts`                                                         | `/api/health` endpoint                                                  |
-| **IndexNow**    | `server/api/indexnow/*`, `server/middleware/indexnow.ts`                           | IndexNow submission + key verification                                  |
-| **Error Pages** | `app/error.vue`                                                                    | Branded global error pages (404/500)                                    |
-| **Base CSS**    | `app/assets/css/main.css`                                                          | Tailwind v4 `@theme` tokens, glass/card utilities                       |
-| **App Shell**   | `app/app.vue`, `app/app.config.ts`                                                 | `<UApp>` wrapper, color token defaults                                  |
+| Category        | Files                                                                              | What You Get                                                                          |
+| --------------- | ---------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------- |
+| **Modules**     | `nuxt.config.ts`                                                                   | `@nuxt/ui`, `@nuxt/fonts`, `@nuxt/image`, `@nuxtjs/seo`, `@nuxt/eslint`               |
+| **Nitro**       | `nuxt.config.ts`                                                                   | `cloudflare-module` preset, esbuild target, Drizzle inline                            |
+| **UI/Color**    | `nuxt.config.ts` + `app/app.config.ts`                                             | colorMode, ogImage defaults, image provider                                           |
+| **SEO**         | `app/composables/useSeo.ts`, `useSchemaOrg.ts`                                     | `useSeo()`, `useWebPageSchema()`, `useArticleSchema()`, etc.                          |
+| **OG Images**   | `app/components/OgImage/*`                                                         | Dynamic OG image templates (Satori)                                                   |
+| **Analytics**   | `app/plugins/gtag.client.ts`, `posthog.client.ts`                                  | PostHog + GA4 (no-op without keys)                                                    |
+| **CSRF**        | `app/plugins/fetch.client.ts`, `server/middleware/csrf.ts`                         | Auto `X-Requested-With` header + server validation                                    |
+| **Security**    | `server/middleware/cors.ts`, `securityHeaders.ts`                                  | CORS, CSP, X-Frame-Options, Referrer-Policy                                           |
+| **Rate Limit**  | `server/utils/rateLimit.ts`                                                        | Per-isolate sliding-window IP limiter                                                 |
+| **Database**    | `server/utils/database.ts`, `server/middleware/d1.ts`, `server/database/schema.ts` | D1 bindings, Drizzle connection, base schema (`nitro-cloudflare-dev` required in app) |
+| **Storage**     | `server/utils/kv.ts`, `server/utils/r2.ts`                                         | KV and R2 binding helpers                                                             |
+| **Auth**        | `server/utils/auth.ts`                                                             | `requireAdmin`, PBKDF2 password hashing                                               |
+| **Health**      | `server/api/health.get.ts`                                                         | `/api/health` endpoint                                                                |
+| **IndexNow**    | `server/api/indexnow/*`, `server/middleware/indexnow.ts`                           | IndexNow submission + key verification                                                |
+| **Error Pages** | `app/error.vue`                                                                    | Branded global error pages (404/500)                                                  |
+| **Base CSS**    | `app/assets/css/main.css`                                                          | Tailwind v4 `@theme` tokens, glass/card utilities                                     |
+| **App Shell**   | `app/app.vue`, `app/app.config.ts`                                                 | `<UApp>` wrapper, color token defaults                                                |
 
 ### Showcase Architecture
 
@@ -103,13 +103,26 @@ To add a new example app:
 
 **Dev and seed data:** Apps that use D1 (example-auth, example-blog) run `db:ready` (migrate + seed) before `nuxt dev`, so the local D1 database is always created and populated with seed data when you start dev. From the repo root you can run `pnpm db:ready:auth` to prepare the auth example DB before `pnpm dev:showcase`.
 
+> **⚠️ Local D1 Requirement:** The app must explicitly install `nitro-cloudflare-dev` and register it in `nuxt.config.ts` (pointing `nitro.cloudflareDev.configPath` to the app's `wrangler.json`) to provide the local D1 proxy to the dev server. Without this, server routes will fail to access the database during development.
+
 ### Updating the Layer
 
-To pull the latest layer fixes and features:
+To pull the latest layer fixes and features from the template repository:
 
 ```bash
-pnpm update @loganrenz/narduk-nuxt-template-layer
+pnpm run update-layer
 ```
+
+**What this does under the hood:**
+
+1. Adds or updates a `template` Git remote pointing to `https://github.com/loganrenz/narduk-nuxt-template.git`.
+2. Fetches `main` from the template.
+3. Checks out the `layers/narduk-nuxt-layer` directory from `template/main`, overwriting the local layer directory.
+4. Rewrites `layers/narduk-nuxt-layer/package.json` so its `repository.url` points to _your_ app's origin instead of the template's, preventing identity drift.
+5. Runs `pnpm install` to sync any new layer dependencies with the workspace lockfile.
+
+> **⚠️ WARNING: Local Overwrites**  
+> This script will unconditionally overwrite `layers/narduk-nuxt-layer`. Any customizations you've made directly to the layer code in your repository will be discarded. You will need to use your Git staging interface (e.g., `git diff` or VS Code Source Control) to review the incoming changes and merge/restore your local modifications before committing.
 
 ## Hard Constraints (Cloudflare Workers)
 
@@ -117,6 +130,7 @@ pnpm update @loganrenz/narduk-nuxt-template-layer
 - **Use Web Crypto API** — `crypto.subtle` for all hashing (PBKDF2)
 - **Nitro preset** is `cloudflare-module` (ES Module format, V8 isolates)
 - **Drizzle ORM only** — no Prisma or other Node-dependent ORMs
+- **Drizzle `sql` gotcha** — in `sql` template literals, `${table.column}` is parameterized as a **value** (bind parameter), not a column reference. This causes silent bugs in correlated subqueries (e.g. always-zero counts). Use `Promise.all` with individual queries instead of correlated subqueries, or use Drizzle's relational query API.
 - All server code must be stateless across requests (edge isolate model)
 
 ## Security & Protection
@@ -125,13 +139,17 @@ The layer provides three security layers out of the box:
 
 ### Rate Limiting (Two-Tier)
 
-**Tier 1 — Per-Isolate (built-in):** The layer includes `server/utils/rateLimit.ts`, a sliding-window rate limiter that runs in each Cloudflare Worker isolate's memory. Use it in API routes:
+**Tier 1 — Per-Isolate (built-in):** The layer includes `server/utils/rateLimit.ts`, a sliding-window rate limiter that runs in each Cloudflare Worker isolate's memory. Use it in API routes. **CRITICAL:** You MUST call `enforceRateLimit(event)` on ALL mutation endpoints (POST/PUT/PATCH/DELETE) to prevent systemic abuse:
 
 ```ts
 await enforceRateLimit(event, 'auth', 10, 60_000); // 10 requests/minute per IP
 ```
 
 > **⚠️ Important:** This is per-isolate only — state is NOT shared across Workers. It protects against brute-force from a single client hitting the same isolate, but cannot enforce global limits.
+
+### Request Validation (Zod)
+
+The template strongly recommends using `readBody(event)` combined with Zod's `.safeParse()` instead of `readValidatedBody` to ensure proper validation and robust error handling on all mutations. Never consume unvalidated data from `readBody()`.
 
 **Tier 2 — Global (Cloudflare dashboard):** For production, complement the per-isolate limiter with [Cloudflare Rate Limiting Rules](https://developers.cloudflare.com/waf/rate-limiting-rules/) configured in the Cloudflare dashboard or via Terraform. These enforce limits at the edge before your Worker is invoked.
 
@@ -208,26 +226,50 @@ Sitemap and robots.txt are automatic. OG image templates live in `app/components
 - **SSR-safe state** — use `useState()` or Pinia stores. Never use bare `ref()` at module scope (causes cross-request leaks).
 - **Data fetching** — always use `useAsyncData` or `useFetch`, never raw `$fetch` in `<script setup>`.
 - **Client-only code** — wrap `window`/`document` access in `onMounted` or `<ClientOnly>`.
+- **Server imports** — when importing files inside `server/` (e.g., from `server/api/` to `server/database/schema.ts`), **use the `#server/` alias** (e.g., `import { ... } from '#server/database/schema'`) instead of relative paths like `../../../database/schema`. Relative imports cross the boundary between standard app code and server code, causing `nuxt typecheck` modules to lose resolution context.
 
 ## Starting a New Project from This Template
 
 Follow these steps **in order** — the init script handles renaming, D1 provisioning, and Doppler setup.
 
-1. Clone: `git clone https://github.com/loganrenz/narduk-nuxt-template.git my-app && cd my-app`
-2. Install: `pnpm install`
-3. **Run the init script** (renames everything, provisions D1, creates Doppler project):
-   ```bash
-   pnpm setup -- --name="your-app-name" --display="Your Display Name" --url="https://yoururl.com"
-   ```
-4. Wire up Doppler locally: `doppler setup --project your-app-name --config dev`
-5. Start dev: `doppler run -- pnpm run dev`
-6. Verify infrastructure: `pnpm run validate`
+> **Doppler is optional for initial setup.** Steps that require Doppler (project creation, hub secret sync, GitHub CI token, analytics) are skipped gracefully when the Doppler CLI is not installed or configured. You can complete them later by running `doppler setup` and re-running `pnpm run setup` with `--repair`.
+> Note: If you do have Doppler installed but your hub secrets are not fully configured yet, the setup script will intelligently **defer** the analytics provisioning step with a clear follow-up command.
 
-> See the **🚀 Initialization Routine** recipe below for the full details and edge cases.
+1. Clone: `git clone https://github.com/loganrenz/narduk-nuxt-template.git my-app && cd my-app`
+2. Clear the template's git history and set up your own repository (Required for GitHub CI secrets to bind properly):
+   ```bash
+   rm -rf .git
+   git init
+   git remote add origin git@github.com:your-username/my-app.git
+   ```
+3. Install dependencies: `pnpm install`
+4. **Run the initialization script** (renames everything, provisions D1, creates Doppler project, pushes CI token to GitHub):
+   ```bash
+   pnpm run setup -- --name="your-app-name" --display="Your Display Name" --url="https://yoururl.com"
+   ```
+5. **Configure Local D1 (Critical Step):** If your app uses the database, you MUST add `nitro-cloudflare-dev` to your app to proxy D1 to the dev server:
+   - `pnpm --filter your-app-name add -D nitro-cloudflare-dev`
+   - In your app's `nuxt.config.ts`, add:
+     ```ts
+     modules: ['nitro-cloudflare-dev'],
+     nitro: { cloudflareDev: { configPath: resolve(__dirname, 'wrangler.json') } }
+     ```
+6. Wire up Doppler locally: `doppler setup --project your-app-name --config dev`
+7. Start dev: `doppler run -- pnpm run dev`
+8. Verify infrastructure: `pnpm run validate`
+
+> **❌ GitHub Actions CI Preflight Failures:**
+> The `ci.yml` deploy job requires a `DOPPLER_TOKEN` (recommended) or `CLOUDFLARE_API_TOKEN` / `CLOUDFLARE_ACCOUNT_ID` in your GitHub repository secrets. If they are missing, the deploy will fail at the "preflight" step.
+> The `pnpm run setup` script tries to create the `DOPPLER_TOKEN` in GitHub automatically (Step 6), but it **will skip this step if you have not set up your git remote** (Step 2).
+> **Fix:** Check your GitHub repository secrets. If `DOPPLER_TOKEN` is missing, ensure your git remote is set up (`git remote add origin ...`), then run `pnpm run setup -- --name="your-app-name" --display="Your Display Name" --url="https://yoururl.com" --repair` to inject the secret.
 
 ## 🚨 CRITICAL RULE: NEVER COMMIT TO THIS REPOSITORY 🚨
 
 If you are an agent building a new project inside a clone of this repository, **DO NOT COMMIT OR PUSH** directly back to `loganrenz/narduk-nuxt-template`. Verify the user has set up a new remote origin first.
+
+## 🚨 ZERO ERRORS & WARNINGS POLICY 🚨
+
+Any project derived from this template, and any code you write, MUST have **zero errors and zero warnings** (TypeScript, ESLint, Vue, Nuxt, and Build). If you encounter any pre-existing errors or warnings from the template during bootstrapping, you must **fix them properly**. Do not use hacky monkey fixes, `@ts-expect-error`, `eslint-disable`, or other suppression techniques to hide problems. Find the architectural root cause and solve it correctly.
 
 ## Quality Audit Workflows
 
@@ -303,19 +345,51 @@ These are opt-in feature recipes. Follow them when the project needs a specific 
 **When:** You have just cloned this template to begin a new application.
 **CRITICAL:** This must be your very first step before writing any code.
 
+> **Doppler-optional:** Running setup without Doppler is supported. Steps that require Doppler (project creation, hub secret sync, GitHub CI token, analytics) are skipped with a clear message. After configuring Doppler, re-run with `--repair` to complete those steps.
+
 **Steps:**
 
-1. Run the mass-replacer script from the root directory:
+1. Run the setup script from the root directory:
    ```bash
-   pnpm setup -- --name="your-app-name" --display="Your Display Name" --url="https://yoururl.com"
+   pnpm run setup -- --name="your-app-name" --display="Your Display Name" --url="https://yoururl.com"
    ```
-   _(This will rename the project, create the Cloudflare D1 database, spin up the Doppler project, and rewrite `wrangler.json`.)_
+   _(This will rename the project, create the Cloudflare D1 database, spin up the Doppler project if available, and rewrite `wrangler.json`.)_
 2. Configure your Doppler secrets (see Secrets & Env below).
 3. Pull Doppler secrets and initialize the local database schema (non-interactive):
    ```bash
    doppler setup --project <app-name> --config dev && pnpm run db:migrate
    ```
-4. Commit the initialization.
+4. If setup was run without Doppler, complete the Doppler steps:
+   ```bash
+   pnpm run setup -- --name="your-app-name" --display="Your Display Name" --url="https://yoururl.com" --repair
+   ```
+5. Commit the initialization.
+
+---
+
+## 🚀 Recipe: Deploying & D1 Migrations
+
+**When:** You are ready to deploy your application to Cloudflare Workers and need to manage your D1 database schema.
+
+**Local vs. Remote D1:**
+
+- **Local Dev:** Handled via `pnpm run db:migrate`. This applies schema changes to the local `.wrangler/` SQLite file used during `pnpm dev`.
+- **Production (Remote):** Must be migrated against the actual Cloudflare D1 database.
+
+**How Remote Migrations Work in this Template:**
+The template's GitHub Actions CI workflow (`.github/workflows/ci.yml`) is configured to **automatically run remote D1 migrations** during the deploy job. It does this by reading your app's `db:migrate` script and replacing the `--local` flag with `--remote` right before running `wrangler deploy`.
+
+- If your app has a `"db:migrate": "wrangler d1 execute ..."` script in its `package.json`, CI runs it for you safely.
+- **Smoke Tests:** The CI workflow also runs an automated "smoke test" after deploying the main web app. It dynamically fetches your newly deployed URL and makes a `curl` request to the `/api/users` endpoint to verify the D1 database bindings and migrations were successful. If the request fails (e.g., 500 error due to missing tables), the CI step fails.
+
+**Manual Remote Migrations (Optional):**
+If you ever need to apply migrations manually outside of CI, you can run:
+
+```bash
+cd apps/web && pnpm exec wrangler d1 execute <DB_NAME> --remote --file=drizzle/0000_initial_schema.sql
+```
+
+_(Replace `<DB_NAME>` with your database name from `wrangler.json`, and repeat for each `.sql` file in order)._
 
 ---
 
@@ -348,7 +422,7 @@ These are opt-in feature recipes. Follow them when the project needs a specific 
    - `site.name` — change to your app's name
    - `site.description` — change to your app's description
    - `schemaOrg.identity.name` — match your app name
-     > _Note: If you ran `pnpm setup` with `--display`, these values were already replaced automatically._
+     > _Note: If you ran `pnpm run setup` with `--display`, these values were already replaced automatically._
 
 6. **Replace `apps/web/app/pages/index.vue`** — this is a placeholder landing page. Build your actual homepage.
 
@@ -383,12 +457,11 @@ These are opt-in feature recipes. Follow them when the project needs a specific 
 
 All template derivatives use **Doppler Cross-Project Secret Referencing** to avoid duplicating sensitive keys. **Never** copy/paste secret values between projects manually.
 
-#### Hub Projects (shared infrastructure — you do NOT create these)
+#### Hub Project (shared infrastructure — you do NOT create this)
 
-| Hub Project              | Purpose                          | Secrets It Owns                                                                                                                     |
-| ------------------------ | -------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------- |
-| `narduk-enterprise-apps` | Cloud infrastructure credentials | `CLOUDFLARE_API_TOKEN`, `CLOUDFLARE_ACCOUNT_ID`                                                                                     |
-| `narduk-analytics`       | Centralized analytics management | `POSTHOG_PUBLIC_KEY`, `POSTHOG_PROJECT_ID`, `POSTHOG_HOST`, `POSTHOG_PERSONAL_API_KEY`, `GA_ACCOUNT_ID`, `GSC_SERVICE_ACCOUNT_JSON` |
+| Hub Project            | Purpose                                   | Secrets It Owns                                                                                                                                 |
+| ---------------------- | ----------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `narduk-nuxt-template` | Cloud + analytics (single source of truth) | `CLOUDFLARE_API_TOKEN`, `CLOUDFLARE_ACCOUNT_ID`, `POSTHOG_PUBLIC_KEY`, `POSTHOG_PROJECT_ID`, `POSTHOG_HOST`, `POSTHOG_PERSONAL_API_KEY`, `GA_ACCOUNT_ID`, `GSC_SERVICE_ACCOUNT_JSON`, `APP_NAME`, `SITE_URL`, etc. |
 
 #### App Spoke Projects (one per app — created by `init.ts`)
 
@@ -403,37 +476,44 @@ ${<hub-project>.<config>.<KEY>}
 **Example:** To reference the Cloudflare API token from the enterprise hub:
 
 ```bash
-doppler secrets set CLOUDFLARE_API_TOKEN='${narduk-enterprise-apps.prd.CLOUDFLARE_API_TOKEN}' --project my-app --config prd
+doppler secrets set CLOUDFLARE_API_TOKEN='${narduk-nuxt-template.prd.CLOUDFLARE_API_TOKEN}' --project my-app --config prd
 ```
 
 #### Complete Secret Reference Table
 
-| Secret                  | Source                                           | Config | Notes                                           |
-| ----------------------- | ------------------------------------------------ | ------ | ----------------------------------------------- |
-| `CLOUDFLARE_API_TOKEN`  | `← narduk-enterprise-apps` hub ref               | `prd`  | Deploy credential                               |
-| `CLOUDFLARE_ACCOUNT_ID` | `← narduk-enterprise-apps` hub ref               | `prd`  | Deploy credential                               |
-| `POSTHOG_PUBLIC_KEY`    | `← narduk-analytics` hub ref                     | `prd`  | Shared across all apps (single PostHog project) |
-| `POSTHOG_PROJECT_ID`    | `← narduk-analytics` hub ref                     | `prd`  | Shared across all apps                          |
-| `POSTHOG_HOST`          | `← narduk-analytics` hub ref                     | `prd`  | Defaults to `https://us.i.posthog.com`          |
+| Secret                  | Source                           | Config | Notes                                           |
+| ----------------------- | -------------------------------- | ------ | ----------------------------------------------- |
+| `CLOUDFLARE_API_TOKEN`  | `← narduk-nuxt-template` hub ref | `prd`  | Deploy credential                               |
+| `CLOUDFLARE_ACCOUNT_ID` | `← narduk-nuxt-template` hub ref | `prd`  | Deploy credential                               |
+| `POSTHOG_PUBLIC_KEY`    | `← narduk-nuxt-template` hub ref | `prd`  | Shared across all apps (single PostHog project) |
+| `POSTHOG_PROJECT_ID`    | `← narduk-nuxt-template` hub ref | `prd`  | Shared across all apps                          |
+| `POSTHOG_HOST`          | `← narduk-nuxt-template` hub ref | `prd`  | Defaults to `https://us.i.posthog.com`          |
 | `APP_NAME`              | Per-app (set by `init.ts`)                       | `prd`  | Differentiates apps in PostHog events           |
 | `SITE_URL`              | Per-app                                          | `prd`  | e.g. `https://myapp.com`                        |
 | `GA_MEASUREMENT_ID`     | Per-app (auto-generated by `setup-analytics.ts`) | `prd`  | `G-XXXXXXX`                                     |
 | `INDEXNOW_KEY`          | Per-app (auto-generated by `setup-analytics.ts`) | `prd`  | 32-char hex                                     |
 | `GA_PROPERTY_ID`        | Per-app (auto-generated)                         | `prd`  | GA4 property identifier                         |
+| `APPLE_MAPKIT_TOKEN`    | Per-app                                          | `prd`  | MapKit JS JWT token (runtime, client-safe)      |
 | `GSC_USER_EMAIL`        | Per-app                                          | `prd`  | Google account email for GSC access             |
 
 #### Dev vs. Prd Configs
 
 - **`dev` config:** Select this when running `doppler setup` locally. Hub references resolve automatically. You can override any key for local testing without affecting production.
-- **`prd` config:** Used by CI/CD (`deploy.yml`). The `init.ts` script provisions hub references in `prd` only. The `DOPPLER_TOKEN` GitHub secret is scoped to `prd`.
+- **`prd` config:** Used by CI/CD (`deploy.yml`). The `init.ts` script provisions hub references in `prd` only. The `DOPPLER_TOKEN` GitHub secret is scoped to `prd`. **CRITICAL:** Deployments will fail with "Cloudflare credentials missing" if your `prd` config does not contain `CLOUDFLARE_API_TOKEN` and `CLOUDFLARE_ACCOUNT_ID` (either directly or via hub reference).
 - **`stg` config:** Available if needed; not provisioned by default.
 
 #### CI/CD Flow
 
-1. `init.ts` creates a Doppler service token (`ci-deploy`) scoped to `<app-name>/prd`
-2. The token is stored as `DOPPLER_TOKEN` GitHub Actions secret
-3. On push to `main`, `deploy.yml` uses the `dopplerhq/secrets-fetch-action` to securely fetch **all resolved secrets** (hub refs are resolved server-side) and inject them into `$GITHUB_ENV`
-4. `pnpm build` and `wrangler deploy` run with full access to all secrets
+**Deploy will fail until:**
+
+1. GitHub must have either the `DOPPLER_TOKEN` secret (recommended) or both `CLOUDFLARE_API_TOKEN` and `CLOUDFLARE_ACCOUNT_ID`.
+2. If setup was run without a git remote, add the remote and re-run with `--repair` to set `DOPPLER_TOKEN`.
+3. The app's Doppler `prd` config must expose `CLOUDFLARE_API_TOKEN` and `CLOUDFLARE_ACCOUNT_ID` (via hub sync or direct) so the deploy job can run `wrangler deploy`.
+
+4. `init.ts` creates a Doppler service token (`ci-deploy`) scoped to `<app-name>/prd`
+5. The token is stored as `DOPPLER_TOKEN` GitHub Actions secret
+6. On push to `main`, `deploy.yml` uses the `dopplerhq/secrets-fetch-action` to securely fetch **all resolved secrets** (hub refs are resolved server-side) and inject them into `$GITHUB_ENV`
+7. `pnpm build` and `wrangler deploy` run with full access to all secrets
 
 **Reference:** See `apps/example-auth/nuxt.config.ts` for the full runtimeConfig block.
 
@@ -495,6 +575,14 @@ doppler secrets set CLOUDFLARE_API_TOKEN='${narduk-enterprise-apps.prd.CLOUDFLAR
 
 E2E tests use a **single root config** (`playwright.config.ts` at repo root) with one project per app (showcase, example-auth, example-blog, example-marketing). In the IDE Test Explorer, those projects can appear as **disabled** (greyed out) until you enable them: open the **Playwright** sidebar (below the Test Explorer), find **PROJECTS**, and **check the boxes** for the apps you want. After that you can run or debug tests from the Test Explorer as usual. From the terminal, `pnpm test:e2e` runs all projects; `pnpm test:e2e:auth` runs only the example-auth project.
 
+### 🤖 Agent Testing Instructions
+
+When writing new features, modifying components, or creating composables, **agents MUST write a reasonable amount of tests against their code**.
+
+- **Unit Tests:** Core business logic, parsers, formatters, and composables should have dedicated unit tests (`tests/composables/`, `tests/utils/`) using Vitest.
+- **E2E Tests:** Critical user flows (e.g., login, onboarding, checkout) must have E2E tests using Playwright.
+- **Environment Agnostic:** Ensure tests are designed so they can be run **both against local dev servers and against live production deployments** (e.g., using parameterized base URLs and robust locators).
+
 ---
 
 ## 🔒 Recipe: Authentication (Web Crypto + D1 Sessions) `[OPT-IN — FULL SETUP]`
@@ -508,6 +596,20 @@ E2E tests use a **single root config** (`playwright.config.ts` at repo root) wit
 3. Create API routes: `server/api/auth/login.post.ts`, `register.post.ts`, `logout.post.ts`, `me.get.ts`.
 4. Create `app/composables/useAuth.ts` — reactive auth state backed by `useState()`.
 5. Create `app/middleware/auth.ts` — route guard that redirects unauthenticated users.
+
+### 🚨 Extending the Database Schema
+
+The layer provides base `users` and `sessions` tables via its own `server/database/schema.ts` and auto-imports its own `useDatabase` helper.
+If your app defines its own schema (e.g., adding `clients` and `invoices` tables, or modifying the base tables), you **must** provide your own database helper in your app (e.g., `apps/web/server/utils/database.ts` -> `useAppDatabase(event)`).
+
+**To extend the schema:**
+
+1. Re-export the layer schema in your app (`export * from '#layer/server/database/schema'`).
+2. Define your new tables below the re-export.
+3. Create `apps/web/server/utils/database.ts` that exports `useAppDatabase(event)` containing your new schema.
+4. Call `useAppDatabase(event)` from all your app's server routes.
+
+Using the auto-imported `useDatabase` from the layer will resolve to the layer's schema, causing your app's tables to be missing from the Drizzle instance. **If you name your app util `useDatabase`, Nitro will warn about "Duplicated imports" and favor the layer's version.**
 
 **Key constraint:** All crypto MUST use Web Crypto API (`crypto.subtle.deriveKey` with PBKDF2). Node.js `crypto` and `bcrypt` are forbidden on Cloudflare Workers.
 
@@ -530,11 +632,11 @@ All plugins **no-op gracefully** when their keys are empty — safe for dev with
 
 **Automated setup:** The examples app includes `tools/setup-analytics.ts` which bootstraps GA4 and GSC via API.
 
-**Doppler architecture:** Universal management keys live in the `narduk-analytics` Doppler project. Per-app keys go in the app's own Doppler project. You must reference the exact `POSTHOG_PUBLIC_KEY` and `POSTHOG_PROJECT_ID` from the analytics hub.
+**Doppler architecture:** Universal management keys (PostHog, GA, GSC, Cloudflare) live in the `narduk-nuxt-template` Doppler project. Per-app keys go in the app's own Doppler project. Reference `POSTHOG_PUBLIC_KEY`, `POSTHOG_PROJECT_ID`, etc. from the hub via cross-project refs.
 
 > **⚠️ WARNING: PostHog Workspaces**
 > Do not create a separate project workspace inside PostHog for each new app unless specifically requested! The expected behavior is that ALL template apps log to the single "Narduk Analytics" master project in PostHog. The apps are differentiated using the `app:` property attached to every event by the client plugin.
-> Ensure your Doppler environment references the `narduk-analytics` keys directly.
+> Ensure your Doppler environment references the `narduk-nuxt-template` hub keys (e.g. `POSTHOG_PUBLIC_KEY`, `POSTHOG_PROJECT_ID`) via cross-project refs.
 
 ---
 

@@ -11,7 +11,7 @@ const DOC_URL = 'https://nuxt.com/docs/api/composables/use-fetch'
 
 export default {
   meta: {
-    type: 'problem',
+    type: 'problem' as const,
     docs: {
       description:
         'disallow raw $fetch in script — use useAsyncData or useFetch for SSR-safe data fetching',
@@ -34,7 +34,7 @@ export default {
         DOC_URL,
     },
   },
-  create(context: Rule.RuleContext<string, any[]>): Rule.RuleListener {
+  create(context: Rule.RuleContext): Rule.RuleListener {
     const options = context.options[0] as { testMode?: boolean } | undefined
     const testMode = options?.testMode === true
     const filename = context.filename ?? (context as any).getFilename?.() ?? ''

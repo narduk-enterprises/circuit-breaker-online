@@ -100,7 +100,7 @@ const services = [
             <h3 class="mb-4 font-display text-sm font-semibold uppercase tracking-wider text-brand-500">Our Services</h3>
             <ul class="space-y-2.5 text-sm text-muted">
               <li v-for="service in services" :key="service" class="flex items-start gap-2">
-                <UIcon name="i-lucide-circle-check-circle" class="mt-0.5 size-4 shrink-0 text-brand-500" />
+                <UIcon name="i-lucide-circle-check" class="mt-0.5 size-4 shrink-0 text-brand-500" />
                 <span>{{ service }}</span>
               </li>
             </ul>

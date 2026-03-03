@@ -19,7 +19,7 @@ const toggleTheme = () => {
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-14 flex items-center justify-between">
           <NuxtLink to="/" class="font-display font-bold text-lg">
             <slot name="logo">
-              <span class="text-primary">N4</span> Template
+              <span class="text-primary">CBS</span> Circuit Breaker Sales
             </slot>
           </NuxtLink>
 

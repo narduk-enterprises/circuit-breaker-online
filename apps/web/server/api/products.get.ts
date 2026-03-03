@@ -9,13 +9,15 @@ const querySchema = z.object({
   amperage: z.string().optional(),
   type: z.string().optional(),
   search: z.string().optional(),
-  page: z.string().optional().transform(v => Math.max(1, parseInt(v || '1') || 1)),
-  limit: z.string().optional().transform(v => Math.min(100, Math.max(1, parseInt(v || '24') || 24))),
+  page: z.string().optional().transform((v: string | undefined) => Math.max(1, Number.parseInt(v ?? '1', 10) || 1)),
+  limit: z.string().optional().transform((v: string | undefined) => Math.min(100, Math.max(1, Number.parseInt(v ?? '24', 10) || 24))),
   sort: z.string().optional(),
 })
 
+type Query = z.infer<typeof querySchema>
+
 export default defineEventHandler(async (event) => {
-  const query = await getValidatedQuery(event, querySchema.parse)
+  const query = await getValidatedQuery(event, querySchema.parse) as Query
   const db = useD1(event)
 
   // Single product by slug
@@ -33,7 +35,7 @@ export default defineEventHandler(async (event) => {
 
   // Build dynamic query
   const conditions: string[] = []
-  const params: any[] = []
+  const params: (string | number)[] = []
 
   // Category filter
   if (query.category) {
@@ -81,12 +83,12 @@ export default defineEventHandler(async (event) => {
   const whereClause = conditions.length > 0 ? `WHERE ${conditions.join(' AND ')}` : ''
 
   // Count total
-  const countRow = await db.prepare(`SELECT COUNT(*) as total FROM products ${whereClause}`).bind(...params).first()
-  const total = (countRow as any)?.total || 0
+  const countRow = await db.prepare(`SELECT COUNT(*) as total FROM products ${whereClause}`).bind(...params).first() as { total?: number } | null
+  const total = Number(countRow?.total ?? 0)
 
-  // Pagination
-  const page = query.page
-  const limit = query.limit
+  // Pagination (schema transform ensures page/limit are numbers when present)
+  const page = query.page ?? 1
+  const limit = query.limit ?? 24
   const offset = (page - 1) * limit
 
   // Sorting
@@ -102,10 +104,11 @@ export default defineEventHandler(async (event) => {
     `SELECT id, name, slug, sku, manufacturer, model, category, subcategory, condition, voltage, amperage, type, short_description, images FROM products ${whereClause} ORDER BY ${sort} LIMIT ? OFFSET ?`
   ).bind(...params, limit, offset).all()
 
+  interface ProductRow { images?: string; [key: string]: unknown }
   return {
-    products: (products || []).map((p: any) => ({
+    products: (products || []).map((p: ProductRow) => ({
       ...p,
-      images: JSON.parse(p.images || '[]'),
+      images: JSON.parse(String(p.images ?? '[]')),
     })),
     total,
     page,

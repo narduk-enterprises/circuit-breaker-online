@@ -1,9 +1,12 @@
 /* ─── Circuit Breaker Sales: App-Specific Styles ─── */
-/* Base tailwind/nuxt-ui imports, glass, body/heading fonts, form layouts,
-   page transitions, and animations are provided by the layer's CSS. */
+/* Nuxt UI provides semantic tokens: text-default, bg-default, text-muted,
+   bg-muted, bg-elevated, border-default, text-dimmed — do NOT redefine them. */
+
+@import 'tailwindcss';
+@import '@nuxt/ui';
 
 @theme {
-  /* Industrial Color Palette */
+  /* Industrial Brand Color Palette — maps to primary via app.config.ts */
   --color-brand-50: #fef2f2;
   --color-brand-100: #fee2e2;
   --color-brand-200: #fecaca;
@@ -20,50 +23,6 @@
   --font-display: 'Montserrat', 'Outfit', sans-serif;
   --font-body: 'Inter', sans-serif;
   --font-sans: 'Inter', sans-serif;
-
-  /* Semantic Colors */
-  --color-text-default: #1a2332;
-  --color-text-muted: #4b5563;
-  --color-text-dimmed: #9ca3af;
-  --color-text-primary: #cc0000;
-
-  --color-bg-default: #ffffff;
-  --color-bg-muted: #f3f4f6;
-  --color-bg-elevated: #ffffff;
-
-  --color-border-default: #e5e7eb;
-  --color-border-primary: #cc0000;
-}
-
-/* ─── Semantic Utility Classes ─── */
-.text-default {
-  color: var(--color-text-default);
-}
-.text-muted {
-  color: var(--color-text-muted);
-}
-.text-dimmed {
-  color: var(--color-text-dimmed);
-}
-.text-primary {
-  color: var(--color-text-primary);
-}
-
-.bg-default {
-  background-color: var(--color-bg-default);
-}
-.bg-muted {
-  background-color: var(--color-bg-muted);
-}
-.bg-elevated {
-  background-color: var(--color-bg-elevated);
-}
-
-.border-default {
-  border-color: var(--color-border-default);
-}
-.border-primary {
-  border-color: var(--color-border-primary);
 }
 
 /* ─── Glass Strong (layer provides .glass, this is app-specific) ─── */
@@ -76,27 +35,45 @@
 
 /* ─── Light Card ─── */
 .light-card {
-  background: #ffffff;
-  border: 1px solid #e5e7eb;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06);
-  transition: all 0.3s ease;
+  background: var(--color-zinc-50);
+  border: 1px solid var(--color-zinc-200);
+  box-shadow: var(--shadow-card);
+  transition: all var(--transition-base);
 }
 .light-card:hover {
-  border-color: #cc0000;
-  box-shadow: 0 4px 16px rgba(204, 0, 0, 0.08);
+  border-color: var(--color-brand-600);
+  box-shadow: 0 4px 16px color-mix(in srgb, var(--color-brand-600) 8%, transparent);
   transform: translateY(-2px);
+}
+.dark .light-card {
+  background: var(--color-zinc-900);
+  border-color: var(--color-zinc-700);
+}
+.dark .light-card:hover {
+  border-color: var(--color-brand-500);
+  box-shadow: 0 4px 16px color-mix(in srgb, var(--color-brand-500) 12%, transparent);
 }
 
 /* ─── Industrial Accent Border ─── */
 .accent-border {
-  border-left: 4px solid #cc0000;
+  border-left: 4px solid var(--color-brand-600);
+}
+.dark .accent-border {
+  border-left-color: var(--color-brand-500);
 }
 
 /* ─── Hero Grid Pattern ─── */
 .hero-grid {
   background-image:
-    linear-gradient(rgba(204, 0, 0, 0.03) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(204, 0, 0, 0.03) 1px, transparent 1px);
+    linear-gradient(
+      color-mix(in srgb, var(--color-brand-600) 3%, transparent) 1px,
+      transparent 1px
+    ),
+    linear-gradient(
+      90deg,
+      color-mix(in srgb, var(--color-brand-600) 3%, transparent) 1px,
+      transparent 1px
+    );
   background-size: 40px 40px;
 }
 
@@ -108,15 +85,9 @@
   background: linear-gradient(to bottom, transparent, #0a0a0f);
 }
 
-/* ─── Section Backgrounds ─── */
-.section-light {
-  background-color: #ffffff;
-}
-.section-gray {
-  background-color: #f8f9fa;
-}
+/* ─── Section Backgrounds — use Nuxt UI tokens where possible ─── */
 .section-dark {
-  background-color: #0f172a;
+  background-color: var(--color-zinc-950);
   color: #ffffff;
 }
 
@@ -149,12 +120,12 @@
 
 /* ─── Product Card Hover ─── */
 .product-card {
-  transition: all 0.3s ease;
+  transition: all var(--transition-base);
 }
 .product-card:hover {
-  border-color: rgba(204, 0, 0, 0.5);
+  border-color: color-mix(in srgb, var(--color-brand-600) 50%, transparent);
   transform: translateY(-2px);
-  box-shadow: 0 8px 32px rgba(204, 0, 0, 0.1);
+  box-shadow: 0 8px 32px color-mix(in srgb, var(--color-brand-600) 10%, transparent);
 }
 .product-card img {
   transition: transform 0.5s ease;
@@ -165,11 +136,11 @@
 
 /* ─── Category Card ─── */
 .category-card {
-  transition: all 0.3s ease;
+  transition: all var(--transition-base);
   position: relative;
   overflow: hidden;
-  background: #ffffff;
-  border: 1px solid #e5e7eb;
+  background: var(--color-zinc-50);
+  border: 1px solid var(--color-zinc-200);
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
 }
 .category-card::after {
@@ -179,16 +150,27 @@
   left: 0;
   width: 0;
   height: 3px;
-  background: #cc0000;
-  transition: width 0.3s ease;
+  background: var(--color-brand-600);
+  transition: width var(--transition-base);
 }
 .category-card:hover::after {
   width: 100%;
 }
 .category-card:hover {
-  border-color: #cc0000;
-  box-shadow: 0 4px 16px rgba(204, 0, 0, 0.08);
+  border-color: var(--color-brand-600);
+  box-shadow: 0 4px 16px color-mix(in srgb, var(--color-brand-600) 8%, transparent);
   transform: translateY(-2px);
+}
+.dark .category-card {
+  background: var(--color-zinc-900);
+  border-color: var(--color-zinc-700);
+}
+.dark .category-card::after {
+  background: var(--color-brand-500);
+}
+.dark .category-card:hover {
+  border-color: var(--color-brand-500);
+  box-shadow: 0 4px 16px color-mix(in srgb, var(--color-brand-500) 12%, transparent);
 }
 
 /* ─── Scrollbar ─── */
@@ -196,19 +178,31 @@
   width: 8px;
 }
 ::-webkit-scrollbar-track {
-  background: #f1f5f9;
+  background: var(--color-zinc-100);
 }
 ::-webkit-scrollbar-thumb {
-  background: #94a3b8;
+  background: var(--color-zinc-400);
   border-radius: 4px;
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: var(--color-text-dimmed);
+  background: var(--color-zinc-500);
+}
+.dark ::-webkit-scrollbar-track {
+  background: var(--color-zinc-900);
+}
+.dark ::-webkit-scrollbar-thumb {
+  background: var(--color-zinc-600);
+}
+.dark ::-webkit-scrollbar-thumb:hover {
+  background: var(--color-zinc-500);
 }
 .scrollbar-thin::-webkit-scrollbar {
   width: 4px;
 }
 .scrollbar-thin {
   scrollbar-width: thin;
-  scrollbar-color: #cbd5e1 transparent;
+  scrollbar-color: var(--color-zinc-400) transparent;
+}
+.dark .scrollbar-thin {
+  scrollbar-color: var(--color-zinc-600) transparent;
 }

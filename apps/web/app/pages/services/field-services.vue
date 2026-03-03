@@ -21,11 +21,11 @@ useHead({
 
 const fieldServices = [
   { title: 'Circuit Breaker Testing', icon: 'i-lucide-bolt', description: 'Full diagnostic testing of low and medium voltage circuit breakers including timing, contact resistance, and insulation resistance.' },
-  { title: 'Switchgear Maintenance', icon: 'i-lucide-checkpu', description: 'Preventive maintenance and testing of metal-clad and metal-enclosed switchgear to OEM specifications and NETA standards.' },
+  { title: 'Switchgear Maintenance', icon: 'i-lucide-cpu', description: 'Preventive maintenance and testing of metal-clad and metal-enclosed switchgear to OEM specifications and NETA standards.' },
   { title: 'Equipment Installation', icon: 'i-lucide-wrench', description: 'Professional installation and commissioning of new and reconditioned circuit breakers, switchgear, and substation equipment.' },
   { title: 'Protective Relay Testing', icon: 'i-lucide-shield-check', description: 'Comprehensive relay testing, calibration, and coordination studies for electromechanical and digital protective relays.' },
   { title: 'Arc Flash Studies', icon: 'i-lucide-fire', description: 'IEEE 1584-compliant arc flash hazard analysis, labeling, and mitigation recommendations for your electrical system.' },
-  { title: 'Infrared Thermography', icon: 'i-lucide-checkamera', description: 'Non-intrusive infrared scanning to identify hot spots, loose connections, and potential failures before they cause downtime.' },
+  { title: 'Infrared Thermography', icon: 'i-lucide-camera', description: 'Non-intrusive infrared scanning to identify hot spots, loose connections, and potential failures before they cause downtime.' },
 ]
 
 const industries = [
@@ -39,7 +39,7 @@ const safetyItems = [
   { title: 'OSHA Compliant', icon: 'i-lucide-shield-check' },
   { title: 'NFPA 70E', icon: 'i-lucide-fire' },
   { title: 'Full PPE', icon: 'i-lucide-user' },
-  { title: 'Job Hazard Analysis', icon: 'i-lucide-checklipboard-check' },
+  { title: 'Job Hazard Analysis', icon: 'i-lucide-clipboard-check' },
 ]
 </script>
 

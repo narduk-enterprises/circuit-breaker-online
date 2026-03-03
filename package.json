@@ -11,8 +11,9 @@
     "lint": "pnpm run prelint && turbo run lint",
     "typecheck": "turbo run typecheck",
     "quality": "turbo run quality",
-    "setup": "doppler run -- jiti tools/init.ts",
-    "validate": "doppler run -- jiti tools/validate.ts",
+    "setup": "doppler run -- npx tsx tools/init.ts",
+    "validate": "doppler run -- npx tsx tools/validate.ts",
+    "update-layer": "npx tsx tools/update-layer.ts",
     "clean": "find . -type d \\( -name node_modules -o -name .nuxt -o -name .output -o -name .nitro -o -name .wrangler -o -name .turbo -o -name .data -o -name dist \\) -not -path './.git/*' -prune -exec rm -rf {} +",
     "clean:install": "pnpm run clean && pnpm install && pnpm run db:migrate",
     "db:migrate": "pnpm --filter web run db:migrate",
@@ -33,6 +34,7 @@
       "esbuild",
       "protobufjs",
       "sharp",
+      "unrs-resolver",
       "vue-demi",
       "workerd"
     ]

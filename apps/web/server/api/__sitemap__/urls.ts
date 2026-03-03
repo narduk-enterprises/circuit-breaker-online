@@ -1,22 +1,31 @@
 /**
  * Dynamic sitemap URL source for NuxtSEO.
  *
- * Automatically discovered by nuxt-simple-sitemap when placed at
- * `server/api/__sitemap__/urls.ts`. Queries D1 for all products and
+ * Sitemap config sources point to this API. Queries D1 for all products and
  * categories and returns them with proper loc, lastmod, changefreq,
  * and priority metadata.
  */
-import { defineSitemapEventHandler } from '#imports'
+import type { H3Event } from 'h3'
 
-export default defineSitemapEventHandler(async (event) => {
+interface SitemapEntry {
+  loc: string
+  lastmod?: string
+  changefreq?: 'always' | 'hourly' | 'daily' | 'weekly' | 'monthly' | 'yearly' | 'never'
+  priority?: number
+}
+
+export default defineEventHandler(async (event: H3Event): Promise<SitemapEntry[]> => {
   const db = useD1(event)
   const { results: products } = await db.prepare('SELECT slug FROM products').all()
   const { results: categories } = await db.prepare("SELECT name, slug, parent FROM categories ORDER BY parent, name").all()
 
   const now = new Date().toISOString()
 
+  interface ProductRow { slug?: string }
+  interface CategoryRow { name?: string; slug?: string; parent?: string | null }
+
   // Dynamic product pages — highest volume
-  const productUrls = (products || []).map((p: any) => ({
+  const productUrls = (products || []).map((p: ProductRow) => ({
     loc: `/products/${p.slug}`,
     lastmod: now,
     changefreq: 'weekly' as const,
@@ -25,9 +34,9 @@ export default defineSitemapEventHandler(async (event) => {
 
   // Dynamic category filter pages
   const categoryUrls = (categories || [])
-    .filter((c: any) => !c.parent)
-    .map((c: any) => ({
-      loc: `/products?category=${encodeURIComponent(c.name)}`,
+    .filter((c: CategoryRow) => !c.parent)
+    .map((c: CategoryRow) => ({
+      loc: `/products?category=${encodeURIComponent(c.name ?? '')}`,
       lastmod: now,
       changefreq: 'weekly' as const,
       priority: 0.85,

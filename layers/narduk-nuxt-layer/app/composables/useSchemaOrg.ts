@@ -95,16 +95,24 @@ interface ProductOptions {
   availability?: 'InStock' | 'OutOfStock' | 'PreOrder' | 'Discontinued'
   ratingValue?: number
   reviewCount?: number
+  /** Schema.org itemCondition — e.g. NewCondition, UsedCondition, RefurbishedCondition */
+  itemCondition?: 'NewCondition' | 'UsedCondition' | 'RefurbishedCondition'
+  /** Canonical product URL */
+  url?: string
+  /** Seller for Offer */
+  seller?: { name: string; url?: string }
 }
 
 export function useProductSchema(options: ProductOptions) {
-  const { name, description, image, brand, sku, price, priceCurrency = 'USD', availability, ratingValue, reviewCount } = options
+  const { name, description, image, brand, sku, price, priceCurrency = 'USD', availability, ratingValue, reviewCount, itemCondition, url, seller } = options
 
   useSchemaOrg([
     defineProduct({
       name,
       description,
       image,
+      ...(url && { url }),
+      ...(itemCondition && { itemCondition: `https://schema.org/${itemCondition}` }),
       ...(brand && { brand: { '@type': 'Brand' as const, name: brand } }),
       ...(sku && { sku }),
       ...(price !== undefined && {
@@ -113,6 +121,7 @@ export function useProductSchema(options: ProductOptions) {
           price: price.toString(),
           priceCurrency,
           ...(availability && { availability: `https://schema.org/${availability}` }),
+          ...(seller && { seller: { '@type': 'Organization' as const, name: seller.name, ...(seller.url && { url: seller.url }) } }),
         },
       }),
       ...(ratingValue !== undefined && reviewCount !== undefined && {

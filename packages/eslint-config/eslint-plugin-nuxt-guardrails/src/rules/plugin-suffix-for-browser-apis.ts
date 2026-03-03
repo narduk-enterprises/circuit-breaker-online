@@ -26,7 +26,7 @@ function referencesBrowserApi(node: any): boolean {
 
 export default {
   meta: {
-    type: 'problem',
+    type: 'problem' as const,
     docs: {
       description: 'plugins using browser APIs must use .client.ts suffix',
       category: 'Best Practices',
@@ -38,7 +38,7 @@ export default {
         'This plugin uses browser APIs (window/document/storage/navigator). Use a .client.ts suffix so it only runs on the client.',
     },
   },
-  create(context: Rule.RuleContext<string, any[]>): Rule.RuleListener {
+  create(context: Rule.RuleContext): Rule.RuleListener {
     const filename = context.filename ?? (context as any).getFilename?.() ?? ''
     const normalized = filename.replace(/\\/g, '/')
     if (!normalized.includes('/app/plugins/') || !normalized.endsWith('.ts')) return {}

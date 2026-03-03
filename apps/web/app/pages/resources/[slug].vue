@@ -135,8 +135,8 @@ const faqPairs = computed(() => {
   const h2Regex = /<h2>(.*?)<\/h2>\s*([\s\S]*?)(?=<h2>|$)/g
   let match
   while ((match = h2Regex.exec(content)) !== null) {
-    const question = (match[1] || '').replace(/<[^>]*>/g, '').trim()
-    const answer = (match[2] || '').replace(/<[^>]*>/g, ' ').replace(/\s+/g, ' ').trim()
+    const question = (match[1] || '').replaceAll(/<[^>]*>/g, '').trim()
+    const answer = (match[2] || '').replaceAll(/<[^>]*>/g, ' ').replaceAll(/\s+/g, ' ').trim()
     if (question && answer) {
       pairs.push({ question, answer: answer.slice(0, 500) })
     }

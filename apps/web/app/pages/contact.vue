@@ -105,7 +105,7 @@ const handleSubmit = async () => {
 
           <div v-if="submitted" class="mt-6 rounded-lg bg-muted border border-default p-4">
             <p class="text-sm text-primary">
-              <UIcon name="i-lucide-circle-check-circle" class="mr-1 inline size-4" />
+              <UIcon name="i-lucide-circle-check" class="mr-1 inline size-4" />
               Thank you! Your message has been sent. Our team will get back to you shortly.
             </p>
           </div>
@@ -140,19 +140,19 @@ const handleSubmit = async () => {
           </h3>
           <ul class="space-y-2.5 text-sm text-dimmed">
             <li class="flex items-start gap-2">
-              <UIcon name="i-lucide-circle-check-circle" class="mt-0.5 size-3.5 shrink-0 text-brand-500" />
+              <UIcon name="i-lucide-circle-check" class="mt-0.5 size-3.5 shrink-0 text-brand-500" />
               <span>Competitive pricing on all equipment</span>
             </li>
             <li class="flex items-start gap-2">
-              <UIcon name="i-lucide-circle-check-circle" class="mt-0.5 size-3.5 shrink-0 text-brand-500" />
+              <UIcon name="i-lucide-circle-check" class="mt-0.5 size-3.5 shrink-0 text-brand-500" />
               <span>Volume discounts available</span>
             </li>
             <li class="flex items-start gap-2">
-              <UIcon name="i-lucide-circle-check-circle" class="mt-0.5 size-3.5 shrink-0 text-brand-500" />
+              <UIcon name="i-lucide-circle-check" class="mt-0.5 size-3.5 shrink-0 text-brand-500" />
               <span>Custom reconditioning to your specs</span>
             </li>
             <li class="flex items-start gap-2">
-              <UIcon name="i-lucide-circle-check-circle" class="mt-0.5 size-3.5 shrink-0 text-brand-500" />
+              <UIcon name="i-lucide-circle-check" class="mt-0.5 size-3.5 shrink-0 text-brand-500" />
               <span>Fast turnaround on urgent orders</span>
             </li>
           </ul>

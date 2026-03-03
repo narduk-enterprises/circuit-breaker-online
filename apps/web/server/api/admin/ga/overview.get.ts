@@ -15,12 +15,12 @@ export default defineEventHandler(async (event) => {
     throw createError({ statusCode: 500, statusMessage: 'GA_PROPERTY_ID not configured' })
   }
 
-  const query = await getValidatedQuery(event, querySchema.parse)
+  const query = (await getValidatedQuery(event, querySchema.parse)) as { startDate?: string; endDate?: string }
 
-  const endDate = query.endDate ? String(query.endDate) : new Date().toISOString().split('T')[0]
-  const start = new Date(endDate as string)
+  const endDate = (query?.endDate ? String(query.endDate) : new Date().toISOString().split('T')[0]) as string
+  const start = new Date(endDate)
   start.setDate(start.getDate() - 30)
-  const startDate = query.startDate ? String(query.startDate) : start.toISOString().split('T')[0]
+  const startDate = query?.startDate ? String(query.startDate) : start.toISOString().split('T')[0]
 
   try {
     const data = await googleApiFetch(
@@ -42,8 +42,9 @@ export default defineEventHandler(async (event) => {
       },
     )
 
-    const totals = data.totals as Array<{ metricValues?: Array<{ value: string }> }> | undefined
-    const rows = data.rows as Array<Record<string, unknown>> | undefined
+    const payload = data as { totals?: Array<{ metricValues?: Array<{ value: string }> }>; rows?: Array<Record<string, unknown>> }
+    const totals = payload.totals
+    const rows = payload.rows
 
     return {
       totals: totals?.[0]?.metricValues || [],

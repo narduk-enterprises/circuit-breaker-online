@@ -47,16 +47,17 @@ jobs:
       - name: Unit Tests
         run: pnpm -r --if-present test:unit
 
-  deploy:
-    name: Deploy
+  # ── Deploy pipeline (push to main only) ──
+
+  preflight:
+    name: Preflight
     if: github.event_name != 'pull_request'
     runs-on: ubuntu-latest
-    timeout-minutes: 10
-    permissions:
-      contents: read
-      deployments: write
+    timeout-minutes: 2
+    outputs:
+      method: ${{ steps.creds.outputs.method }}
     steps:
-      - name: Preflight — validate credentials
+      - name: Validate credentials
         id: creds
         env:
           DOPPLER_TOKEN: ${{ secrets.DOPPLER_TOKEN }}
@@ -75,6 +76,15 @@ jobs:
             exit 1
           fi
 
+  deploy:
+    name: Deploy web
+    needs: [preflight]
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    permissions:
+      contents: read
+      deployments: write
+    steps:
       - uses: actions/checkout@v4
 
       - uses: pnpm/action-setup@v4
@@ -87,14 +97,14 @@ jobs:
       - run: pnpm install --frozen-lockfile
 
       - name: Fetch secrets from Doppler
-        if: steps.creds.outputs.method == 'doppler'
+        if: needs.preflight.outputs.method == 'doppler'
         uses: dopplerhq/secrets-fetch-action@v1.3.1
         with:
           doppler-token: ${{ secrets.DOPPLER_TOKEN }}
           inject-env-vars: true
 
       - name: Set direct Cloudflare credentials
-        if: steps.creds.outputs.method == 'direct'
+        if: needs.preflight.outputs.method == 'direct'
         env:
           CF_API: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           CF_ACCOUNT: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
@@ -103,24 +113,33 @@ jobs:
           echo "CLOUDFLARE_ACCOUNT_ID=$CF_ACCOUNT" >> "$GITHUB_ENV"
 
       - name: Validate Cloudflare credentials
-        env:
-          DEPLOY_METHOD: ${{ steps.creds.outputs.method }}
         run: |
-          missing=()
-          [ -z "$CLOUDFLARE_API_TOKEN" ] && missing+=("CLOUDFLARE_API_TOKEN")
-          [ -z "$CLOUDFLARE_ACCOUNT_ID" ] && missing+=("CLOUDFLARE_ACCOUNT_ID")
-          if [ ${#missing[@]} -gt 0 ]; then
-            echo "::error::Missing Cloudflare credentials: ${missing[*]}"
-            if [ "$DEPLOY_METHOD" = "doppler" ]; then
-              echo "Doppler connected but Cloudflare tokens missing from spoke project."
-              echo "Fix: doppler secrets set CLOUDFLARE_API_TOKEN='\${narduk-enterprise-apps.prd.CLOUDFLARE_API_TOKEN}' --config prd"
-            fi
+          if [ -z "$CLOUDFLARE_API_TOKEN" ] || [ -z "$CLOUDFLARE_ACCOUNT_ID" ]; then
+            echo "::error::Cloudflare credentials missing after secret resolution."
             exit 1
           fi
-          echo "✓ Cloudflare credentials validated"
+
+      - name: Run D1 migrations (remote)
+        working-directory: apps/web
+        run: |
+          echo "Running remote migrations..."
+          # Dynamically run the db:migrate script against the remote database
+          cmd=$(node -p "require('./package.json').scripts['db:migrate']?.replace('--local', '--remote') || ''")
+          if [ -n "$cmd" ]; then
+            pnpm exec $cmd
+          else
+            echo "No db:migrate script found!"
+            exit 1
+          fi
 
       - name: Build & Deploy
+        id: deploy
         working-directory: apps/web
         run: |
           pnpm build
-          pnpm exec wrangler deploy
+          # Capture output to extract the deployed URL for the smoke test
+          deploy_output=$(pnpm exec wrangler deploy)
+          echo "$deploy_output"
+          url=$(echo "$deploy_output" | grep -o 'https://[^ ]*' | grep -v 'dash.cloudflare.com' | head -n 1)
+          echo "url=$url" >> "$GITHUB_OUTPUT"
+

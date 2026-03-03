@@ -9,7 +9,7 @@ import type { Rule } from 'eslint'
 
 export default {
   meta: {
-    type: 'problem',
+    type: 'problem' as const,
     docs: {
       description: 'require useSeo() in app/pages/*.vue for consistent SEO',
       category: 'Best Practices',
@@ -21,7 +21,7 @@ export default {
         'Page must call useSeo() for title, description, and OG image. See template SEO docs.',
     },
   },
-  create(context: Rule.RuleContext<string, any[]>): Rule.RuleListener {
+  create(context: Rule.RuleContext): Rule.RuleListener {
     const filename = context.filename ?? (context as any).getFilename?.() ?? ''
     const normalized = filename.replace(/\\/g, '/')
     if (!normalized.includes('/app/pages/') || !normalized.endsWith('.vue')) return {}

@@ -16,7 +16,7 @@ const articles = [
 const topics = [
   { title: 'Equipment Maintenance', icon: 'i-lucide-wrench', description: 'Best practices for maintaining circuit breakers, switchgear, and transformers.', link: '/resources/circuit-breaker-maintenance-guide' },
   { title: 'Safety & Compliance', icon: 'i-lucide-shield-check', description: 'Arc flash safety, OSHA compliance, and NFPA 70E requirements.', link: '/resources/arc-flash-safety-guide' },
-  { title: 'Engineering Guides', icon: 'i-lucide-checkpu', description: 'Technical guides for modernization, retrofit, and system design.', link: '/resources/switchgear-modernization' },
+  { title: 'Engineering Guides', icon: 'i-lucide-cpu', description: 'Technical guides for modernization, retrofit, and system design.', link: '/resources/switchgear-modernization' },
   { title: 'Testing & Diagnostics', icon: 'i-lucide-bar-chart', description: 'Equipment testing methods, diagnostics, and condition assessment.', link: '/resources/vacuum-interrupter-testing' },
 ]
 </script>

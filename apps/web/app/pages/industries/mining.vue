@@ -12,7 +12,7 @@ const pageData = {
   description: 'Heavy-duty electrical distribution equipment designed for the harsh conditions of surface and underground mining operations. MSHA-compliant equipment with rapid delivery to remote locations.',
   accentColor: 'zinc',
   solutions: [
-    { title: 'Mine Power Centers', icon: 'i-lucide-checkpu', description: 'Portable and stationary power centers for underground and surface mining operations.' },
+    { title: 'Mine Power Centers', icon: 'i-lucide-cpu', description: 'Portable and stationary power centers for underground and surface mining operations.' },
     { title: 'Motor Starters', icon: 'i-lucide-settings', description: 'Heavy-duty motor starters and contactors for draglines, shovels, and conveyor systems.' },
     { title: 'Switchgear', icon: 'i-lucide-bolt', description: 'Metal-clad and metal-enclosed switchgear for mine substations and surface facilities.' },
     { title: 'Protection Systems', icon: 'i-lucide-shield-check', description: 'Ground fault and ground check protection systems meeting MSHA requirements.' },

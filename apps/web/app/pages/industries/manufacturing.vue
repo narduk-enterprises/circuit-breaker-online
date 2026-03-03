@@ -13,7 +13,7 @@ const pageData = {
   accentColor: 'emerald',
   solutions: [
     { title: 'Motor Control Centers', icon: 'i-lucide-settings', description: 'MCC sections, starter buckets, and VFD replacements for production motor loads.' },
-    { title: 'Process Switchgear', icon: 'i-lucide-checkpu', description: 'Low and medium voltage switchgear for process power distribution.' },
+    { title: 'Process Switchgear', icon: 'i-lucide-cpu', description: 'Low and medium voltage switchgear for process power distribution.' },
     { title: 'Power Monitoring', icon: 'i-lucide-bar-chart', description: 'Power quality monitoring and metering for energy optimization.' },
     { title: 'Predictive Maintenance', icon: 'i-lucide-wrench', description: 'Thermal scanning, breaker testing, and PM programs to prevent unplanned downtime.' },
   ],

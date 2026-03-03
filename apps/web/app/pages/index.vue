@@ -90,14 +90,14 @@ const stats = [
 
 const categories = [
   { name: 'Circuit Breakers', slug: 'circuit-breakers', icon: 'i-lucide-zap', description: 'Low & medium voltage power circuit breakers' },
-  { name: 'Switchgear', slug: 'switchgear', icon: 'i-lucide-checkpu', description: 'Metal-clad & metal-enclosed switchgear' },
-  { name: 'Transformers', slug: 'transformers', icon: 'i-lucide-arrow-rightrrow-left-right', description: 'Power & distribution transformers' },
+  { name: 'Switchgear', slug: 'switchgear', icon: 'i-lucide-cpu', description: 'Metal-clad & metal-enclosed switchgear' },
+  { name: 'Transformers', slug: 'transformers', icon: 'i-lucide-arrow-left-right', description: 'Power & distribution transformers' },
   { name: 'Protective Relays', slug: 'protective-relays', icon: 'i-lucide-shield-check', description: 'Electromechanical & digital relays' },
   { name: 'Vacuum Interrupters', slug: 'vacuum-interrupters', icon: 'i-lucide-database', description: 'OEM replacement vacuum bottles' },
   { name: 'Motor Control', slug: 'motor-control', icon: 'i-lucide-settings', description: 'Low voltage motor control centers' },
   { name: 'Renewal Parts', slug: 'renewal-parts', icon: 'i-lucide-wrench', description: 'Replacement & renewal parts' },
   { name: 'Unit Substations', slug: 'unit-substations', icon: 'i-lucide-building', description: 'Complete substation packages' },
-  { name: 'Load Break Switches', slug: 'load-break-switches', icon: 'i-lucide-phoneower', description: 'Medium voltage load break switches' },
+  { name: 'Load Break Switches', slug: 'load-break-switches', icon: 'i-lucide-power', description: 'Medium voltage load break switches' },
   { name: 'Contactors', slug: 'contactors', icon: 'i-lucide-link', description: 'Medium voltage controls & contactors' },
   { name: 'Remote Racking', slug: 'remote-racking', icon: 'i-lucide-rss', description: 'Remote racking & switching devices' },
   { name: 'Load Tap Changers', slug: 'load-tap-changers', icon: 'i-lucide-sliders', description: 'Tap changer parts & components' },
@@ -126,7 +126,7 @@ const features = [
   },
   {
     title: 'Fast Turnaround',
-    icon: 'i-lucide-checklock',
+    icon: 'i-lucide-clock',
     description: 'Emergency and rush orders available. We understand downtime costs money in industrial operations.',
   },
   {

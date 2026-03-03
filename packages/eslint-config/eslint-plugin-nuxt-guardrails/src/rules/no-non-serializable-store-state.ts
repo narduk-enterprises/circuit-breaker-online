@@ -10,7 +10,7 @@ import type { Rule } from 'eslint'
 
 export default {
   meta: {
-    type: 'problem',
+    type: 'problem' as const,
     docs: {
       description: 'disallow ref<Map>/ref<Set>/new Map()/new Set() in app/stores for SSR serialization',
       category: 'Best Practices',
@@ -22,7 +22,7 @@ export default {
         'Store state must be serializable for SSR. Avoid Map, Set, Date, or class instances. Use plain objects/arrays or shallowRef + skipHydrate if needed.',
     },
   },
-  create(context: Rule.RuleContext<string, any[]>): Rule.RuleListener {
+  create(context: Rule.RuleContext): Rule.RuleListener {
     const filename = context.filename ?? (context as any).getFilename?.() ?? ''
     const normalized = filename.replace(/\\/g, '/')
     if (!normalized.includes('/app/stores/') || !normalized.endsWith('.ts')) return {}

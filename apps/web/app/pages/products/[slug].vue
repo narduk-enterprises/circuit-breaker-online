@@ -1,3 +1,89 @@
+<script setup lang="ts">
+const route = useRoute()
+const slug = route.params.slug as string
+
+const { data: product } = await useFetch('/api/products', {
+  query: { slug },
+  transform: (d: any) => d,
+})
+
+if (!product.value) {
+  throw createError({ statusCode: 404, message: 'Product not found' })
+}
+
+const activeImage = ref(0)
+
+// Fetch related products for internal linking
+const { data: relatedProducts } = await useFetch('/api/related-products', {
+  query: { slug },
+  transform: (d: any) => d?.products || [],
+})
+
+// SEO — canonical, OG, Twitter, meta
+const cleanDescription = product.value.short_description || `${product.value.manufacturer ? product.value.manufacturer + ' ' : ''}${product.value.name}. Available from Circuit Breaker Sales.`
+
+useSeo({
+  title: `${product.value.name} | Circuit Breaker Sales`,
+  description: cleanDescription,
+  image: product.value.images?.[0],
+  keywords: [
+    product.value.manufacturer,
+    product.value.category,
+    product.value.type,
+    'circuit breaker',
+    'industrial power equipment',
+  ].filter(Boolean) as string[],
+  ogImage: {
+    title: product.value.name,
+    description: cleanDescription,
+    icon: '⚡',
+  },
+})
+
+// Map product condition to Schema.org itemCondition
+function mapCondition(condition?: string): 'NewCondition' | 'UsedCondition' | 'RefurbishedCondition' | undefined {
+  if (!condition) return undefined
+  const lower = condition.toLowerCase()
+  if (lower.includes('new')) return 'NewCondition'
+  if (lower.includes('recondition') || lower.includes('refurbish')) return 'RefurbishedCondition'
+  if (lower.includes('used')) return 'UsedCondition'
+  return undefined
+}
+
+// Schema.org — Product structured data
+useProductSchema({
+  name: product.value.name,
+  description: (product.value.short_description || product.value.description?.replaceAll(/<[^>]*>/g, '') || '').slice(0, 500),
+  image: product.value.images?.[0] ? [product.value.images[0]] : undefined,
+  brand: product.value.manufacturer,
+  sku: product.value.sku,
+  availability: 'InStock',
+  itemCondition: mapCondition(product.value.condition),
+  url: `https://circuitbreaker.online/products/${slug}`,
+  seller: {
+    name: 'Circuit Breaker Sales',
+    url: 'https://circuitbreaker.online',
+  },
+})
+
+// Schema.org — Breadcrumb path
+const breadcrumbItems = [
+  { name: 'Home', url: 'https://circuitbreaker.online/' },
+  { name: 'Products', url: 'https://circuitbreaker.online/products' },
+]
+if (product.value.category) {
+  breadcrumbItems.push({
+    name: product.value.category,
+    url: `https://circuitbreaker.online/products?category=${encodeURIComponent(product.value.category)}`,
+  })
+}
+breadcrumbItems.push({
+  name: product.value.name,
+  url: `https://circuitbreaker.online/products/${slug}`,
+})
+useBreadcrumbSchema(breadcrumbItems)
+</script>
+
 <template>
   <div class="mx-auto max-w-7xl px-4 py-12">
     <!-- Breadcrumb (hierarchical) -->
@@ -40,7 +126,7 @@
               class="h-full w-full object-contain p-4"
             />
             <div v-else class="flex h-full w-full items-center justify-center">
-              <UIcon name="i-lucide-phonehoto" class="size-24 text-gray-200" />
+              <UIcon name="i-lucide-image" class="size-24 text-gray-200" />
             </div>
             <!-- Condition Badge -->
             <span
@@ -203,7 +289,7 @@
               loading="lazy"
             />
             <div v-else class="flex h-full w-full items-center justify-center">
-              <UIcon name="i-lucide-phonehoto" class="size-12 text-gray-200" />
+              <UIcon name="i-lucide-image" class="size-12 text-gray-200" />
             </div>
           </div>
           <div class="p-3">
@@ -221,90 +307,3 @@
 
   </div>
 </template>
-
-<script setup lang="ts">
-const route = useRoute()
-const slug = route.params.slug as string
-
-const { data: product } = await useFetch('/api/products', {
-  query: { slug },
-  transform: (d: any) => d,
-})
-
-if (!product.value) {
-  throw createError({ statusCode: 404, message: 'Product not found' })
-}
-
-const activeImage = ref(0)
-
-// Fetch related products for internal linking
-const { data: relatedProducts } = await useFetch('/api/related-products', {
-  query: { slug },
-  transform: (d: any) => d?.products || [],
-})
-
-// SEO — canonical, OG, Twitter, meta
-const cleanDescription = product.value.short_description || `${product.value.manufacturer ? product.value.manufacturer + ' ' : ''}${product.value.name}. Available from Circuit Breaker Sales.`
-
-useSeo({
-  title: `${product.value.name} | Circuit Breaker Sales`,
-  description: cleanDescription,
-  type: 'product',
-  image: product.value.images?.[0],
-  keywords: [
-    product.value.manufacturer,
-    product.value.category,
-    product.value.type,
-    'circuit breaker',
-    'industrial power equipment',
-  ].filter(Boolean) as string[],
-  ogImage: {
-    title: product.value.name,
-    description: cleanDescription,
-    icon: '⚡',
-  },
-})
-
-// Map product condition to Schema.org itemCondition
-function mapCondition(condition?: string): 'NewCondition' | 'UsedCondition' | 'RefurbishedCondition' | undefined {
-  if (!condition) return undefined
-  const lower = condition.toLowerCase()
-  if (lower.includes('new')) return 'NewCondition'
-  if (lower.includes('recondition') || lower.includes('refurbish')) return 'RefurbishedCondition'
-  if (lower.includes('used')) return 'UsedCondition'
-  return undefined
-}
-
-// Schema.org — Product structured data
-useProductSchema({
-  name: product.value.name,
-  description: (product.value.short_description || product.value.description?.replace(/<[^>]*>/g, '') || '').slice(0, 500),
-  image: product.value.images?.[0] ? [product.value.images[0]] : undefined,
-  brand: product.value.manufacturer,
-  sku: product.value.sku,
-  availability: 'InStock',
-  itemCondition: mapCondition(product.value.condition),
-  url: `https://circuitbreaker.online/products/${slug}`,
-  seller: {
-    name: 'Circuit Breaker Sales',
-    url: 'https://circuitbreaker.online',
-  },
-})
-
-// Schema.org — Breadcrumb path
-const breadcrumbItems = [
-  { name: 'Home', url: 'https://circuitbreaker.online/' },
-  { name: 'Products', url: 'https://circuitbreaker.online/products' },
-]
-if (product.value.category) {
-  breadcrumbItems.push({
-    name: product.value.category,
-    url: `https://circuitbreaker.online/products?category=${encodeURIComponent(product.value.category)}`,
-  })
-}
-breadcrumbItems.push({
-  name: product.value.name,
-  url: `https://circuitbreaker.online/products/${slug}`,
-})
-useBreadcrumbSchema(breadcrumbItems)
-</script>

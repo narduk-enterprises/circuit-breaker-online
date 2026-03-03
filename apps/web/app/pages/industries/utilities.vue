@@ -8,7 +8,7 @@ useHead({ script: [{ type: 'application/ld+json', innerHTML: JSON.stringify({ '@
 const solutions = [
   { title: 'Substation Breakers', icon: 'i-lucide-bolt', description: 'Medium voltage circuit breakers for substation switching and protection applications.' },
   { title: 'Recloser Components', icon: 'i-lucide-refresh-cw', description: 'Replacement parts and controls for distribution reclosers and sectionalizers.' },
-  { title: 'Power Transformers', icon: 'i-lucide-arrow-rightrrows-right-left', description: 'Substation transformers, regulators, and load tap changer service.' },
+  { title: 'Power Transformers', icon: 'i-lucide-arrows-right-left', description: 'Substation transformers, regulators, and load tap changer service.' },
   { title: 'Relay & Protection', icon: 'i-lucide-shield-check', description: 'Protective relays, CTs, PTs, and protection system upgrades.' },
 ]
 
@@ -73,7 +73,7 @@ const services = [
             <h3 class="mb-4 font-display text-sm font-semibold uppercase tracking-wider text-primary">Utility Services</h3>
             <ul class="space-y-2.5 text-sm text-muted">
               <li v-for="s in services" :key="s" class="flex items-start gap-2">
-                <UIcon name="i-lucide-circle-check-circle" class="mt-0.5 size-4 shrink-0 text-primary" />
+                <UIcon name="i-lucide-circle-check" class="mt-0.5 size-4 shrink-0 text-primary" />
                 <span>{{ s }}</span>
               </li>
             </ul>

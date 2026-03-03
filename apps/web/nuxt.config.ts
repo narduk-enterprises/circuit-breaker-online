@@ -77,5 +77,16 @@ export default defineNuxtConfig({
       ],
     },
     pageTransition: { name: 'page', mode: 'out-in' }
-  }
+  },
+
+  modules: [
+    'nitro-cloudflare-dev',
+  ],
+
+  // Cloudflare dev proxy (from template standard)
+  nitro: {
+    cloudflareDev: {
+      configPath: 'wrangler.json',
+    },
+  },
 })

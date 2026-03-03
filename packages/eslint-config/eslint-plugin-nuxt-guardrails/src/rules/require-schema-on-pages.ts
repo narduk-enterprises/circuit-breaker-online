@@ -18,7 +18,7 @@ const SCHEMA_COMPOSABLES = new Set([
 
 export default {
   meta: {
-    type: 'problem',
+    type: 'problem' as const,
     docs: {
       description: 'require a Schema.org composable in app/pages/*.vue',
       category: 'Best Practices',
@@ -30,7 +30,7 @@ export default {
         'Page should call a Schema.org composable (e.g. useWebPageSchema, useArticleSchema). See template SEO docs.',
     },
   },
-  create(context: Rule.RuleContext<string, any[]>): Rule.RuleListener {
+  create(context: Rule.RuleContext): Rule.RuleListener {
     const filename = context.filename ?? (context as any).getFilename?.() ?? ''
     const normalized = filename.replace(/\\/g, '/')
     if (!normalized.includes('/app/pages/') || !normalized.endsWith('.vue')) return {}

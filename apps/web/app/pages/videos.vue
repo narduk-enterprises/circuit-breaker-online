@@ -227,7 +227,7 @@ useHead({
               />
               <div class="absolute inset-0 flex items-center justify-center bg-muted/20 transition-colors group-hover:bg-muted/10">
                 <div class="flex size-12 items-center justify-center rounded-full bg-brand-600/90 text-default shadow-lg transition-transform group-hover:scale-110">
-                  <UIcon name="i-lucide-phonelay" class="ml-0.5 size-5" />
+                  <UIcon name="i-lucide-play" class="ml-0.5 size-5" />
                 </div>
               </div>
               <!-- Category badge -->
@@ -279,7 +279,7 @@ useHead({
             target="_blank"
             color="primary"
             size="lg"
-            icon="i-lucide-phonelay-circle"
+            icon="i-lucide-play-circle"
           >
             Subscribe on YouTube
           </UButton>

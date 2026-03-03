@@ -5,7 +5,7 @@
   "description": "Narduk Nuxt 4 Layer — shared components, composables, server routes, and Drizzle schema for Cloudflare Workers apps",
   "repository": {
     "type": "git",
-    "url": "https://github.com/loganrenz/circuit-breaker-online.git",
+    "url": "https://github.com/loganrenz/narduk-nuxt-template.git",
     "directory": "layers/narduk-nuxt-layer"
   },
   "publishConfig": {
@@ -21,7 +21,7 @@
     "typecheck": "nuxt typecheck",
     "prelint": "test -f .nuxt/eslint.config.mjs || nuxt prepare",
     "lint": "eslint .",
-    "quality": "pnpm run lint && pnpm run typecheck",
+    "quality": "pnpm run lint && pnpm run typecheck && pnpm run test:unit",
     "test:unit": "vitest run",
     "db:generate": "drizzle-kit generate",
     "db:studio": "drizzle-kit studio"
@@ -44,11 +44,16 @@
     "@cloudflare/workers-types": "^4.20250620.0",
     "@iconify-json/lucide": "^1.2.94",
     "@narduk/eslint-config": "workspace:*",
+    "@nuxt/test-utils": "^4.0.0",
+    "@playwright/test": "^1.58.2",
     "@tailwindcss/vite": "^4.0.0",
     "@types/node": "^22.19.13",
+    "@vue/test-utils": "^2.4.6",
     "drizzle-kit": "^0.31.9",
     "eslint": "^10.0.2",
+    "happy-dom": "^20.7.0",
     "nuxt": "^4.3.1",
+    "playwright": "^1.58.2",
     "prettier": "^3.8.1",
     "tailwindcss": "^4.0.0",
     "typescript": "^5.9.3",

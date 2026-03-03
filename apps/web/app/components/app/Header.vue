@@ -20,17 +20,17 @@ watch(() => route.path, () => {
 </script>
 
 <template>
-  <div class="sticky top-0 z-50 w-full border-b border-default bg-white shadow-lg">
+  <div class="sticky top-0 z-50 w-full border-b border-default bg-default shadow-lg">
     <!-- Top Bar -->
-    <div class="border-b border-default bg-gray-50">
-      <div class="mx-auto flex max-w-7xl items-center justify-between px-4 py-2.5 text-sm text-dimmed">
+    <div class="border-b border-default bg-muted">
+      <div class="mx-auto flex max-w-7xl items-center justify-between px-4 py-2.5 text-sm text-muted">
         <span class="hidden sm:inline font-medium">A Group CBS Company — Trusted Since 1981</span>
         <div class="flex items-center gap-5">
-          <ULink to="tel:8002325809" class="flex items-center gap-1.5 transition-colors hover:text-default">
+          <ULink to="tel:8002325809" class="flex items-center gap-1.5 transition-colors hover:text-white">
             <UIcon name="i-lucide-phone" class="size-4" />
-            <span class="font-bold text-default">800-232-5809</span>
+            <span class="font-bold text-white">800-232-5809</span>
           </ULink>
-          <ULink to="mailto:sales@circuitbreaker.com" class="hidden items-center gap-1.5 transition-colors hover:text-default sm:flex">
+          <ULink to="mailto:sales@circuitbreaker.com" class="hidden items-center gap-1.5 transition-colors hover:text-white sm:flex">
             <UIcon name="i-lucide-mail" class="size-4" />
             <span>sales@circuitbreaker.com</span>
           </ULink>
@@ -55,8 +55,8 @@ watch(() => route.path, () => {
           v-for="link in navLinks"
           :key="link.to"
           :to="link.to"
-          class="rounded-md px-3 py-2 text-[13.5px] font-bold uppercase tracking-wide text-gray-500 transition-colors hover:bg-gray-100 hover:text-gray-900"
-          active-class="!text-gray-900 bg-gray-100"
+          class="rounded-md px-3 py-2 text-[13.5px] font-bold uppercase tracking-wide text-muted transition-colors hover:bg-elevated hover:text-primary"
+          active-class="!text-primary bg-elevated"
         >
           {{ link.label }}
         </NuxtLink>
@@ -77,7 +77,7 @@ watch(() => route.path, () => {
         <UButton
           variant="ghost"
           color="neutral"
-          class="rounded-md p-2 text-dimmed transition-colors hover:text-default md:hidden"
+          class="rounded-md p-2 text-muted transition-colors hover:bg-elevated hover:text-primary md:hidden"
           @click="mobileMenuOpen = !mobileMenuOpen"
         >
           <UIcon :name="mobileMenuOpen ? 'i-lucide-x' : 'i-lucide-menu'" class="size-6" />
@@ -94,12 +94,12 @@ watch(() => route.path, () => {
       leave-from-class="opacity-100 translate-y-0"
       leave-to-class="opacity-0 -translate-y-2"
     >
-      <div v-if="mobileMenuOpen" class="border-t border-default bg-white px-4 py-3 md:hidden">
+      <div v-if="mobileMenuOpen" class="border-t border-default bg-default px-4 py-3 md:hidden">
         <NuxtLink
           v-for="link in navLinks"
           :key="link.to"
           :to="link.to"
-          class="block rounded-md px-3 py-3 text-base font-bold uppercase tracking-wide text-gray-500 transition-colors hover:bg-gray-100 hover:text-gray-900"
+          class="block rounded-md px-3 py-3 text-base font-bold uppercase tracking-wide text-muted transition-colors hover:bg-elevated hover:text-primary"
           @click="mobileMenuOpen = false"
         >
           {{ link.label }}

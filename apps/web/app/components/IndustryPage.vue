@@ -52,7 +52,7 @@ const accentTextClass = computed(() => {
             <h3 class="mb-4 font-display text-sm font-semibold uppercase tracking-wider" :class="accentTextClass">Services</h3>
             <ul class="space-y-2.5 text-sm text-muted">
               <li v-for="s in services" :key="s" class="flex items-start gap-2">
-                <UIcon name="i-lucide-circle-check-circle" class="mt-0.5 size-4 shrink-0" :class="accentTextClass" />
+                <UIcon name="i-lucide-circle-check" class="mt-0.5 size-4 shrink-0" :class="accentTextClass" />
                 <span>{{ s }}</span>
               </li>
             </ul>

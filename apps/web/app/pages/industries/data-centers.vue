@@ -7,8 +7,8 @@ useHead({ script: [{ type: 'application/ld+json', innerHTML: JSON.stringify({ '@
 
 const solutions = [
   { title: 'Critical Power Breakers', icon: 'i-lucide-bolt', description: 'Redundant circuit breakers for UPS output, generator, utility, and static transfer switch applications.' },
-  { title: 'PDU Switchgear', icon: 'i-lucide-checkpu', description: 'Power distribution unit switchgear and components for A+B feed architectures.' },
-  { title: 'ATS Components', icon: 'i-lucide-arrow-rightrrows-right-left', description: 'Automatic transfer switch components and replacement parts for seamless power transitions.' },
+  { title: 'PDU Switchgear', icon: 'i-lucide-cpu', description: 'Power distribution unit switchgear and components for A+B feed architectures.' },
+  { title: 'ATS Components', icon: 'i-lucide-arrows-right-left', description: 'Automatic transfer switch components and replacement parts for seamless power transitions.' },
   { title: 'Protective Relays', icon: 'i-lucide-shield-check', description: 'Digital protective relays for generator, transformer, and bus differential protection.' },
 ]
 
@@ -88,7 +88,7 @@ const services = [
             <h3 class="mb-4 font-display text-sm font-semibold uppercase tracking-wider text-primary">Data Center Services</h3>
             <ul class="space-y-2.5 text-sm text-muted">
               <li v-for="s in services" :key="s" class="flex items-start gap-2">
-                <UIcon name="i-lucide-circle-check-circle" class="mt-0.5 size-4 shrink-0 text-primary" />
+                <UIcon name="i-lucide-circle-check" class="mt-0.5 size-4 shrink-0 text-primary" />
                 <span>{{ s }}</span>
               </li>
             </ul>

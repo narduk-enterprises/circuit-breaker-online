@@ -24,7 +24,7 @@ const capabilities = [
   { title: 'Mobile Workshops', icon: 'i-lucide-wrench', description: 'Fully equipped mobile workshops can perform on-site testing, repair, and reconditioning at your facility.' },
   { title: 'Equipment Sourcing', icon: 'i-lucide-search', description: 'Access to the largest independent inventory of circuit breakers, switchgear, and replacement parts in the country.' },
   { title: 'Temporary Equipment', icon: 'i-lucide-refresh-cw', description: 'Temporary replacement equipment available to keep your operations running while permanent repairs are underway.' },
-  { title: 'Storm & Disaster Recovery', icon: 'i-lucide-checkloud', description: 'Experienced in hurricane, flood, and natural disaster recovery for electrical infrastructure. Proven track record.' },
+  { title: 'Storm & Disaster Recovery', icon: 'i-lucide-cloud', description: 'Experienced in hurricane, flood, and natural disaster recovery for electrical infrastructure. Proven track record.' },
   { title: 'After-Hours Support', icon: 'i-lucide-moon', description: 'Our emergency hotline is staffed 24 hours a day, 7 days a week, 365 days a year. We never close.' },
 ]
 
