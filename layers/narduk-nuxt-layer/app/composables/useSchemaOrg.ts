@@ -109,6 +109,8 @@ interface ProductOptions {
 export function useProductSchema(options: ProductOptions) {
   const { name, description, image, brand, sku, mpn, url, itemCondition, seller, price, priceCurrency = 'USD', availability, ratingValue, reviewCount } = options
 
+  const conditionUrl = itemCondition ? `https://schema.org/${itemCondition}` : undefined
+
   useSchemaOrg([
     defineProduct({
       name,
@@ -118,13 +120,13 @@ export function useProductSchema(options: ProductOptions) {
       ...(brand && { brand: { '@type': 'Brand' as const, name: brand } }),
       ...(sku && { sku }),
       ...(mpn && { mpn }),
-      ...(itemCondition && { itemCondition: `https://schema.org/${itemCondition}` }),
+      ...(conditionUrl && { itemCondition: conditionUrl }),
       ...(seller && {
         offers: {
           '@type': 'Offer' as const,
           ...(price !== undefined && { price: price.toString(), priceCurrency }),
           ...(availability && { availability: `https://schema.org/${availability}` }),
-          ...(itemCondition && { itemCondition: `https://schema.org/${itemCondition}` }),
+          ...(conditionUrl && { itemCondition: conditionUrl }),
           seller: { '@type': 'Organization' as const, name: seller.name, ...(seller.url && { url: seller.url }) },
         },
       }),

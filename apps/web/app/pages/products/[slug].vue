@@ -39,7 +39,7 @@ function mapCondition(condition?: string): 'NewCondition' | 'UsedCondition' | 'R
 
 // --- Derived SEO values ---
 const canonicalUrl = `${siteUrl}/products/${slug}`
-const productId = product.value.sku || product.value.model || product.value.name
+const productIdentifier = product.value.sku || product.value.model || product.value.name
 const seoTitle = buildProductTitle(product.value)
 
 const fallbackDescription = buildFallbackDescription(product.value)
@@ -81,8 +81,8 @@ useProductSchema({
   description: schemaDescription,
   image: absoluteImages.length > 0 ? absoluteImages : [primaryImage],
   brand: product.value.manufacturer,
-  sku: product.value.sku || slug,
-  mpn: product.value.sku || product.value.model,
+  sku: product.value.sku || undefined,
+  mpn: product.value.sku || product.value.model || undefined,
   availability: 'InStock',
   itemCondition: mapCondition(product.value.condition),
   url: canonicalUrl,
@@ -180,8 +180,8 @@ useBreadcrumbSchema(breadcrumbItems)
         <h1 class="font-display text-2xl font-bold text-default sm:text-3xl">{{ product.name }}</h1>
 
         <!-- Product ID / SKU (visible near top) -->
-        <p v-if="productId" class="text-sm font-mono text-muted">
-          <span class="font-semibold text-dimmed">Part #:</span> {{ productId }}
+        <p v-if="productIdentifier" class="text-sm font-mono text-muted">
+          <span class="font-semibold text-dimmed">Part #:</span> {{ productIdentifier }}
         </p>
 
         <!-- Short Description -->

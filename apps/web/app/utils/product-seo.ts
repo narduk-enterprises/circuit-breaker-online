@@ -12,12 +12,8 @@ export function toAbsoluteImageUrl(siteUrl: string, url?: string): string | unde
   return `${siteUrl}${url.startsWith('/') ? '' : '/'}${url}`
 }
 
-/**
- * Build a deterministic fallback description (~100-200 words) from
- * structured product fields. Ensures every product page has enough
- * unique content even when no editorial description is available.
- */
-export function buildFallbackDescription(p: {
+/** Product data fields used by SEO helpers. */
+export interface ProductSeoData {
   name: string
   sku?: string
   model?: string
@@ -29,7 +25,14 @@ export function buildFallbackDescription(p: {
   type?: string
   condition?: string
   warranty?: string
-}): string {
+}
+
+/**
+ * Build a deterministic fallback description (~100-200 words) from
+ * structured product fields. Ensures every product page has enough
+ * unique content even when no editorial description is available.
+ */
+export function buildFallbackDescription(p: ProductSeoData): string {
   const parts: string[] = []
 
   const mfr = p.manufacturer || 'Industrial'
