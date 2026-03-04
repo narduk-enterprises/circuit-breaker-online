@@ -4,55 +4,27 @@
  * Validates that the sitemap URL source only emits clean URLs
  * (no query params, no fragments) and that the SEO policy
  * utilities work correctly.
+ *
+ * Imports the real buildSitemapEntries and useCategorySlug so
+ * regressions in the source are caught by these tests.
  */
 import { describe, it, expect } from 'vitest'
+import { useCategorySlug } from '../app/composables/useCategorySlug'
+import { buildSitemapEntries } from '../server/utils/buildSitemapEntries'
 
 // ---------------------------------------------------------------------------
-// useCategorySlug — mirrors apps/web/app/composables/useCategorySlug.ts
-// Duplicated here to avoid Nuxt auto-import context dependency.
+// SEO policy helpers — extracted from app/plugins/seo-policy.ts logic
 // ---------------------------------------------------------------------------
-function categorySlug(name: string): string {
-  return name.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '')
+
+/** Build canonical URL from site origin + path (no query string). */
+function getCanonical(fullUrl: string, siteUrl: string): string {
+  const url = new URL(fullUrl, siteUrl)
+  return `${siteUrl}${url.pathname}`
 }
 
-// ---------------------------------------------------------------------------
-// Simulated sitemap entries — mirrors the logic in
-// server/api/__sitemap__/urls.ts after the fix.
-// ---------------------------------------------------------------------------
-function buildSitemapEntries(
-  products: { slug: string }[],
-  categories: { name: string; slug: string; parent: string | null }[],
-) {
-  const now = new Date().toISOString()
-
-  const productUrls = products.map(p => ({
-    loc: `/products/${p.slug}`,
-    lastmod: now,
-    changefreq: 'weekly' as const,
-    priority: 0.8,
-  }))
-
-  const categoryUrls = categories
-    .filter(c => !c.parent && c.slug)
-    .map(c => ({
-      loc: `/products/category/${c.slug}`,
-      lastmod: now,
-      changefreq: 'weekly' as const,
-      priority: 0.85,
-    }))
-
-  const staticPages = [
-    { loc: '/', priority: 1.0 },
-    { loc: '/about', priority: 0.8 },
-    { loc: '/contact', priority: 0.8 },
-    { loc: '/products', priority: 0.95 },
-    { loc: '/services', priority: 0.9 },
-    { loc: '/equipment', priority: 0.9 },
-    { loc: '/equipment/circuit-breakers', priority: 0.9 },
-    { loc: '/industries', priority: 0.8 },
-  ].map(p => ({ ...p, lastmod: now, changefreq: 'monthly' as const }))
-
-  return [...staticPages, ...categoryUrls, ...productUrls]
+/** Determine robots directive based on presence of query params. */
+function getRobots(queryKeys: string[]): string {
+  return queryKeys.length > 0 ? 'noindex,follow' : 'index,follow'
 }
 
 // ---------------------------------------------------------------------------
@@ -119,35 +91,37 @@ describe('sitemap URL generation', () => {
 
 describe('useCategorySlug', () => {
   it('converts category names to URL-safe slugs', () => {
-    expect(categorySlug('Circuit Breakers')).toBe('circuit-breakers')
-    expect(categorySlug('Bus Duct & Busway')).toBe('bus-duct-busway')
-    expect(categorySlug('Variable Frequency Drives (VFDs)')).toBe('variable-frequency-drives-vfds')
-    expect(categorySlug('Fuses & Fuse Holders')).toBe('fuses-fuse-holders')
-    expect(categorySlug('Renewal & Replacement Parts')).toBe('renewal-replacement-parts')
+    expect(useCategorySlug('Circuit Breakers')).toBe('circuit-breakers')
+    expect(useCategorySlug('Bus Duct & Busway')).toBe('bus-duct-busway')
+    expect(useCategorySlug('Variable Frequency Drives (VFDs)')).toBe('variable-frequency-drives-vfds')
+    expect(useCategorySlug('Fuses & Fuse Holders')).toBe('fuses-fuse-holders')
+    expect(useCategorySlug('Renewal & Replacement Parts')).toBe('renewal-replacement-parts')
   })
 
   it('handles simple single-word names', () => {
-    expect(categorySlug('Switchgear')).toBe('switchgear')
-    expect(categorySlug('Transformers')).toBe('transformers')
+    expect(useCategorySlug('Switchgear')).toBe('switchgear')
+    expect(useCategorySlug('Transformers')).toBe('transformers')
   })
 
   it('strips leading and trailing hyphens', () => {
-    expect(categorySlug('  Test  ')).toBe('test')
-    expect(categorySlug('---test---')).toBe('test')
+    expect(useCategorySlug('  Test  ')).toBe('test')
+    expect(useCategorySlug('---test---')).toBe('test')
   })
 })
 
 describe('SEO policy', () => {
-  function getCanonical(path: string, siteUrl: string): string {
-    return `${siteUrl}${path}`
-  }
+  it('canonical URL strips query string from URL with params', () => {
+    expect(getCanonical('/products?category=Circuit%20Breakers', 'https://circuitbreaker.online'))
+      .toBe('https://circuitbreaker.online/products')
+  })
 
-  function getRobots(queryKeys: string[]): string {
-    return queryKeys.length > 0 ? 'noindex,follow' : 'index,follow'
-  }
+  it('canonical URL preserves clean path', () => {
+    expect(getCanonical('/products/category/circuit-breakers', 'https://circuitbreaker.online'))
+      .toBe('https://circuitbreaker.online/products/category/circuit-breakers')
+  })
 
-  it('canonical URL strips query string', () => {
-    expect(getCanonical('/products', 'https://circuitbreaker.online'))
+  it('canonical URL strips multiple query params', () => {
+    expect(getCanonical('/products?category=X&page=2&sort=newest', 'https://circuitbreaker.online'))
       .toBe('https://circuitbreaker.online/products')
   })
 

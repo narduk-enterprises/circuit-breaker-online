@@ -17,12 +17,12 @@ export default defineNuxtPlugin(() => {
     // Canonical URL = site origin + path (no query string, no hash)
     const canonicalUrl = `${siteUrl}${route.path}`
 
-    // Pages with query params get noindex,follow unless path is whitelisted
+    // Pages with any query params get noindex,follow
     const hasQueryParams = Object.keys(route.query).length > 0
     const robots = hasQueryParams ? 'noindex,follow' : 'index,follow'
 
     useHead({
-      link: [{ rel: 'canonical', href: canonicalUrl }],
+      link: [{ key: 'canonical', rel: 'canonical', href: canonicalUrl }],
     })
 
     useSeoMeta({ robots })

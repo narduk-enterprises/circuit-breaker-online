@@ -52,7 +52,7 @@ export default defineNuxtConfig({
     ],
     // Exclude any URLs with query params or fragments from the sitemap
     exclude: [
-      '/**?*',
+      '/**[?]*',
     ],
   },
 
