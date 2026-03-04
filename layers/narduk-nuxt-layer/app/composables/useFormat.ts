@@ -1,10 +1,9 @@
 /**
  * Shared formatting utilities for displaying currency, dates, numbers, and percentages.
  * Exported as plain functions for tree-shaking, and aliased in `useFormat()` for composable usage.
- * (Pure formatters are not Vue composables — only useFormat() is; disable require-use-prefix for exports.)
  */
-/* eslint-disable vue-official/require-use-prefix-for-composables */
 
+/* eslint-disable vue-official/require-use-prefix-for-composables */
 const DEFAULT_LOCALE = 'en-US';
 
 export function formatCents(

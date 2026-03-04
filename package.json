@@ -21,9 +21,9 @@
     "dev:kill": "sh scripts/dev-kill.sh",
     "generate:favicons": "npx tsx tools/generate-favicons.ts",
     "gsc:inspect-urls": "doppler run -- npx tsx tools/gsc-toolbox.ts inspect-urls",
-    "predev": "node tools/check-setup.js",
-    "prebuild": "node tools/check-setup.js",
-    "predeploy": "node tools/check-setup.js"
+    "predev": "node tools/check-setup.cjs",
+    "prebuild": "node tools/check-setup.cjs",
+    "predeploy": "node tools/check-setup.cjs"
   },
   "pnpm": {
     "overrides": {
