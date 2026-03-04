@@ -4,6 +4,9 @@
  * Enforces canonical URLs (without query strings) and sets
  * `noindex,follow` for any page rendered with query parameters.
  *
+ * Canonical/robots logic lives in `app/utils/seo-helpers.ts` so
+ * the regression tests import the same functions the plugin uses.
+ *
  * Runs on both SSR and client navigation.
  */
 export default defineNuxtPlugin(() => {
@@ -14,12 +17,8 @@ export default defineNuxtPlugin(() => {
   function applySeoPolicy() {
     const route = useRoute()
 
-    // Canonical URL = site origin + path (no query string, no hash)
-    const canonicalUrl = `${siteUrl}${route.path}`
-
-    // Pages with any query params get noindex,follow
-    const hasQueryParams = Object.keys(route.query).length > 0
-    const robots = hasQueryParams ? 'noindex,follow' : 'index,follow'
+    const canonicalUrl = getCanonicalUrl(siteUrl, route.path)
+    const robots = getRobotsDirective(Object.keys(route.query))
 
     useHead({
       link: [{ key: 'canonical', rel: 'canonical', href: canonicalUrl }],

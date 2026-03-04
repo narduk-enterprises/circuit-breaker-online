@@ -3,7 +3,7 @@
  *
  * Pure function used by the sitemap API route and regression tests.
  * Accepts raw product/category rows and returns clean sitemap entries
- * — guaranteed free of query params and fragments.
+ * with path-style URLs (no query params or fragments are added here).
  */
 
 export interface SitemapEntry {

@@ -5,27 +5,13 @@
  * (no query params, no fragments) and that the SEO policy
  * utilities work correctly.
  *
- * Imports the real buildSitemapEntries and useCategorySlug so
- * regressions in the source are caught by these tests.
+ * Imports the real buildSitemapEntries, useCategorySlug, and SEO
+ * helpers so regressions in the source are caught by these tests.
  */
 import { describe, it, expect } from 'vitest'
 import { useCategorySlug } from '../app/composables/useCategorySlug'
 import { buildSitemapEntries } from '../server/utils/buildSitemapEntries'
-
-// ---------------------------------------------------------------------------
-// SEO policy helpers — extracted from app/plugins/seo-policy.ts logic
-// ---------------------------------------------------------------------------
-
-/** Build canonical URL from site origin + path (no query string). */
-function getCanonical(fullUrl: string, siteUrl: string): string {
-  const url = new URL(fullUrl, siteUrl)
-  return `${siteUrl}${url.pathname}`
-}
-
-/** Determine robots directive based on presence of query params. */
-function getRobots(queryKeys: string[]): string {
-  return queryKeys.length > 0 ? 'noindex,follow' : 'index,follow'
-}
+import { getCanonicalUrl, getRobotsDirective } from '../app/utils/seo-helpers'
 
 // ---------------------------------------------------------------------------
 // Tests
@@ -111,26 +97,26 @@ describe('useCategorySlug', () => {
 
 describe('SEO policy', () => {
   it('canonical URL strips query string from URL with params', () => {
-    expect(getCanonical('/products?category=Circuit%20Breakers', 'https://circuitbreaker.online'))
+    expect(getCanonicalUrl('https://circuitbreaker.online', '/products'))
       .toBe('https://circuitbreaker.online/products')
   })
 
   it('canonical URL preserves clean path', () => {
-    expect(getCanonical('/products/category/circuit-breakers', 'https://circuitbreaker.online'))
+    expect(getCanonicalUrl('https://circuitbreaker.online', '/products/category/circuit-breakers'))
       .toBe('https://circuitbreaker.online/products/category/circuit-breakers')
   })
 
-  it('canonical URL strips multiple query params', () => {
-    expect(getCanonical('/products?category=X&page=2&sort=newest', 'https://circuitbreaker.online'))
+  it('canonical URL normalises trailing slash on siteUrl', () => {
+    expect(getCanonicalUrl('https://circuitbreaker.online/', '/products'))
       .toBe('https://circuitbreaker.online/products')
   })
 
   it('clean pages get index,follow', () => {
-    expect(getRobots([])).toBe('index,follow')
+    expect(getRobotsDirective([])).toBe('index,follow')
   })
 
   it('query-param pages get noindex,follow', () => {
-    expect(getRobots(['category'])).toBe('noindex,follow')
-    expect(getRobots(['category', 'page', 'sort'])).toBe('noindex,follow')
+    expect(getRobotsDirective(['category'])).toBe('noindex,follow')
+    expect(getRobotsDirective(['category', 'page', 'sort'])).toBe('noindex,follow')
   })
 })

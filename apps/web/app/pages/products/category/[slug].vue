@@ -42,7 +42,7 @@ if (!category.value) {
 }
 
 const categoryName = category.value.name
-const siteUrl = (useRuntimeConfig().public.appUrl as string) || ''
+const siteUrl = normalizeSiteUrl((useRuntimeConfig().public.appUrl as string) || '')
 
 // SEO
 useSeo({
