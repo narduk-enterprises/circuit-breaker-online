@@ -50,7 +50,7 @@ const absoluteImages = (product.value.images || []).map((img: string) => absolut
 const primaryImage = absoluteImages[0] || `${siteUrl}/images/placeholder-product.png`
 
 // Image alt text including product ID and brand
-const imageAlt = [product.value.manufacturer, product.value.name, product.value.sku].filter(Boolean).join(' - ')
+const imageAlt = [product.value.manufacturer, product.value.name, productIdentifier].filter(Boolean).join(' - ')
 
 // SEO — canonical, OG, Twitter, meta
 useSeo({
