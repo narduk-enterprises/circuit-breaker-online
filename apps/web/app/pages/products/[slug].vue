@@ -39,7 +39,7 @@ function mapCondition(condition?: string): 'NewCondition' | 'UsedCondition' | 'R
 
 // --- Derived SEO values ---
 const canonicalUrl = `${siteUrl}/products/${slug}`
-const productIdentifier = product.value.sku || product.value.model || product.value.name
+const productIdentifier = product.value.sku || product.value.model
 const seoTitle = buildProductTitle(product.value)
 
 const fallbackDescription = buildFallbackDescription(product.value)

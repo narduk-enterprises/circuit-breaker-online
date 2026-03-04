@@ -202,7 +202,8 @@ describe('buildFallbackDescription', () => {
 
   it('works with minimal product data', () => {
     const desc = buildFallbackDescription({ name: 'Minimal Product' })
-    expect(desc.length).toBeGreaterThan(100)
+    const wordCount = desc.split(/\s+/).length
+    expect(wordCount).toBeGreaterThanOrEqual(50)
     expect(desc).toContain('Minimal Product')
     expect(desc).toContain('Circuit Breaker Sales')
   })

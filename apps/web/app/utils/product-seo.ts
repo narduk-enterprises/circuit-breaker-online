@@ -28,9 +28,8 @@ export interface ProductSeoData {
 }
 
 /**
- * Build a deterministic fallback description (~100-200 words) from
- * structured product fields. Ensures every product page has enough
- * unique content even when no editorial description is available.
+ * Build a deterministic fallback description from structured product fields.
+ * Provides unique, consistent content when no editorial description is available.
  */
 export function buildFallbackDescription(p: ProductSeoData): string {
   const parts: string[] = []
