@@ -21,7 +21,7 @@ const pageData = {
   title: 'Power & Distribution',
   titleHighlight: 'Transformers',
   description: 'New and reconditioned dry-type and liquid-filled transformers for distribution and power applications. From small dry-type distribution transformers to large substation power transformers.',
-  catalogLink: '/products?category=Transformers',
+  catalogLink: '/products/category/transformers',
   catalogLabel: 'Browse Transformers',
   contentTitle: 'Transformer Solutions',
   contentParagraphs: [

@@ -21,7 +21,7 @@ const pageData = {
   title: 'Medium Voltage',
   titleHighlight: 'Load Break Switches',
   description: 'New and reconditioned medium voltage load break switches and load interrupter switches for safe isolation of electrical circuits. Essential components for switchgear, substations, and pad-mount applications.',
-  catalogLink: '/products?category=Load%20Break%20Switches',
+  catalogLink: '/products/category/disconnect-switches',
   catalogLabel: 'Browse Switches',
   contentTitle: 'Load Break Switch Solutions',
   contentParagraphs: [

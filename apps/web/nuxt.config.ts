@@ -50,6 +50,10 @@ export default defineNuxtConfig({
     sources: [
       '/api/__sitemap__/urls',
     ],
+    // Exclude any URLs with query params or fragments from the sitemap
+    exclude: [
+      '/**[?]*',
+    ],
   },
 
   robots: {

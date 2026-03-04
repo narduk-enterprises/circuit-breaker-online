@@ -68,7 +68,7 @@ const services = [
           Air, vacuum, and SF6 circuit breakers from all major manufacturers — tested, certified, and ready to ship.
         </p>
         <div class="flex flex-wrap gap-4">
-          <UButton to="/products?category=Circuit%20Breakers" size="lg" color="primary">Browse Circuit Breakers</UButton>
+          <UButton to="/products/category/circuit-breakers" size="lg" color="primary">Browse Circuit Breakers</UButton>
           <UButton to="/contact" size="lg" variant="outline" color="neutral">Request a Quote</UButton>
         </div>
       </div>

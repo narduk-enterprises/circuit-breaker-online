@@ -21,7 +21,7 @@ const pageData = {
   title: 'OEM Replacement',
   titleHighlight: 'Vacuum Interrupters',
   description: 'Replacement vacuum interrupters (vacuum bottles) for medium voltage circuit breakers and contactors. OEM and aftermarket options with predictive testing to identify bottles before failure.',
-  catalogLink: '/products?category=Vacuum%20Interrupters',
+  catalogLink: '/products/category/medium-voltage-components',
   catalogLabel: 'Browse Vacuum Interrupters',
   contentTitle: 'Vacuum Interrupter Solutions',
   contentParagraphs: [

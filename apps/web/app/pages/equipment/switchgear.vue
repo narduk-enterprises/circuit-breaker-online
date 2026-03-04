@@ -21,7 +21,7 @@ const pageData = {
   title: 'Metal-Clad & Metal-Enclosed',
   titleHighlight: 'Switchgear',
   description: 'New and reconditioned switchgear assemblies for utility substations, industrial facilities, and commercial buildings. Available in a wide range of voltage classes and configurations to match your existing installation.',
-  catalogLink: '/products?category=Switchgear',
+  catalogLink: '/products/category/switchgear',
   catalogLabel: 'Browse Switchgear',
   contentTitle: 'Switchgear Solutions',
   contentParagraphs: [

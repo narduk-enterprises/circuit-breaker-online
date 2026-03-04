@@ -232,7 +232,7 @@ const features = [
           <NuxtLink
             v-for="cat in categories"
             :key="cat.slug"
-            :to="`/products?category=${encodeURIComponent(cat.name)}`"
+            :to="`/products/category/${cat.slug}`"
             class="group category-card rounded-xl p-5 sm:p-6 flex sm:block items-center gap-4"
           >
             <div class="mb-0 sm:mb-3 flex size-10 sm:size-12 shrink-0 items-center justify-center rounded-xl bg-brand-50 transition-colors group-hover:bg-brand-100">
