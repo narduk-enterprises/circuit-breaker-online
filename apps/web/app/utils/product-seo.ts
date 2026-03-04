@@ -71,16 +71,18 @@ export function buildFallbackDescription(p: ProductSeoData): string {
 
 /**
  * Build an SEO-optimized `<title>` for a product page.
- * Includes product name, SKU, and manufacturer when available.
+ * Includes product name, SKU (or model as fallback), and manufacturer when available.
  */
 export function buildProductTitle(p: {
   name: string
   sku?: string
+  model?: string
   manufacturer?: string
 }): string {
   const titleParts = [p.name]
-  if (p.sku && !p.name.includes(p.sku)) {
-    titleParts.push(p.sku)
+  const identifier = p.sku || p.model
+  if (identifier && !p.name.includes(identifier)) {
+    titleParts.push(identifier)
   }
   if (p.manufacturer && !p.name.includes(p.manufacturer)) {
     titleParts.push(p.manufacturer)

@@ -244,4 +244,15 @@ describe('buildProductTitle', () => {
     const count = title.split('General Electric').length - 1
     expect(count).toBe(1)
   })
+
+  it('falls back to model when SKU is missing', () => {
+    const title = buildProductTitle({ name: 'Some Breaker', model: 'MOD-456' })
+    expect(title).toContain('MOD-456')
+  })
+
+  it('prefers SKU over model when both exist', () => {
+    const title = buildProductTitle({ name: 'Some Breaker', sku: 'ABC-123', model: 'MOD-456' })
+    expect(title).toContain('ABC-123')
+    expect(title).not.toContain('MOD-456')
+  })
 })

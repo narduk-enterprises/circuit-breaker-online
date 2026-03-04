@@ -121,21 +121,14 @@ export function useProductSchema(options: ProductOptions) {
       ...(sku && { sku }),
       ...(mpn && { mpn }),
       ...(conditionUrl && { itemCondition: conditionUrl }),
-      ...(seller && {
-        offers: {
-          '@type': 'Offer' as const,
-          ...(price !== undefined && { price: price.toString(), priceCurrency }),
-          ...(availability && { availability: `https://schema.org/${availability}` }),
-          ...(conditionUrl && { itemCondition: conditionUrl }),
-          seller: { '@type': 'Organization' as const, name: seller.name, ...(seller.url && { url: seller.url }) },
-        },
-      }),
-      ...(!seller && price !== undefined && {
+      ...(price !== undefined && {
         offers: {
           '@type': 'Offer' as const,
           price: price.toString(),
           priceCurrency,
           ...(availability && { availability: `https://schema.org/${availability}` }),
+          ...(conditionUrl && { itemCondition: conditionUrl }),
+          ...(seller && { seller: { '@type': 'Organization' as const, name: seller.name, ...(seller.url && { url: seller.url }) } }),
         },
       }),
       ...(ratingValue !== undefined && reviewCount !== undefined && {
