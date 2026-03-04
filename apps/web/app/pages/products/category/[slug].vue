@@ -47,23 +47,38 @@ if (!category.value) {
 const categoryName = computed(() => category.value?.name ?? '')
 const siteUrl = normalizeSiteUrl((useRuntimeConfig().public.appUrl as string) || '')
 
+const seoTitle = computed(() => `${categoryName.value} | Circuit Breaker Sales`)
+const seoDescription = computed(
+  () =>
+    `Browse our inventory of ${categoryName.value.toLowerCase()}. New and reconditioned industrial power equipment available with fast shipping.`,
+)
+const ogDescription = computed(() => `${category.value?.count ?? 0}+ items in stock`)
+const webPageDescription = computed(
+  () => `Browse ${categoryName.value.toLowerCase()} from Circuit Breaker Sales.`,
+)
+const categoryUrl = computed(() => `${siteUrl}/products/category/${slug.value}`)
+
 // SEO
 useSeo({
-  title: `${categoryName.value} | Circuit Breaker Sales`,
-  description: `Browse our inventory of ${categoryName.value.toLowerCase()}. New and reconditioned industrial power equipment available with fast shipping.`,
+  title: seoTitle,
+  description: seoDescription,
   ogImage: {
-    title: categoryName.value,
-    description: `${category.value.count}+ items in stock`,
+    title: categoryName,
+    description: ogDescription,
     icon: '⚡',
   },
 })
 
-useWebPageSchema({ type: 'CollectionPage', name: categoryName.value, description: `Browse ${categoryName.value.toLowerCase()} from Circuit Breaker Sales.` })
+useWebPageSchema({
+  type: 'CollectionPage',
+  name: categoryName,
+  description: webPageDescription,
+})
 
 useBreadcrumbSchema([
   { name: 'Home', url: `${siteUrl}/` },
   { name: 'Products', url: `${siteUrl}/products` },
-  { name: categoryName.value, url: `${siteUrl}/products/category/${slug.value}` },
+  { name: categoryName, url: categoryUrl },
 ])
 
 // Pagination
