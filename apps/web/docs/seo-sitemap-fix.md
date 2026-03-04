@@ -87,7 +87,7 @@ curl -sS https://circuitbreaker.online/sitemap.xml | grep -c "<url>"
 
 Verify no query params in sitemap (must return 0):
 ```bash
-curl -sS https://circuitbreaker.online/sitemap.xml | grep -c "\?"
+curl -sS https://circuitbreaker.online/sitemap.xml | grep -F -c '?'
 ```
 
 Run regression tests locally:
