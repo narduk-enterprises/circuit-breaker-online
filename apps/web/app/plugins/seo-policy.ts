@@ -24,7 +24,7 @@ export default defineNuxtPlugin(() => {
     ],
   }))
 
-  useSeoMeta(() => ({
-    robots: getRobotsDirective(Object.keys(route.query)),
-  }))
+  useSeoMeta({
+    robots: () => getRobotsDirective(Object.keys(route.query)),
+  })
 })
