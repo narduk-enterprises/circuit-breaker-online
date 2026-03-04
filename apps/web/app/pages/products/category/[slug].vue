@@ -42,6 +42,7 @@ if (!category.value) {
 }
 
 const categoryName = category.value.name
+const siteUrl = (useRuntimeConfig().public.appUrl as string) || ''
 
 // SEO
 useSeo({
@@ -57,9 +58,9 @@ useSeo({
 useWebPageSchema({ type: 'CollectionPage', name: categoryName, description: `Browse ${categoryName.toLowerCase()} from Circuit Breaker Sales.` })
 
 useBreadcrumbSchema([
-  { name: 'Home', url: 'https://circuitbreaker.online/' },
-  { name: 'Products', url: 'https://circuitbreaker.online/products' },
-  { name: categoryName, url: `https://circuitbreaker.online/products/category/${slug}` },
+  { name: 'Home', url: `${siteUrl}/` },
+  { name: 'Products', url: `${siteUrl}/products` },
+  { name: categoryName, url: `${siteUrl}/products/category/${slug}` },
 ])
 
 // Pagination

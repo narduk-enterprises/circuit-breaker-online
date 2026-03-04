@@ -8,7 +8,7 @@
  */
 export default defineNuxtPlugin(() => {
   const router = useRouter()
-  const siteUrl = useRuntimeConfig().public.appUrl as string || 'https://circuitbreaker.online'
+  const siteUrl = (useRuntimeConfig().public.appUrl as string) || ''
 
   /** Apply canonical + robots head tags for the current route. */
   function applySeoPolicy() {
