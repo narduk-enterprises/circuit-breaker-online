@@ -60,25 +60,25 @@ const categoryUrl = computed(() => `${siteUrl}/products/category/${slug.value}`)
 
 // SEO
 useSeo({
-  title: seoTitle,
-  description: seoDescription,
+  title: seoTitle.value,
+  description: seoDescription.value,
   ogImage: {
-    title: categoryName,
-    description: ogDescription,
+    title: categoryName.value,
+    description: ogDescription.value,
     icon: '⚡',
   },
 })
 
 useWebPageSchema({
   type: 'CollectionPage',
-  name: categoryName,
-  description: webPageDescription,
+  name: categoryName.value,
+  description: webPageDescription.value,
 })
 
 useBreadcrumbSchema([
   { name: 'Home', url: `${siteUrl}/` },
   { name: 'Products', url: `${siteUrl}/products` },
-  { name: categoryName, url: categoryUrl },
+  { name: categoryName.value, url: categoryUrl.value },
 ])
 
 // Pagination
