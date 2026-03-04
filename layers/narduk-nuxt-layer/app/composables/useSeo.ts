@@ -105,7 +105,7 @@ export function useSeo(options: SeoOptions) {
   // --- Head extras ---
   if (canonicalUrl) {
     useHead({
-      link: [{ key: 'canonical', rel: 'canonical', href: canonicalUrl }],
+      link: [{ rel: 'canonical', href: canonicalUrl }],
     })
   }
 
