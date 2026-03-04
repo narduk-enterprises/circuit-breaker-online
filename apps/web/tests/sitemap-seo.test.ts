@@ -12,6 +12,7 @@ import { describe, it, expect } from 'vitest'
 import { useCategorySlug } from '../app/composables/useCategorySlug'
 import { buildSitemapEntries } from '../server/utils/buildSitemapEntries'
 import { getCanonicalUrl, getRobotsDirective } from '../app/utils/seo-helpers'
+import { toAbsoluteImageUrl, buildFallbackDescription, buildProductTitle } from '../app/utils/product-seo'
 
 // ---------------------------------------------------------------------------
 // Tests
@@ -128,5 +129,118 @@ describe('SEO policy', () => {
   it('query-param pages get noindex,follow', () => {
     expect(getRobotsDirective(['category'])).toBe('noindex,follow')
     expect(getRobotsDirective(['category', 'page', 'sort'])).toBe('noindex,follow')
+  })
+})
+
+// ---------------------------------------------------------------------------
+// Product SEO helpers
+// ---------------------------------------------------------------------------
+
+describe('toAbsoluteImageUrl', () => {
+  const site = 'https://circuitbreaker.online'
+
+  it('returns undefined for undefined/empty input', () => {
+    expect(toAbsoluteImageUrl(site, undefined)).toBeUndefined()
+    expect(toAbsoluteImageUrl(site, '')).toBeUndefined()
+  })
+
+  it('preserves already-absolute URLs', () => {
+    expect(toAbsoluteImageUrl(site, 'https://cdn.example.com/img.jpg'))
+      .toBe('https://cdn.example.com/img.jpg')
+    expect(toAbsoluteImageUrl(site, 'http://cdn.example.com/img.jpg'))
+      .toBe('http://cdn.example.com/img.jpg')
+  })
+
+  it('prefixes relative URLs starting with /', () => {
+    expect(toAbsoluteImageUrl(site, '/images/products/test.png'))
+      .toBe('https://circuitbreaker.online/images/products/test.png')
+  })
+
+  it('prefixes relative URLs without leading /', () => {
+    expect(toAbsoluteImageUrl(site, 'images/test.png'))
+      .toBe('https://circuitbreaker.online/images/test.png')
+  })
+})
+
+describe('buildFallbackDescription', () => {
+  it('generates a description with at least 100 words', () => {
+    const desc = buildFallbackDescription({
+      name: 'GE AKR-50 Circuit Breaker',
+      sku: 'AKR-50',
+      manufacturer: 'General Electric',
+      category: 'Circuit Breakers',
+      voltage: '600V',
+      amperage: '1600A',
+      type: 'Low Voltage',
+      condition: 'Reconditioned',
+      warranty: '1 Year',
+      subcategory: 'Air Circuit Breakers',
+    })
+    const wordCount = desc.split(/\s+/).length
+    expect(wordCount).toBeGreaterThanOrEqual(100)
+  })
+
+  it('includes the product name in the description', () => {
+    const desc = buildFallbackDescription({ name: 'Test Product XYZ-123' })
+    expect(desc).toContain('Test Product XYZ-123')
+  })
+
+  it('includes the SKU when available', () => {
+    const desc = buildFallbackDescription({ name: 'Test', sku: 'SKU-999' })
+    expect(desc).toContain('SKU-999')
+  })
+
+  it('includes voltage and amperage when both present', () => {
+    const desc = buildFallbackDescription({
+      name: 'Test',
+      voltage: '480V',
+      amperage: '2000A',
+    })
+    expect(desc).toContain('480V')
+    expect(desc).toContain('2000A')
+  })
+
+  it('works with minimal product data', () => {
+    const desc = buildFallbackDescription({ name: 'Minimal Product' })
+    expect(desc.length).toBeGreaterThan(100)
+    expect(desc).toContain('Minimal Product')
+    expect(desc).toContain('Circuit Breaker Sales')
+  })
+})
+
+describe('buildProductTitle', () => {
+  it('includes product name', () => {
+    const title = buildProductTitle({ name: 'GE AKR-50' })
+    expect(title).toContain('GE AKR-50')
+    expect(title).toContain('Circuit Breaker Sales')
+  })
+
+  it('appends SKU when not in name', () => {
+    const title = buildProductTitle({ name: 'Some Breaker', sku: 'ABC-123' })
+    expect(title).toContain('ABC-123')
+  })
+
+  it('does not duplicate SKU when already in name', () => {
+    const title = buildProductTitle({ name: 'ABC-123 Circuit Breaker', sku: 'ABC-123' })
+    // SKU should appear exactly once
+    const count = title.split('ABC-123').length - 1
+    expect(count).toBe(1)
+  })
+
+  it('appends manufacturer when not in name', () => {
+    const title = buildProductTitle({
+      name: 'AKR-50 Breaker',
+      manufacturer: 'General Electric',
+    })
+    expect(title).toContain('General Electric')
+  })
+
+  it('does not duplicate manufacturer when already in name', () => {
+    const title = buildProductTitle({
+      name: 'General Electric AKR-50',
+      manufacturer: 'General Electric',
+    })
+    const count = title.split('General Electric').length - 1
+    expect(count).toBe(1)
   })
 })

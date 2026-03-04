@@ -84,12 +84,21 @@ export function useArticleSchema(options: ArticleOptions) {
 }
 
 // --- Product schema ---
+interface ProductSeller {
+  name: string
+  url?: string
+}
+
 interface ProductOptions {
   name: string
   description?: string
   image?: string | string[]
   brand?: string
   sku?: string
+  mpn?: string
+  url?: string
+  itemCondition?: 'NewCondition' | 'UsedCondition' | 'RefurbishedCondition'
+  seller?: ProductSeller
   price?: number
   priceCurrency?: string
   availability?: 'InStock' | 'OutOfStock' | 'PreOrder' | 'Discontinued'
@@ -98,16 +107,28 @@ interface ProductOptions {
 }
 
 export function useProductSchema(options: ProductOptions) {
-  const { name, description, image, brand, sku, price, priceCurrency = 'USD', availability, ratingValue, reviewCount } = options
+  const { name, description, image, brand, sku, mpn, url, itemCondition, seller, price, priceCurrency = 'USD', availability, ratingValue, reviewCount } = options
 
   useSchemaOrg([
     defineProduct({
       name,
       description,
       image,
+      url,
       ...(brand && { brand: { '@type': 'Brand' as const, name: brand } }),
       ...(sku && { sku }),
-      ...(price !== undefined && {
+      ...(mpn && { mpn }),
+      ...(itemCondition && { itemCondition: `https://schema.org/${itemCondition}` }),
+      ...(seller && {
+        offers: {
+          '@type': 'Offer' as const,
+          ...(price !== undefined && { price: price.toString(), priceCurrency }),
+          ...(availability && { availability: `https://schema.org/${availability}` }),
+          ...(itemCondition && { itemCondition: `https://schema.org/${itemCondition}` }),
+          seller: { '@type': 'Organization' as const, name: seller.name, ...(seller.url && { url: seller.url }) },
+        },
+      }),
+      ...(!seller && price !== undefined && {
         offers: {
           '@type': 'Offer' as const,
           price: price.toString(),

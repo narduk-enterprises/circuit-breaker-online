@@ -1,6 +1,7 @@
 <script setup lang="ts">
 const route = useRoute()
 const slug = route.params.slug as string
+const siteUrl = normalizeSiteUrl((useRuntimeConfig().public.appUrl as string) || '')
 
 const { data: product } = await useFetch('/api/products', {
   query: { slug },
@@ -19,28 +20,14 @@ const { data: relatedProducts } = await useFetch('/api/related-products', {
   transform: (d: any) => d?.products || [],
 })
 
-// SEO — canonical, OG, Twitter, meta
-const cleanDescription = product.value.short_description || `${product.value.manufacturer ? product.value.manufacturer + ' ' : ''}${product.value.name}. Available from Circuit Breaker Sales.`
+// --- Helpers ---
 
-useSeo({
-  title: `${product.value.name} | Circuit Breaker Sales`,
-  description: cleanDescription,
-  image: product.value.images?.[0],
-  keywords: [
-    product.value.manufacturer,
-    product.value.category,
-    product.value.type,
-    'circuit breaker',
-    'industrial power equipment',
-  ].filter(Boolean) as string[],
-  ogImage: {
-    title: product.value.name,
-    description: cleanDescription,
-    icon: '⚡',
-  },
-})
+/** Ensure an image URL is absolute (prefix with site origin if needed). */
+function absoluteImageUrl(url?: string): string | undefined {
+  return toAbsoluteImageUrl(siteUrl, url)
+}
 
-// Map product condition to Schema.org itemCondition
+/** Map product condition to Schema.org itemCondition. */
 function mapCondition(condition?: string): 'NewCondition' | 'UsedCondition' | 'RefurbishedCondition' | undefined {
   if (!condition) return undefined
   const lower = condition.toLowerCase()
@@ -50,36 +37,75 @@ function mapCondition(condition?: string): 'NewCondition' | 'UsedCondition' | 'R
   return undefined
 }
 
-// Schema.org — Product structured data
+// --- Derived SEO values ---
+const canonicalUrl = `${siteUrl}/products/${slug}`
+const productId = product.value.sku || product.value.model || product.value.name
+const seoTitle = buildProductTitle(product.value)
+
+const fallbackDescription = buildFallbackDescription(product.value)
+const cleanDescription = product.value.short_description || fallbackDescription
+
+// Absolute image URLs for SEO
+const absoluteImages = (product.value.images || []).map((img: string) => absoluteImageUrl(img)).filter(Boolean) as string[]
+const primaryImage = absoluteImages[0] || `${siteUrl}/images/placeholder-product.png`
+
+// Image alt text including product ID and brand
+const imageAlt = [product.value.manufacturer, product.value.name, product.value.sku].filter(Boolean).join(' - ')
+
+// SEO — canonical, OG, Twitter, meta
+useSeo({
+  title: seoTitle,
+  description: cleanDescription.slice(0, 320),
+  image: primaryImage,
+  canonicalUrl,
+  keywords: [
+    product.value.sku,
+    product.value.model,
+    product.value.manufacturer,
+    product.value.category,
+    product.value.type,
+    'circuit breaker',
+    'industrial power equipment',
+  ].filter(Boolean) as string[],
+  ogImage: {
+    title: product.value.name,
+    description: cleanDescription.slice(0, 200),
+    icon: '⚡',
+  },
+})
+
+// Schema.org — Product structured data (includes mpn, url, seller, itemCondition)
+const schemaDescription = (product.value.short_description || product.value.description?.replaceAll(/<[^>]*>/g, '') || fallbackDescription).slice(0, 500)
 useProductSchema({
   name: product.value.name,
-  description: (product.value.short_description || product.value.description?.replaceAll(/<[^>]*>/g, '') || '').slice(0, 500),
-  image: product.value.images?.[0] ? [product.value.images[0]] : undefined,
+  description: schemaDescription,
+  image: absoluteImages.length > 0 ? absoluteImages : [primaryImage],
   brand: product.value.manufacturer,
-  sku: product.value.sku,
+  sku: product.value.sku || slug,
+  mpn: product.value.sku || product.value.model,
   availability: 'InStock',
   itemCondition: mapCondition(product.value.condition),
-  url: `https://circuitbreaker.online/products/${slug}`,
+  url: canonicalUrl,
   seller: {
     name: 'Circuit Breaker Sales',
-    url: 'https://circuitbreaker.online',
+    url: siteUrl,
   },
 })
 
 // Schema.org — Breadcrumb path
 const breadcrumbItems = [
-  { name: 'Home', url: 'https://circuitbreaker.online/' },
-  { name: 'Products', url: 'https://circuitbreaker.online/products' },
+  { name: 'Home', url: `${siteUrl}/` },
+  { name: 'Products', url: `${siteUrl}/products` },
 ]
 if (product.value.category) {
   breadcrumbItems.push({
     name: product.value.category,
-    url: `https://circuitbreaker.online/products/category/${useCategorySlug(product.value.category)}`,
+    url: `${siteUrl}/products/category/${useCategorySlug(product.value.category)}`,
   })
 }
 breadcrumbItems.push({
   name: product.value.name,
-  url: `https://circuitbreaker.online/products/${slug}`,
+  url: canonicalUrl,
 })
 useBreadcrumbSchema(breadcrumbItems)
 </script>
@@ -100,15 +126,6 @@ useBreadcrumbSchema(breadcrumbItems)
           {{ product.category }}
         </NuxtLink>
       </template>
-      <template v-if="product.subcategory">
-        <UIcon name="i-lucide-chevron-right" class="size-3" />
-        <NuxtLink
-          :to="`/products?category=${encodeURIComponent(product.category)}&subcategory=${encodeURIComponent(product.subcategory)}`"
-          class="transition-colors hover:text-default"
-        >
-          {{ product.subcategory }}
-        </NuxtLink>
-      </template>
       <UIcon name="i-lucide-chevron-right" class="size-3" />
       <span class="truncate text-muted font-medium">{{ product.name }}</span>
     </nav>
@@ -120,9 +137,9 @@ useBreadcrumbSchema(breadcrumbItems)
         <div class="light-card mb-4 overflow-hidden rounded-xl">
           <div class="relative aspect-square bg-muted">
             <img
-              v-if="product.images?.length"
-              :src="product.images[activeImage]"
-              :alt="product.name"
+              v-if="absoluteImages.length"
+              :src="absoluteImages[activeImage]"
+              :alt="imageAlt"
               class="h-full w-full object-contain p-4"
             />
             <div v-else class="flex h-full w-full items-center justify-center">
@@ -139,15 +156,15 @@ useBreadcrumbSchema(breadcrumbItems)
         </div>
 
         <!-- Thumbnails -->
-        <div v-if="product.images?.length > 1" class="grid grid-cols-4 gap-2">
+        <div v-if="absoluteImages.length > 1" class="grid grid-cols-4 gap-2">
           <button
-            v-for="(img, idx) in product.images"
+            v-for="(img, idx) in absoluteImages"
             :key="idx"
             class="overflow-hidden rounded-lg border-2 transition-all"
             :class="activeImage === Number(idx) ? 'border-brand-600' : 'border-default hover:border-brand-300'"
             @click="activeImage = Number(idx)"
           >
-            <img :src="img" :alt="`${product.name} - Image ${Number(idx) + 1}`" class="aspect-square object-cover" loading="lazy" />
+            <img :src="img" :alt="`${imageAlt} - Image ${Number(idx) + 1}`" class="aspect-square object-cover" loading="lazy" />
           </button>
         </div>
       </div>
@@ -161,6 +178,11 @@ useBreadcrumbSchema(breadcrumbItems)
 
         <!-- Name -->
         <h1 class="font-display text-2xl font-bold text-default sm:text-3xl">{{ product.name }}</h1>
+
+        <!-- Product ID / SKU (visible near top) -->
+        <p v-if="productId" class="text-sm font-mono text-muted">
+          <span class="font-semibold text-dimmed">Part #:</span> {{ productId }}
+        </p>
 
         <!-- Short Description -->
         <p v-if="product.short_description" class="text-base text-muted leading-relaxed">
@@ -254,6 +276,12 @@ useBreadcrumbSchema(breadcrumbItems)
         <div v-else-if="product.description" class="light-card rounded-xl p-6">
           <h2 class="mb-3 font-display text-sm font-semibold uppercase tracking-wider text-dimmed">Description</h2>
           <div class="prose prose-sm max-w-none text-muted" v-html="product.description" />
+        </div>
+
+        <!-- Generated fallback description (when no real description exists) -->
+        <div v-else class="light-card rounded-xl p-6">
+          <h2 class="mb-3 font-display text-sm font-semibold uppercase tracking-wider text-dimmed">About This Product</h2>
+          <p class="text-sm text-muted leading-relaxed">{{ fallbackDescription }}</p>
         </div>
 
         <!-- Tags -->

@@ -18,7 +18,8 @@
     "lint": "eslint .",
     "quality": "pnpm run lint && pnpm run typecheck",
     "test": "vitest run",
-    "test:unit": "vitest run"
+    "test:unit": "vitest run",
+    "seo:check": "vitest run tests/sitemap-seo.test.ts"
   },
   "dependencies": {
     "@narduk-enterprises/narduk-nuxt-template-layer": "workspace:*",
