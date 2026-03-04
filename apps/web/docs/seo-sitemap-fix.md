@@ -73,7 +73,7 @@ Converts a category name to its URL slug: `"Circuit Breakers"` → `"circuit-bre
 
 1. Ensure the category exists in the `categories` table with a `slug` and `parent = NULL` (top-level category).
 2. The sitemap API (`server/api/__sitemap__/urls.ts`) automatically picks up all parent categories.
-3. The page at `/products/category/{slug}` will resolve automatically via the `[slug].vue` catch-all.
+3. The page at `/products/category/{slug}` will resolve automatically via the `[slug].vue` dynamic route.
 4. Link to the category using `/products/category/{slug}` — never `/products?category=Name`.
 
 ---

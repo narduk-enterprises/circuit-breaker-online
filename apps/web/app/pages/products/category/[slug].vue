@@ -69,14 +69,19 @@ useBreadcrumbSchema([
 // Pagination
 const currentPage = ref(1)
 
-// Fetch products for this category (reactive — re-fetches on slug or page change)
+// Reset to first page when category slug changes (client-side navigation)
+watch(slug, () => {
+  currentPage.value = 1
+})
+
+// Fetch products for this category (reactive — re-fetches on slug, category name, or page change)
 const { data, status } = await useFetch<ProductResponse>('/api/products', {
   query: computed(() => ({
     category: categoryName.value,
     page: currentPage.value,
     limit: 24,
   })),
-  watch: [slug, currentPage],
+  watch: [slug, categoryName, currentPage],
 })
 
 function goToPage(page: number) {
