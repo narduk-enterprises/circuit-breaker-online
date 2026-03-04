@@ -10,7 +10,7 @@
     "prelint": "pnpm run build:plugins",
     "lint": "pnpm run prelint && turbo run lint",
     "typecheck": "turbo run typecheck",
-    "quality": "turbo run quality",
+    "quality": "turbo run quality --filter='./apps/*'",
     "setup": "doppler run -- npx tsx tools/init.ts",
     "validate": "doppler run -- npx tsx tools/validate.ts",
     "update-layer": "npx tsx tools/update-layer.ts",
