@@ -16,7 +16,13 @@ export function normalizeSiteUrl(siteUrl: string): string {
  * or hash fragment. Also normalises a potential trailing slash on `siteUrl`.
  */
 export function getCanonicalUrl(siteUrl: string, path: string): string {
-  return `${normalizeSiteUrl(siteUrl)}${path}`
+  const qIdx = path.indexOf('?')
+  const hIdx = path.indexOf('#')
+  let end = path.length
+  if (qIdx !== -1 && hIdx !== -1) end = Math.min(qIdx, hIdx)
+  else if (qIdx !== -1) end = qIdx
+  else if (hIdx !== -1) end = hIdx
+  return `${normalizeSiteUrl(siteUrl)}${path.slice(0, end)}`
 }
 
 /**

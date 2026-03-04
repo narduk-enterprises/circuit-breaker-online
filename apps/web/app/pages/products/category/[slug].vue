@@ -1,6 +1,6 @@
 <script setup lang="ts">
 const route = useRoute()
-const slug = route.params.slug as string
+const slug = computed(() => route.params.slug as string)
 
 interface CategoryData {
   name: string
@@ -34,46 +34,49 @@ interface ProductResponse {
   totalPages: number
 }
 
-// Resolve slug → category
-const { data: category } = await useFetch<CategoryData>(`/api/categories/${slug}`)
+// Resolve slug → category (reactive — re-fetches on client-side slug change)
+const { data: category } = await useFetch<CategoryData>(
+  computed(() => `/api/categories/${slug.value}`),
+  { watch: [slug] },
+)
 
 if (!category.value) {
   throw createError({ statusCode: 404, message: 'Category not found' })
 }
 
-const categoryName = category.value.name
+const categoryName = computed(() => category.value?.name ?? '')
 const siteUrl = normalizeSiteUrl((useRuntimeConfig().public.appUrl as string) || '')
 
 // SEO
 useSeo({
-  title: `${categoryName} | Circuit Breaker Sales`,
-  description: `Browse our inventory of ${categoryName.toLowerCase()}. New and reconditioned industrial power equipment available with fast shipping.`,
+  title: `${categoryName.value} | Circuit Breaker Sales`,
+  description: `Browse our inventory of ${categoryName.value.toLowerCase()}. New and reconditioned industrial power equipment available with fast shipping.`,
   ogImage: {
-    title: categoryName,
+    title: categoryName.value,
     description: `${category.value.count}+ items in stock`,
     icon: '⚡',
   },
 })
 
-useWebPageSchema({ type: 'CollectionPage', name: categoryName, description: `Browse ${categoryName.toLowerCase()} from Circuit Breaker Sales.` })
+useWebPageSchema({ type: 'CollectionPage', name: categoryName.value, description: `Browse ${categoryName.value.toLowerCase()} from Circuit Breaker Sales.` })
 
 useBreadcrumbSchema([
   { name: 'Home', url: `${siteUrl}/` },
   { name: 'Products', url: `${siteUrl}/products` },
-  { name: categoryName, url: `${siteUrl}/products/category/${slug}` },
+  { name: categoryName.value, url: `${siteUrl}/products/category/${slug.value}` },
 ])
 
 // Pagination
 const currentPage = ref(1)
 
-// Fetch products for this category
+// Fetch products for this category (reactive — re-fetches on slug or page change)
 const { data, status } = await useFetch<ProductResponse>('/api/products', {
   query: computed(() => ({
-    category: categoryName,
+    category: categoryName.value,
     page: currentPage.value,
     limit: 24,
   })),
-  watch: [currentPage],
+  watch: [slug, currentPage],
 })
 
 function goToPage(page: number) {

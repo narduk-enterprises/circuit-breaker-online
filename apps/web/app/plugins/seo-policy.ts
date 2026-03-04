@@ -10,28 +10,21 @@
  * Runs on both SSR and client navigation.
  */
 export default defineNuxtPlugin(() => {
-  const router = useRouter()
   const siteUrl = (useRuntimeConfig().public.appUrl as string) || ''
+  const route = useRoute()
 
-  /** Apply canonical + robots head tags for the current route. */
-  function applySeoPolicy() {
-    const route = useRoute()
+  // Reactively apply canonical + robots head tags for the current route.
+  useHead(() => ({
+    link: [
+      {
+        key: 'canonical',
+        rel: 'canonical',
+        href: getCanonicalUrl(siteUrl, route.path),
+      },
+    ],
+  }))
 
-    const canonicalUrl = getCanonicalUrl(siteUrl, route.path)
-    const robots = getRobotsDirective(Object.keys(route.query))
-
-    useHead({
-      link: [{ key: 'canonical', rel: 'canonical', href: canonicalUrl }],
-    })
-
-    useSeoMeta({ robots })
-  }
-
-  // Apply on initial render (SSR + first client load)
-  applySeoPolicy()
-
-  // Re-apply on every client-side navigation
-  router.afterEach(() => {
-    applySeoPolicy()
-  })
+  useSeoMeta(() => ({
+    robots: getRobotsDirective(Object.keys(route.query)),
+  }))
 })

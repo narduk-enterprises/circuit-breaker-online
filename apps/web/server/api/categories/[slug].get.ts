@@ -30,10 +30,10 @@ export default defineEventHandler(async (event) => {
     name: category.name,
     slug: category.slug,
     count: category.count,
-    subcategories: (subcategories || []).map((c: any) => ({
-      name: c.name,
-      slug: c.slug,
-      count: c.count,
+    subcategories: (subcategories || []).map((c: Record<string, unknown>) => ({
+      name: c.name as string,
+      slug: c.slug as string,
+      count: c.count as number,
     })),
   }
 })

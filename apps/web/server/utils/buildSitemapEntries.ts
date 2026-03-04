@@ -23,12 +23,14 @@ export function buildSitemapEntries(
   const now = new Date().toISOString()
 
   // Dynamic product pages — highest volume
-  const productUrls = (products || []).map((p: ProductRow) => ({
-    loc: `/products/${p.slug}`,
-    lastmod: now,
-    changefreq: 'weekly' as const,
-    priority: 0.8,
-  }))
+  const productUrls = (products || [])
+    .filter((p: ProductRow) => p.slug)
+    .map((p: ProductRow) => ({
+      loc: `/products/${p.slug}`,
+      lastmod: now,
+      changefreq: 'weekly' as const,
+      priority: 0.8,
+    }))
 
   // Dynamic category pages — clean path URLs (no query params)
   const categoryUrls = (categories || [])

@@ -96,8 +96,18 @@ describe('useCategorySlug', () => {
 })
 
 describe('SEO policy', () => {
-  it('canonical URL strips query string from URL with params', () => {
-    expect(getCanonicalUrl('https://circuitbreaker.online', '/products'))
+  it('canonical URL strips query string', () => {
+    expect(getCanonicalUrl('https://circuitbreaker.online', '/products?category=breakers&page=2'))
+      .toBe('https://circuitbreaker.online/products')
+  })
+
+  it('canonical URL strips hash fragment', () => {
+    expect(getCanonicalUrl('https://circuitbreaker.online', '/products#top'))
+      .toBe('https://circuitbreaker.online/products')
+  })
+
+  it('canonical URL strips both query string and hash fragment', () => {
+    expect(getCanonicalUrl('https://circuitbreaker.online', '/products?category=X#section'))
       .toBe('https://circuitbreaker.online/products')
   })
 
