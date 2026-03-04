@@ -51,7 +51,7 @@ GE AKR-50 Circuit Breaker - AKR-50 - General Electric | Circuit Breaker Sales
 The product ID / SKU is rendered as visible text near the top of the page (below the `<h1>`), ensuring Google indexes it for part-number searches.
 
 ### Fallback description
-When no editorial description exists, a deterministic fallback (100-200 words) is generated from structured fields:
+When no editorial description exists, a deterministic fallback (~50–200 words, depending on available data) is generated from structured fields:
 - Manufacturer, category, SKU, model, voltage, amperage, type, condition, warranty, subcategory.
 - Plus standard boilerplate about Circuit Breaker Sales.
 
