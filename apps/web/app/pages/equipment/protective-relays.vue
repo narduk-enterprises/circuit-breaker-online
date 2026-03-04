@@ -21,7 +21,7 @@ const pageData = {
   title: 'Electromechanical & Digital',
   titleHighlight: 'Protective Relays',
   description: 'Replacement protective relays for overcurrent, differential, distance, frequency, and voltage protection. We carry electromechanical, solid-state, and modern digital relay types from all major manufacturers.',
-  catalogLink: '/products?category=Protective%20Relays',
+  catalogLink: '/products/category/protective-relays',
   catalogLabel: 'Browse Relays',
   contentTitle: 'Protective Relay Solutions',
   contentParagraphs: [

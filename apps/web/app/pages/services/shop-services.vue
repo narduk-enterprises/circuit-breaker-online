@@ -66,7 +66,7 @@ const equipmentTypes = [
   { name: 'Load Break Switches', slug: 'switches', icon: 'i-lucide-power', note: 'Medium voltage', link: '/equipment/load-break-switches' },
   { name: 'Load Tap Changers', slug: 'ltc', icon: 'i-lucide-sliders-horizontal', note: 'Parts & service', link: '/equipment/load-tap-changers' },
   { name: 'Vacuum Interrupters', slug: 'vi', icon: 'i-lucide-layers', note: 'OEM replacement bottles', link: '/equipment/vacuum-interrupters' },
-  { name: 'Renewal Parts', slug: 'parts', icon: 'i-lucide-wrench', note: 'All manufacturers', link: '/products?category=Renewal%20Parts' },
+  { name: 'Renewal Parts', slug: 'parts', icon: 'i-lucide-wrench', note: 'All manufacturers', link: '/products/category/renewal-replacement-parts' },
 ]
 
 const certifications = [

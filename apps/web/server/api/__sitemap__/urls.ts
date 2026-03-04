@@ -32,11 +32,11 @@ export default defineEventHandler(async (event: H3Event): Promise<SitemapEntry[]
     priority: 0.8,
   }))
 
-  // Dynamic category filter pages
+  // Dynamic category pages — clean path URLs (no query params)
   const categoryUrls = (categories || [])
-    .filter((c: CategoryRow) => !c.parent)
+    .filter((c: CategoryRow) => !c.parent && c.slug)
     .map((c: CategoryRow) => ({
-      loc: `/products?category=${encodeURIComponent(c.name ?? '')}`,
+      loc: `/products/category/${c.slug}`,
       lastmod: now,
       changefreq: 'weekly' as const,
       priority: 0.85,

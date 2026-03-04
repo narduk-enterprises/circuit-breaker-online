@@ -21,7 +21,7 @@ const pageData = {
   title: 'Remote Racking &',
   titleHighlight: 'Switching Systems',
   description: 'Remotely rack circuit breakers and operate switching devices from a safe distance outside the arc flash boundary. Essential for NFPA 70E compliance and worker safety in hazardous electrical environments.',
-  catalogLink: '/products?category=Remote%20Racking',
+  catalogLink: '/products/category/remote-racking-systems',
   catalogLabel: 'Browse Remote Racking',
   contentTitle: 'Arc Flash Safety Solutions',
   contentParagraphs: [

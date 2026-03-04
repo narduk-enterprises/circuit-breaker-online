@@ -74,7 +74,7 @@ const breadcrumbItems = [
 if (product.value.category) {
   breadcrumbItems.push({
     name: product.value.category,
-    url: `https://circuitbreaker.online/products?category=${encodeURIComponent(product.value.category)}`,
+    url: `https://circuitbreaker.online/products/category/${useCategorySlug(product.value.category)}`,
   })
 }
 breadcrumbItems.push({
@@ -94,7 +94,7 @@ useBreadcrumbSchema(breadcrumbItems)
       <template v-if="product.category">
         <UIcon name="i-lucide-chevron-right" class="size-3" />
         <NuxtLink
-          :to="`/products?category=${encodeURIComponent(product.category)}`"
+          :to="`/products/category/${useCategorySlug(product.category)}`"
           class="transition-colors hover:text-default"
         >
           {{ product.category }}
@@ -216,7 +216,7 @@ useBreadcrumbSchema(breadcrumbItems)
               <dt class="text-xs text-dimmed">Category</dt>
               <dd class="mt-0.5 text-sm">
                 <NuxtLink
-                  :to="`/products?category=${encodeURIComponent(product.category)}`"
+                  :to="`/products/category/${useCategorySlug(product.category)}`"
                   class="text-brand-600 hover:text-brand-500"
                 >
                   {{ product.category }}

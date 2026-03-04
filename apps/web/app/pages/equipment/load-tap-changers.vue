@@ -21,7 +21,7 @@ const pageData = {
   title: 'Load Tap Changer',
   titleHighlight: 'Parts & Service',
   description: 'Comprehensive load tap changer (LTC) solutions including replacement parts, component repair, and preventive maintenance programs. We service all major LTC types and manufacturers to keep your transformers regulating voltage reliably.',
-  catalogLink: '/products?category=Load%20Tap%20Changers',
+  catalogLink: '/products/category/load-tap-changers',
   catalogLabel: 'Browse LTC Parts',
   contentTitle: 'Load Tap Changer Expertise',
   contentParagraphs: [

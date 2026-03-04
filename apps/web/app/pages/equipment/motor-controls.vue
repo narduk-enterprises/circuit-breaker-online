@@ -21,7 +21,7 @@ const pageData = {
   title: 'Motor Control Centers,',
   titleHighlight: 'Starters & Contactors',
   description: 'New and reconditioned motor control centers (MCCs), motor starters, and contactors for industrial motor applications. Full and half-size MCC buckets, replacement starters, and medium voltage contactors.',
-  catalogLink: '/products?category=Motor%20Control',
+  catalogLink: '/products/category/motor-controls',
   catalogLabel: 'Browse Motor Controls',
   contentTitle: 'Motor Control Solutions',
   contentParagraphs: [
