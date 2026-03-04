@@ -9,7 +9,11 @@
 export function toAbsoluteImageUrl(siteUrl: string, url?: string): string | undefined {
   if (!url) return undefined
   if (url.startsWith('http://') || url.startsWith('https://')) return url
-  return `${siteUrl}${url.startsWith('/') ? '' : '/'}${url}`
+
+  // Normalize siteUrl to avoid trailing slashes that would cause `//` in the final URL.
+  const normalizedSiteUrl = siteUrl.replace(/\/+$/, '')
+
+  return `${normalizedSiteUrl}${url.startsWith('/') ? '' : '/'}${url}`
 }
 
 /** Product data fields used by SEO helpers. */
