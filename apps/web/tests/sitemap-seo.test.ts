@@ -140,7 +140,7 @@ describe('toAbsoluteImageUrl', () => {
   const site = 'https://circuitbreaker.online'
 
   it('returns undefined for undefined/empty input', () => {
-    expect(toAbsoluteImageUrl(site, undefined)).toBeUndefined()
+    expect(toAbsoluteImageUrl(site)).toBeUndefined()
     expect(toAbsoluteImageUrl(site, '')).toBeUndefined()
   })
 
