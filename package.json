@@ -17,14 +17,15 @@
     "clean": "find . -type d \\( -name node_modules -o -name .nuxt -o -name .output -o -name .nitro -o -name .wrangler -o -name .turbo -o -name .data -o -name dist \\) -not -path './.git/*' -prune -exec rm -rf {} +",
     "clean:install": "pnpm run clean && pnpm install && pnpm run db:migrate",
     "db:migrate": "pnpm --filter web run db:migrate",
-    "deploy": "pnpm --filter web run deploy",
+    "ship": "pnpm --filter web run deploy",
     "dev:kill": "sh scripts/dev-kill.sh",
     "generate:favicons": "npx tsx tools/generate-favicons.ts",
     "gsc:inspect-urls": "doppler run -- npx tsx tools/gsc-toolbox.ts inspect-urls",
     "predev": "node tools/check-setup.cjs",
     "prebuild": "node tools/check-setup.cjs",
-    "predeploy": "node tools/check-setup.cjs",
-    "postinstall": "node -e \"if(!require('fs').existsSync('.setup-complete'))console.log('\\n⚠️  Run pnpm run setup before doing anything else! See AGENTS.md.\\n')\""
+    "preship": "node tools/check-setup.cjs",
+    "postinstall": "node -e \"if(!require('fs').existsSync('.setup-complete'))console.log('\\n⚠️  Run pnpm run setup before doing anything else! See AGENTS.md.\\n')\"",
+    "predeploy": "node tools/check-setup.cjs"
   },
   "pnpm": {
     "overrides": {
