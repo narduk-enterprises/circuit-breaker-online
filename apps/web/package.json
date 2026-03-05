@@ -16,7 +16,6 @@
     "deploy": "nuxt build && wrangler deploy",
     "prelint": "test -f .nuxt/eslint.config.mjs || nuxt prepare",
     "lint": "eslint . --max-warnings 0",
-    "quality": "echo 'quality pass'",
     "test": "vitest run",
     "test:unit": "vitest run",
     "seo:check": "vitest run tests/sitemap-seo.test.ts"
