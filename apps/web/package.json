@@ -18,7 +18,8 @@
     "lint": "eslint . --max-warnings 0",
     "test": "vitest run",
     "test:unit": "vitest run",
-    "seo:check": "vitest run tests/sitemap-seo.test.ts"
+    "seo:check": "vitest run tests/sitemap-seo.test.ts",
+    "quality": "echo 'Turbo dependsOn handles lint + typecheck + format:check'"
   },
   "dependencies": {
     "@narduk-enterprises/narduk-nuxt-template-layer": "workspace:*",
