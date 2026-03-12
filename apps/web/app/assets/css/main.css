@@ -82,21 +82,21 @@
 /* ─── Hero Grid Pattern ─── */
 .hero-grid {
   background-image:
-    linear-gradient(color-mix(in srgb, var(--color-accent-500) 4%, transparent) 1px,
-      transparent 1px),
-    linear-gradient(90deg,
+    linear-gradient(
       color-mix(in srgb, var(--color-accent-500) 4%, transparent) 1px,
-      transparent 1px);
+      transparent 1px
+    ),
+    linear-gradient(
+      90deg,
+      color-mix(in srgb, var(--color-accent-500) 4%, transparent) 1px,
+      transparent 1px
+    );
   background-size: 48px 48px;
 }
 
 /* ─── Gradient Overlays ─── */
 .gradient-industrial {
-  background: linear-gradient(135deg,
-      #0a0a12 0%,
-      #0f172a 30%,
-      #1a0a12 60%,
-      #0a0a12 100%);
+  background: linear-gradient(135deg, #0a0a12 0%, #0f172a 30%, #1a0a12 60%, #0a0a12 100%);
 }
 
 .gradient-fade-bottom {
@@ -158,14 +158,18 @@
 }
 
 .shimmer {
-  background: linear-gradient(90deg, transparent 30%, rgba(255, 255, 255, 0.08) 50%, transparent 70%);
+  background: linear-gradient(
+    90deg,
+    transparent 30%,
+    rgba(255, 255, 255, 0.08) 50%,
+    transparent 70%
+  );
   background-size: 200% 100%;
   animation: shimmer 3s ease-in-out infinite;
 }
 
 /* ─── Glow Pulse ─── */
 @keyframes glow-pulse {
-
   0%,
   100% {
     box-shadow: 0 0 12px color-mix(in srgb, var(--color-brand-600) 20%, transparent);
@@ -199,7 +203,6 @@
 
 /* ─── Floating Orb ─── */
 @keyframes float-slow {
-
   0%,
   100% {
     transform: translateY(0) scale(1);
@@ -317,8 +320,15 @@
   inset: 0;
   border-radius: inherit;
   padding: 1px;
-  background: linear-gradient(135deg, var(--color-brand-600), var(--color-accent-500), var(--color-brand-600));
-  mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  background: linear-gradient(
+    135deg,
+    var(--color-brand-600),
+    var(--color-accent-500),
+    var(--color-brand-600)
+  );
+  mask:
+    linear-gradient(#fff 0 0) content-box,
+    linear-gradient(#fff 0 0);
   mask-composite: exclude;
   -webkit-mask-composite: xor;
 }
@@ -402,7 +412,7 @@ body {
   gap: 0.75rem;
 }
 
-.mobile-cta-bar>* {
+.mobile-cta-bar > * {
   flex: 1;
 }
 
@@ -413,7 +423,6 @@ body {
 
 /* ─── Reduced Motion ─── */
 @media (prefers-reduced-motion: reduce) {
-
   .animate-fade-in-up,
   .shimmer,
   .glow-pulse,

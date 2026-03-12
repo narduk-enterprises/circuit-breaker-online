@@ -28,7 +28,9 @@ function absoluteImageUrl(url?: string): string | undefined {
 }
 
 /** Map product condition to Schema.org itemCondition. */
-function mapCondition(condition?: string): 'NewCondition' | 'UsedCondition' | 'RefurbishedCondition' | undefined {
+function mapCondition(
+  condition?: string,
+): 'NewCondition' | 'UsedCondition' | 'RefurbishedCondition' | undefined {
   if (!condition) return undefined
   const lower = condition.toLowerCase()
   if (lower.includes('new')) return 'NewCondition'
@@ -46,11 +48,15 @@ const fallbackDescription = buildFallbackDescription(product.value)
 const cleanDescription = product.value.short_description || fallbackDescription
 
 // Absolute image URLs for SEO
-const absoluteImages = (product.value.images || []).map((img: string) => absoluteImageUrl(img)).filter(Boolean) as string[]
+const absoluteImages = (product.value.images || [])
+  .map((img: string) => absoluteImageUrl(img))
+  .filter(Boolean) as string[]
 const primaryImage = absoluteImages[0] || `${siteUrl}/images/placeholder-product.png`
 
 // Image alt text including product ID and brand
-const imageAlt = [product.value.manufacturer, product.value.name, productIdentifier].filter(Boolean).join(' - ')
+const imageAlt = [product.value.manufacturer, product.value.name, productIdentifier]
+  .filter(Boolean)
+  .join(' - ')
 
 // SEO — canonical, OG, Twitter, meta
 useSeo({
@@ -75,7 +81,11 @@ useSeo({
 })
 
 // Schema.org — Product structured data (includes mpn, url, seller, itemCondition)
-const schemaDescription = (product.value.short_description || product.value.description?.replaceAll(/<[^>]*>/g, '') || fallbackDescription).slice(0, 500)
+const schemaDescription = (
+  product.value.short_description ||
+  product.value.description?.replaceAll(/<[^>]*>/g, '') ||
+  fallbackDescription
+).slice(0, 500)
 useProductSchema({
   name: product.value.name,
   description: schemaDescription,
@@ -141,7 +151,7 @@ useBreadcrumbSchema(breadcrumbItems)
               :src="absoluteImages[activeImage]"
               :alt="imageAlt"
               class="h-full w-full object-contain p-4"
-            >
+            />
             <div v-else class="flex h-full w-full items-center justify-center">
               <UIcon name="i-lucide-image" class="size-24 text-gray-200" />
             </div>
@@ -161,10 +171,19 @@ useBreadcrumbSchema(breadcrumbItems)
             v-for="(img, idx) in absoluteImages"
             :key="idx"
             class="overflow-hidden rounded-lg border-2 transition-all"
-            :class="activeImage === Number(idx) ? 'border-brand-600' : 'border-default hover:border-brand-300'"
+            :class="
+              activeImage === Number(idx)
+                ? 'border-brand-600'
+                : 'border-default hover:border-brand-300'
+            "
             @click="activeImage = Number(idx)"
           >
-            <img :src="img" :alt="`${imageAlt} - Image ${Number(idx) + 1}`" class="aspect-square object-cover" loading="lazy" >
+            <img
+              :src="img"
+              :alt="`${imageAlt} - Image ${Number(idx) + 1}`"
+              class="aspect-square object-cover"
+              loading="lazy"
+            />
           </button>
         </div>
       </div>
@@ -172,7 +191,10 @@ useBreadcrumbSchema(breadcrumbItems)
       <!-- Product Info -->
       <div class="space-y-6">
         <!-- Manufacturer -->
-        <p v-if="product.manufacturer" class="text-xs font-semibold uppercase tracking-wider text-brand-600">
+        <p
+          v-if="product.manufacturer"
+          class="text-xs font-semibold uppercase tracking-wider text-brand-600"
+        >
           {{ product.manufacturer }}
         </p>
 
@@ -190,21 +212,35 @@ useBreadcrumbSchema(breadcrumbItems)
         </p>
 
         <!-- Spec Badges -->
-        <div v-if="product.voltage || product.amperage || product.type" class="flex flex-wrap gap-2">
-          <span v-if="product.voltage" class="inline-flex items-center rounded-full bg-muted px-3 py-1 text-sm font-medium text-primary border border-default">
+        <div
+          v-if="product.voltage || product.amperage || product.type"
+          class="flex flex-wrap gap-2"
+        >
+          <span
+            v-if="product.voltage"
+            class="inline-flex items-center rounded-full bg-muted px-3 py-1 text-sm font-medium text-primary border border-default"
+          >
             ⚡ {{ product.voltage }}
           </span>
-          <span v-if="product.amperage" class="inline-flex items-center rounded-full bg-muted px-3 py-1 text-sm font-medium text-primary border border-default">
+          <span
+            v-if="product.amperage"
+            class="inline-flex items-center rounded-full bg-muted px-3 py-1 text-sm font-medium text-primary border border-default"
+          >
             🔌 {{ product.amperage }}
           </span>
-          <span v-if="product.type" class="inline-flex items-center rounded-full bg-muted px-3 py-1 text-sm font-medium text-primary border border-emerald-100">
+          <span
+            v-if="product.type"
+            class="inline-flex items-center rounded-full bg-muted px-3 py-1 text-sm font-medium text-primary border border-emerald-100"
+          >
             {{ product.type }}
           </span>
         </div>
 
         <!-- Specifications Table -->
         <div class="light-card accent-border rounded-xl p-6">
-          <h2 class="mb-4 font-display text-sm font-semibold uppercase tracking-wider text-dimmed">Specifications</h2>
+          <h2 class="mb-4 font-display text-sm font-semibold uppercase tracking-wider text-dimmed">
+            Specifications
+          </h2>
           <dl class="grid grid-cols-2 gap-4">
             <div v-if="product.sku">
               <dt class="text-xs text-dimmed">SKU / Part #</dt>
@@ -243,7 +279,9 @@ useBreadcrumbSchema(breadcrumbItems)
                 >
                   {{ product.category }}
                 </NuxtLink>
-                <span v-if="product.subcategory" class="text-dimmed"> › {{ product.subcategory }}</span>
+                <span v-if="product.subcategory" class="text-dimmed">
+                  › {{ product.subcategory }}</span
+                >
               </dd>
             </div>
           </dl>
@@ -251,7 +289,9 @@ useBreadcrumbSchema(breadcrumbItems)
 
         <!-- CTA -->
         <div class="bg-muted border border-default rounded-xl p-6 text-center">
-          <p class="mb-1 font-display text-lg font-semibold text-default">Interested in this equipment?</p>
+          <p class="mb-1 font-display text-lg font-semibold text-default">
+            Interested in this equipment?
+          </p>
           <p class="mb-4 text-sm text-dimmed">Get a custom quote from our engineering team</p>
           <UButton
             :to="`/contact?subject=${encodeURIComponent(product.category || 'General Inquiry')}&product=${encodeURIComponent(product.name)}`"
@@ -261,7 +301,10 @@ useBreadcrumbSchema(breadcrumbItems)
           >
             Request a Quote
           </UButton>
-          <ULink to="tel:8002325809" class="mt-3 flex items-center justify-center gap-2 text-sm text-dimmed transition-colors hover:text-default">
+          <ULink
+            to="tel:8002325809"
+            class="mt-3 flex items-center justify-center gap-2 text-sm text-dimmed transition-colors hover:text-default"
+          >
             <UIcon name="i-lucide-phone" class="size-4 text-brand-600" />
             or call 800-232-5809
           </ULink>
@@ -269,18 +312,25 @@ useBreadcrumbSchema(breadcrumbItems)
 
         <!-- Long Description -->
         <div v-if="product.long_description" class="light-card rounded-xl p-6">
-          <div class="prose prose-sm max-w-none text-muted prose-headings:text-default prose-headings:font-display prose-a:text-brand-600" v-html="product.long_description" />
+          <div
+            class="prose prose-sm max-w-none text-muted prose-headings:text-default prose-headings:font-display prose-a:text-brand-600"
+            v-html="product.long_description"
+          />
         </div>
 
         <!-- Original Description (fallback) -->
         <div v-else-if="product.description" class="light-card rounded-xl p-6">
-          <h2 class="mb-3 font-display text-sm font-semibold uppercase tracking-wider text-dimmed">Description</h2>
+          <h2 class="mb-3 font-display text-sm font-semibold uppercase tracking-wider text-dimmed">
+            Description
+          </h2>
           <div class="prose prose-sm max-w-none text-muted" v-html="product.description" />
         </div>
 
         <!-- Generated fallback description (when no real description exists) -->
         <div v-else class="light-card rounded-xl p-6">
-          <h2 class="mb-3 font-display text-sm font-semibold uppercase tracking-wider text-dimmed">About This Product</h2>
+          <h2 class="mb-3 font-display text-sm font-semibold uppercase tracking-wider text-dimmed">
+            About This Product
+          </h2>
           <p class="text-sm text-muted leading-relaxed">{{ fallbackDescription }}</p>
         </div>
 
@@ -315,14 +365,23 @@ useBreadcrumbSchema(breadcrumbItems)
               :alt="rp.name"
               class="h-full w-full object-contain p-3"
               loading="lazy"
-            >
+            />
             <div v-else class="flex h-full w-full items-center justify-center">
               <UIcon name="i-lucide-image" class="size-12 text-gray-200" />
             </div>
           </div>
           <div class="p-3">
-            <p v-if="rp.manufacturer" class="text-[10px] font-semibold uppercase tracking-wider text-brand-600">{{ rp.manufacturer }}</p>
-            <p class="mt-0.5 text-sm font-medium text-default line-clamp-2 group-hover:text-brand-600 transition-colors">{{ rp.name }}</p>
+            <p
+              v-if="rp.manufacturer"
+              class="text-[10px] font-semibold uppercase tracking-wider text-brand-600"
+            >
+              {{ rp.manufacturer }}
+            </p>
+            <p
+              class="mt-0.5 text-sm font-medium text-default line-clamp-2 group-hover:text-brand-600 transition-colors"
+            >
+              {{ rp.name }}
+            </p>
             <p v-if="rp.voltage || rp.amperage" class="mt-1 text-xs text-dimmed">
               <span v-if="rp.voltage">{{ rp.voltage }}</span>
               <span v-if="rp.voltage && rp.amperage"> · </span>
@@ -332,6 +391,5 @@ useBreadcrumbSchema(breadcrumbItems)
         </NuxtLink>
       </div>
     </div>
-
   </div>
 </template>

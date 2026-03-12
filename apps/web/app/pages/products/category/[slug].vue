@@ -122,14 +122,14 @@ function goToPage(page: number) {
         {{ categoryName }}
       </h1>
       <div class="h-1 w-16 rounded bg-brand-600" />
-      <p class="mt-2 text-sm text-dimmed">
-        {{ data?.total || 0 }} products available
-      </p>
+      <p class="mt-2 text-sm text-dimmed">{{ data?.total || 0 }} products available</p>
     </div>
 
     <!-- Subcategories -->
     <div v-if="category?.subcategories?.length" class="mb-8">
-      <h2 class="mb-3 font-display text-xs font-semibold uppercase tracking-wider text-dimmed">Subcategories</h2>
+      <h2 class="mb-3 font-display text-xs font-semibold uppercase tracking-wider text-dimmed">
+        Subcategories
+      </h2>
       <div class="flex flex-wrap gap-2">
         <NuxtLink
           v-for="sub in category.subcategories"
@@ -144,7 +144,10 @@ function goToPage(page: number) {
     </div>
 
     <!-- Loading -->
-    <div v-if="status === 'pending'" class="grid gap-3 grid-cols-2 lg:gap-4 lg:grid-cols-3 xl:grid-cols-4">
+    <div
+      v-if="status === 'pending'"
+      class="grid gap-3 grid-cols-2 lg:gap-4 lg:grid-cols-3 xl:grid-cols-4"
+    >
       <div v-for="i in 12" :key="i" class="light-card animate-pulse rounded-xl">
         <div class="aspect-square bg-gray-200/50 rounded-t-xl" />
         <div class="p-3 space-y-2 lg:p-4">
@@ -158,11 +161,7 @@ function goToPage(page: number) {
     <!-- Results -->
     <template v-else-if="data?.products?.length">
       <div class="grid gap-3 grid-cols-2 lg:gap-4 lg:grid-cols-3 xl:grid-cols-4">
-        <ProductCard
-          v-for="product in data.products"
-          :key="product.slug"
-          :product="product"
-        />
+        <ProductCard v-for="product in data.products" :key="product.slug" :product="product" />
       </div>
 
       <!-- Pagination -->

@@ -13,8 +13,14 @@ export interface SitemapEntry {
   priority?: number
 }
 
-export interface ProductRow { slug?: string }
-export interface CategoryRow { name?: string; slug?: string; parent?: string | null }
+export interface ProductRow {
+  slug?: string
+}
+export interface CategoryRow {
+  name?: string
+  slug?: string
+  parent?: string | null
+}
 
 export function buildSitemapEntries(
   products: ProductRow[],
@@ -91,7 +97,7 @@ export function buildSitemapEntries(
     { loc: '/brands/cutler-hammer', priority: 0.8 },
     { loc: '/brands/square-d', priority: 0.7 },
     { loc: '/brands/abb', priority: 0.7 },
-  ].map(p => ({
+  ].map((p) => ({
     ...p,
     lastmod: now,
     changefreq: 'monthly' as const,

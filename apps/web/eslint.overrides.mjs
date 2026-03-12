@@ -23,6 +23,8 @@ export default [
       '@typescript-eslint/no-explicit-any': 'off',
       'unicorn/prefer-string-replace-all': 'off',
       'unicorn/prefer-number-properties': 'off',
+      // Workaround: <ul> HTML element is false-positived as unknown Nuxt UI component "UL"
+      'narduk/no-unknown-nuxt-ui-component': ['error', { additionalComponents: ['UL'] }],
     },
   },
 ]

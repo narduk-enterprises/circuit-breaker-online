@@ -15,16 +15,19 @@ export default defineEventHandler(async (event) => {
   }
 
   // Get the current product to find its category and manufacturer
-  const product = await db.prepare(
-    'SELECT category, manufacturer, subcategory FROM products WHERE slug = ?'
-  ).bind(slug).first()
+  const product = await db
+    .prepare('SELECT category, manufacturer, subcategory FROM products WHERE slug = ?')
+    .bind(slug)
+    .first()
 
   if (!product) {
     return { products: [] }
   }
 
   // Find related products: same category first, then same manufacturer
-  const related = await db.prepare(`
+  const related = await db
+    .prepare(
+      `
     SELECT slug, name, manufacturer, category, subcategory, images, voltage, amperage, short_description
     FROM products
     WHERE slug != ?
@@ -37,15 +40,23 @@ export default defineEventHandler(async (event) => {
       END,
       name
     LIMIT 8
-  `).bind(
-    slug,
-    product.category, product.manufacturer,
-    product.category, product.subcategory || '',
-    product.category,
-    product.manufacturer
-  ).all()
+  `,
+    )
+    .bind(
+      slug,
+      product.category,
+      product.manufacturer,
+      product.category,
+      product.subcategory || '',
+      product.category,
+      product.manufacturer,
+    )
+    .all()
 
-  interface RelatedRow { images?: string; [key: string]: unknown }
+  interface RelatedRow {
+    images?: string
+    [key: string]: unknown
+  }
   return {
     products: (related.results || []).map((p: RelatedRow) => ({
       ...p,

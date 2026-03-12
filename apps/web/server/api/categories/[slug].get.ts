@@ -12,7 +12,9 @@ export default defineEventHandler(async (event) => {
 
   const db = useD1(event)
   const category = await db
-    .prepare('SELECT name, slug, parent, count FROM categories WHERE slug = ? AND (parent IS NULL OR parent = \'\')')
+    .prepare(
+      "SELECT name, slug, parent, count FROM categories WHERE slug = ? AND (parent IS NULL OR parent = '')",
+    )
     .bind(slug)
     .first()
 

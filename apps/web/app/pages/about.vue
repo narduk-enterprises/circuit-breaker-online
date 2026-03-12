@@ -1,7 +1,8 @@
 <script setup lang="ts">
 useSeo({
   title: 'About Us | Circuit Breaker Sales',
-  description: 'Circuit Breaker Sales is a Group CBS company providing new and reconditioned circuit breakers, switchgear, transformers, and industrial power equipment since 1981.',
+  description:
+    'Circuit Breaker Sales is a Group CBS company providing new and reconditioned circuit breakers, switchgear, transformers, and industrial power equipment since 1981.',
   ogImage: {
     title: 'About Circuit Breaker Sales',
     description: 'A Group CBS Company — Since 1981',
@@ -9,7 +10,11 @@ useSeo({
   },
 })
 
-useWebPageSchema({ type: 'AboutPage', name: 'About Circuit Breaker Sales', description: 'A Group CBS company providing industrial power equipment since 1981.' })
+useWebPageSchema({
+  type: 'AboutPage',
+  name: 'About Circuit Breaker Sales',
+  description: 'A Group CBS company providing industrial power equipment since 1981.',
+})
 
 useBreadcrumbSchema([
   { name: 'Home', url: 'https://circuitbreaker.online/' },
@@ -59,10 +64,10 @@ const capabilities = [
           <h2 class="mb-4 font-display text-xl font-semibold text-default">A Group CBS Company</h2>
           <div class="space-y-4 text-base leading-relaxed text-muted">
             <p>
-              Circuit Breaker Sales has been a trusted name in industrial power equipment since 1981.
-              As a proud member of the Group CBS family of companies, we provide one of the largest
-              inventories of new and reconditioned circuit breakers, switchgear, transformers, and renewal
-              parts in North America.
+              Circuit Breaker Sales has been a trusted name in industrial power equipment since
+              1981. As a proud member of the Group CBS family of companies, we provide one of the
+              largest inventories of new and reconditioned circuit breakers, switchgear,
+              transformers, and renewal parts in North America.
             </p>
             <p>
               Our factory-trained technicians restore equipment to OEM specifications, backed by
@@ -71,9 +76,9 @@ const capabilities = [
               and expertise that over 40 years of experience provides.
             </p>
             <p>
-              Whether you need a single replacement breaker or a complete substation package, our team
-              of engineers and sales professionals will work with you to find the right solution at a
-              competitive price — with the fast turnaround your operations demand.
+              Whether you need a single replacement breaker or a complete substation package, our
+              team of engineers and sales professionals will work with you to find the right
+              solution at a competitive price — with the fast turnaround your operations demand.
             </p>
           </div>
         </div>
@@ -82,11 +87,20 @@ const capabilities = [
         <div>
           <h2 class="mb-6 font-display text-xl font-semibold text-default">Our Capabilities</h2>
           <div class="grid gap-4 sm:grid-cols-2">
-            <NuxtLink v-for="cap in capabilities" :key="cap.title" :to="cap.link" class="group light-card rounded-xl p-5 transition-all duration-300 hover:border-brand-600/30 hover:shadow-lg hover:shadow-brand-600/5">
+            <NuxtLink
+              v-for="cap in capabilities"
+              :key="cap.title"
+              :to="cap.link"
+              class="group light-card rounded-xl p-5 transition-all duration-300 hover:border-brand-600/30 hover:shadow-lg hover:shadow-brand-600/5"
+            >
               <div class="mb-3 flex size-9 items-center justify-center rounded-lg bg-brand-600/10">
                 <UIcon :name="cap.icon" class="size-5 text-brand-500" />
               </div>
-              <h3 class="mb-1 font-display text-sm font-semibold text-default group-hover:text-brand-600 transition-colors">{{ cap.title }}</h3>
+              <h3
+                class="mb-1 font-display text-sm font-semibold text-default group-hover:text-brand-600 transition-colors"
+              >
+                {{ cap.title }}
+              </h3>
               <p class="text-sm leading-relaxed text-dimmed">{{ cap.description }}</p>
             </NuxtLink>
           </div>
@@ -96,7 +110,11 @@ const capabilities = [
       <!-- Sidebar -->
       <div class="space-y-6">
         <div class="rounded-xl border border-default bg-muted p-6">
-          <h3 class="mb-4 font-display text-sm font-semibold uppercase tracking-wider text-brand-600">Contact Us</h3>
+          <h3
+            class="mb-4 font-display text-sm font-semibold uppercase tracking-wider text-brand-600"
+          >
+            Contact Us
+          </h3>
           <div class="space-y-3 text-base text-muted">
             <div class="flex items-center gap-3">
               <UIcon name="i-lucide-phone" class="size-4 text-brand-600" />
@@ -104,7 +122,9 @@ const capabilities = [
             </div>
             <div class="flex items-center gap-3">
               <UIcon name="i-lucide-mail" class="size-4 text-brand-600" />
-              <ULink to="mailto:sales@circuitbreaker.com" class="hover:text-brand-600">sales@circuitbreaker.com</ULink>
+              <ULink to="mailto:sales@circuitbreaker.com" class="hover:text-brand-600"
+                >sales@circuitbreaker.com</ULink
+              >
             </div>
           </div>
           <UButton to="/contact" color="primary" block class="mt-6" size="lg">
@@ -113,7 +133,11 @@ const capabilities = [
         </div>
 
         <div class="rounded-xl border border-default bg-default p-6">
-          <h3 class="mb-3 font-display text-sm font-semibold uppercase tracking-wider text-brand-600">Key Facts</h3>
+          <h3
+            class="mb-3 font-display text-sm font-semibold uppercase tracking-wider text-brand-600"
+          >
+            Key Facts
+          </h3>
           <ul class="space-y-2.5 text-base text-muted">
             <li class="flex items-start gap-2">
               <UIcon name="i-lucide-circle-check" class="mt-0.5 size-4 shrink-0 text-brand-500" />

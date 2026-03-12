@@ -27,13 +27,14 @@ export default defineNuxtConfig({
       posthogProjectId: process.env.POSTHOG_PROJECT_ID || '',
       // IndexNow
       indexNowKey: process.env.INDEXNOW_KEY || '',
-    }
+    },
   },
 
   site: {
     url: process.env.SITE_URL || 'https://circuitbreaker.online',
     name: 'Circuit Breaker Sales',
-    description: 'A Group CBS Company. Leading the industry in circuit breaker sales, service, and supply since 1981.',
+    description:
+      'A Group CBS Company. Leading the industry in circuit breaker sales, service, and supply since 1981.',
     defaultLocale: 'en',
   },
 
@@ -53,13 +54,9 @@ export default defineNuxtConfig({
   },
 
   sitemap: {
-    sources: [
-      '/api/__sitemap__/urls',
-    ],
+    sources: ['/api/__sitemap__/urls'],
     // Exclude any URLs with query params or fragments from the sitemap
-    exclude: [
-      '/**[?]*',
-    ],
+    exclude: ['/**[?]*'],
   },
 
   robots: {
@@ -75,9 +72,7 @@ export default defineNuxtConfig({
   app: {
     head: {
       htmlAttrs: { lang: 'en' },
-      meta: [
-        { name: 'theme-color', content: '#b91c1c' },
-      ],
+      meta: [{ name: 'theme-color', content: '#b91c1c' }],
       link: [
         { rel: 'icon', type: 'image/svg+xml', href: '/favicon.svg' },
         { rel: 'icon', type: 'image/png', sizes: '32x32', href: '/favicon-32x32.png' },
@@ -89,9 +84,7 @@ export default defineNuxtConfig({
     pageTransition: false,
   },
 
-  modules: [
-    'nitro-cloudflare-dev',
-  ],
+  modules: ['nitro-cloudflare-dev'],
 
   // Cloudflare dev proxy (from template standard)
   nitro: {

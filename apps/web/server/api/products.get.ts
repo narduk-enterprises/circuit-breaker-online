@@ -9,20 +9,31 @@ const querySchema = z.object({
   amperage: z.string().optional(),
   type: z.string().optional(),
   search: z.string().optional(),
-  page: z.string().optional().transform((v: string | undefined) => Math.max(1, Number.parseInt(v ?? '1', 10) || 1)),
-  limit: z.string().optional().transform((v: string | undefined) => Math.min(100, Math.max(1, Number.parseInt(v ?? '24', 10) || 24))),
+  page: z
+    .string()
+    .optional()
+    .transform((v: string | undefined) => Math.max(1, Number.parseInt(v ?? '1', 10) || 1)),
+  limit: z
+    .string()
+    .optional()
+    .transform((v: string | undefined) =>
+      Math.min(100, Math.max(1, Number.parseInt(v ?? '24', 10) || 24)),
+    ),
   sort: z.string().optional(),
 })
 
 type Query = z.infer<typeof querySchema>
 
 export default defineEventHandler(async (event) => {
-  const query = await getValidatedQuery(event, querySchema.parse) as Query
+  const query = (await getValidatedQuery(event, querySchema.parse)) as Query
   const db = useD1(event)
 
   // Single product by slug
   if (query.slug) {
-    const product = await db.prepare('SELECT * FROM products WHERE slug = ?').bind(query.slug as string).first()
+    const product = await db
+      .prepare('SELECT * FROM products WHERE slug = ?')
+      .bind(query.slug as string)
+      .first()
     if (!product) {
       throw createError({ statusCode: 404, message: 'Product not found' })
     }
@@ -76,14 +87,19 @@ export default defineEventHandler(async (event) => {
   // Search
   if (query.search) {
     const term = `%${query.search}%`
-    conditions.push('(name LIKE ? OR description LIKE ? OR manufacturer LIKE ? OR sku LIKE ? OR model LIKE ? OR short_description LIKE ? OR tags LIKE ?)')
+    conditions.push(
+      '(name LIKE ? OR description LIKE ? OR manufacturer LIKE ? OR sku LIKE ? OR model LIKE ? OR short_description LIKE ? OR tags LIKE ?)',
+    )
     params.push(term, term, term, term, term, term, term)
   }
 
   const whereClause = conditions.length > 0 ? `WHERE ${conditions.join(' AND ')}` : ''
 
   // Count total
-  const countRow = await db.prepare(`SELECT COUNT(*) as total FROM products ${whereClause}`).bind(...params).first() as { total?: number } | null
+  const countRow = (await db
+    .prepare(`SELECT COUNT(*) as total FROM products ${whereClause}`)
+    .bind(...params)
+    .first()) as { total?: number } | null
   const total = Number(countRow?.total ?? 0)
 
   // Pagination (schema transform ensures page/limit are numbers when present)
@@ -95,16 +111,22 @@ export default defineEventHandler(async (event) => {
   const sortOptions: Record<string, string> = {
     'name-asc': 'name ASC',
     'name-desc': 'name DESC',
-    'newest': 'id DESC',
-    'manufacturer': 'manufacturer ASC, name ASC',
+    newest: 'id DESC',
+    manufacturer: 'manufacturer ASC, name ASC',
   }
-  const sort = sortOptions[(query.sort as string)] || 'name ASC'
+  const sort = sortOptions[query.sort as string] || 'name ASC'
 
-  const { results: products } = await db.prepare(
-    `SELECT id, name, slug, sku, manufacturer, model, category, subcategory, condition, voltage, amperage, type, short_description, images FROM products ${whereClause} ORDER BY ${sort} LIMIT ? OFFSET ?`
-  ).bind(...params, limit, offset).all()
+  const { results: products } = await db
+    .prepare(
+      `SELECT id, name, slug, sku, manufacturer, model, category, subcategory, condition, voltage, amperage, type, short_description, images FROM products ${whereClause} ORDER BY ${sort} LIMIT ? OFFSET ?`,
+    )
+    .bind(...params, limit, offset)
+    .all()
 
-  interface ProductRow { images?: string; [key: string]: unknown }
+  interface ProductRow {
+    images?: string
+    [key: string]: unknown
+  }
   return {
     products: (products || []).map((p: ProductRow) => ({
       ...p,

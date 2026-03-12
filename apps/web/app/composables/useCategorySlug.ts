@@ -5,5 +5,8 @@
  * replaced with hyphens) with additional trimming of leading/trailing hyphens.
  */
 export function useCategorySlug(name: string): string {
-  return name.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '')
+  return name
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, '-')
+    .replace(/(^-|-$)/g, '')
 }

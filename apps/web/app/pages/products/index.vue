@@ -1,7 +1,8 @@
 <script setup lang="ts">
 useSeo({
   title: 'Full Product Catalog | Circuit Breaker Sales',
-  description: 'Browse our full inventory of new and reconditioned circuit breakers, switchgear, transformers, protective relays, and industrial power equipment.',
+  description:
+    'Browse our full inventory of new and reconditioned circuit breakers, switchgear, transformers, protective relays, and industrial power equipment.',
   ogImage: {
     title: 'Product Catalog',
     description: 'Browse 1,000+ Industrial Power Equipment Items',
@@ -9,7 +10,11 @@ useSeo({
   },
 })
 
-useWebPageSchema({ type: 'CollectionPage', name: 'Product Catalog', description: 'Browse our full inventory of industrial power equipment.' })
+useWebPageSchema({
+  type: 'CollectionPage',
+  name: 'Product Catalog',
+  description: 'Browse our full inventory of industrial power equipment.',
+})
 
 useBreadcrumbSchema([
   { name: 'Home', url: 'https://circuitbreaker.online/' },
@@ -78,8 +83,14 @@ const mobileFiltersOpen = ref(false)
 // Track total products
 const totalProducts = ref(0)
 
-const hasActiveFilters = computed(() =>
-  activeCategory.value || activeSubcategory.value || activeManufacturer.value || activeVoltage.value || activeAmperage.value || searchQuery.value
+const hasActiveFilters = computed(
+  () =>
+    activeCategory.value ||
+    activeSubcategory.value ||
+    activeManufacturer.value ||
+    activeVoltage.value ||
+    activeAmperage.value ||
+    searchQuery.value,
 )
 
 const activeFilterCount = computed(() => {
@@ -111,7 +122,16 @@ const { data, status } = await useFetch<ProductResponse>('/api/products', {
     page: currentPage.value,
     limit: 24,
   })),
-  watch: [searchQuery, activeCategory, activeSubcategory, activeManufacturer, activeVoltage, activeAmperage, activeSort, currentPage],
+  watch: [
+    searchQuery,
+    activeCategory,
+    activeSubcategory,
+    activeManufacturer,
+    activeVoltage,
+    activeAmperage,
+    activeSort,
+    currentPage,
+  ],
 })
 
 // Get total products count
@@ -263,27 +283,68 @@ function updateUrl() {
 
     <!-- Mobile Active Filters -->
     <div v-if="hasActiveFilters" class="mb-4 flex flex-wrap items-center gap-2 lg:hidden">
-      <span v-if="activeCategory" class="inline-flex items-center gap-1 rounded-full bg-brand-50 px-2.5 py-1 text-xs font-medium text-brand-700">
+      <span
+        v-if="activeCategory"
+        class="inline-flex items-center gap-1 rounded-full bg-brand-50 px-2.5 py-1 text-xs font-medium text-brand-700"
+      >
         {{ activeCategory }}
         <button class="ml-0.5 hover:text-brand-900" @click="clearCategory">&times;</button>
       </span>
-      <span v-if="activeSubcategory" class="inline-flex items-center gap-1 rounded-full bg-muted px-2.5 py-1 text-xs font-medium text-primary">
+      <span
+        v-if="activeSubcategory"
+        class="inline-flex items-center gap-1 rounded-full bg-muted px-2.5 py-1 text-xs font-medium text-primary"
+      >
         {{ activeSubcategory }}
         <button class="ml-0.5 hover:text-primary" @click="clearSubcategory">&times;</button>
       </span>
-      <span v-if="activeManufacturer" class="inline-flex items-center gap-1 rounded-full bg-muted px-2.5 py-1 text-xs font-medium text-primary">
+      <span
+        v-if="activeManufacturer"
+        class="inline-flex items-center gap-1 rounded-full bg-muted px-2.5 py-1 text-xs font-medium text-primary"
+      >
         {{ activeManufacturer }}
-        <button class="ml-0.5 hover:text-primary" @click="activeManufacturer = ''; applyFilter()">&times;</button>
+        <button
+          class="ml-0.5 hover:text-primary"
+          @click="
+            activeManufacturer = ''
+            applyFilter()
+          "
+        >
+          &times;
+        </button>
       </span>
-      <span v-if="activeVoltage" class="inline-flex items-center gap-1 rounded-full bg-muted px-2.5 py-1 text-xs font-medium text-primary">
+      <span
+        v-if="activeVoltage"
+        class="inline-flex items-center gap-1 rounded-full bg-muted px-2.5 py-1 text-xs font-medium text-primary"
+      >
         {{ activeVoltage }}
-        <button class="ml-0.5 hover:text-primary" @click="activeVoltage = ''; applyFilter()">&times;</button>
+        <button
+          class="ml-0.5 hover:text-primary"
+          @click="
+            activeVoltage = ''
+            applyFilter()
+          "
+        >
+          &times;
+        </button>
       </span>
-      <span v-if="activeAmperage" class="inline-flex items-center gap-1 rounded-full bg-purple-50 px-2.5 py-1 text-xs font-medium text-purple-700">
+      <span
+        v-if="activeAmperage"
+        class="inline-flex items-center gap-1 rounded-full bg-purple-50 px-2.5 py-1 text-xs font-medium text-purple-700"
+      >
         {{ activeAmperage }}
-        <button class="ml-0.5 hover:text-purple-900" @click="activeAmperage = ''; applyFilter()">&times;</button>
+        <button
+          class="ml-0.5 hover:text-purple-900"
+          @click="
+            activeAmperage = ''
+            applyFilter()
+          "
+        >
+          &times;
+        </button>
       </span>
-      <button class="text-xs text-dimmed underline hover:text-muted" @click="resetFilters">Clear all</button>
+      <button class="text-xs text-dimmed underline hover:text-muted" @click="resetFilters">
+        Clear all
+      </button>
     </div>
 
     <!-- Mobile Filter Drawer (Slide-over) -->
@@ -291,13 +352,18 @@ function updateUrl() {
       <Transition name="drawer">
         <div v-if="mobileFiltersOpen" class="fixed inset-0 z-50 lg:hidden">
           <!-- Backdrop -->
-          <div class="absolute inset-0 bg-muted/40 backdrop-blur-sm" @click="mobileFiltersOpen = false" />
+          <div
+            class="absolute inset-0 bg-muted/40 backdrop-blur-sm"
+            @click="mobileFiltersOpen = false"
+          />
           <!-- Drawer Panel -->
           <div class="absolute inset-y-0 right-0 flex w-full max-w-sm">
             <div class="relative flex w-full flex-col overflow-y-auto bg-default shadow-2xl">
               <!-- Drawer Header -->
               <div class="flex items-center justify-between border-b border-default px-5 py-4">
-                <h2 class="font-display text-lg font-semibold text-default">Filters & Categories</h2>
+                <h2 class="font-display text-lg font-semibold text-default">
+                  Filters & Categories
+                </h2>
                 <button
                   class="flex size-9 items-center justify-center rounded-full text-dimmed hover:bg-muted hover:text-muted"
                   @click="mobileFiltersOpen = false"
@@ -310,13 +376,24 @@ function updateUrl() {
               <div class="flex-1 space-y-6 overflow-y-auto px-5 py-5">
                 <!-- Categories -->
                 <div>
-                  <h3 class="mb-3 font-display text-xs font-semibold uppercase tracking-wider text-dimmed">Categories</h3>
+                  <h3
+                    class="mb-3 font-display text-xs font-semibold uppercase tracking-wider text-dimmed"
+                  >
+                    Categories
+                  </h3>
                   <ul class="space-y-0.5">
                     <li>
                       <button
                         class="flex w-full items-center justify-between rounded-lg px-3 py-2.5 text-sm transition-colors"
-                        :class="!activeCategory ? 'bg-brand-600/10 text-brand-600 font-medium' : 'text-muted hover:text-default hover:bg-muted'"
-                        @click="clearCategory(); mobileFiltersOpen = false"
+                        :class="
+                          !activeCategory
+                            ? 'bg-brand-600/10 text-brand-600 font-medium'
+                            : 'text-muted hover:text-default hover:bg-muted'
+                        "
+                        @click="
+                          clearCategory()
+                          mobileFiltersOpen = false
+                        "
                       >
                         <span>All Products</span>
                         <span class="text-xs text-dimmed">{{ totalProducts }}</span>
@@ -325,22 +402,41 @@ function updateUrl() {
                     <li v-for="cat in categories" :key="cat.name">
                       <button
                         class="flex w-full items-center justify-between rounded-lg px-3 py-2.5 text-sm transition-colors"
-                        :class="activeCategory === cat.name && !activeSubcategory ? 'bg-brand-50 text-brand-600 font-medium' : 'text-muted hover:text-default hover:bg-muted'"
-                        @click="selectCategory(cat.name); mobileFiltersOpen = false"
+                        :class="
+                          activeCategory === cat.name && !activeSubcategory
+                            ? 'bg-brand-50 text-brand-600 font-medium'
+                            : 'text-muted hover:text-default hover:bg-muted'
+                        "
+                        @click="
+                          selectCategory(cat.name)
+                          mobileFiltersOpen = false
+                        "
                       >
                         <span class="truncate">{{ cat.name }}</span>
                         <span class="ml-2 shrink-0 text-xs text-dimmed">{{ cat.count }}</span>
                       </button>
                       <!-- Subcategories -->
-                      <ul v-if="activeCategory === cat.name && cat.subcategories?.length" class="ml-4 mt-1 space-y-0.5 border-l-2 border-brand-100 pl-2">
+                      <ul
+                        v-if="activeCategory === cat.name && cat.subcategories?.length"
+                        class="ml-4 mt-1 space-y-0.5 border-l-2 border-brand-100 pl-2"
+                      >
                         <li v-for="sub in cat.subcategories" :key="sub.name">
                           <button
                             class="flex w-full items-center justify-between rounded px-3 py-2 text-xs transition-colors"
-                            :class="activeSubcategory === sub.name ? 'bg-brand-600/10 text-brand-600 font-medium' : 'text-dimmed hover:text-default hover:bg-muted'"
-                            @click="selectSubcategory(cat.name, sub.name); mobileFiltersOpen = false"
+                            :class="
+                              activeSubcategory === sub.name
+                                ? 'bg-brand-600/10 text-brand-600 font-medium'
+                                : 'text-dimmed hover:text-default hover:bg-muted'
+                            "
+                            @click="
+                              selectSubcategory(cat.name, sub.name)
+                              mobileFiltersOpen = false
+                            "
                           >
                             <span class="truncate">{{ sub.name }}</span>
-                            <span class="ml-1 shrink-0 text-[10px] text-dimmed">{{ sub.count }}</span>
+                            <span class="ml-1 shrink-0 text-[10px] text-dimmed">{{
+                              sub.count
+                            }}</span>
                           </button>
                         </li>
                       </ul>
@@ -350,24 +446,36 @@ function updateUrl() {
 
                 <!-- Filters -->
                 <div v-if="filters" class="space-y-4 border-t border-default pt-5">
-                  <h3 class="font-display text-xs font-semibold uppercase tracking-wider text-dimmed">Filters</h3>
+                  <h3
+                    class="font-display text-xs font-semibold uppercase tracking-wider text-dimmed"
+                  >
+                    Filters
+                  </h3>
 
                   <!-- Manufacturer -->
                   <div v-if="filters.manufacturers?.length">
-                    <label class="mb-1.5 block text-[11px] font-medium uppercase tracking-wider text-dimmed">Manufacturer</label>
+                    <label
+                      class="mb-1.5 block text-[11px] font-medium uppercase tracking-wider text-dimmed"
+                      >Manufacturer</label
+                    >
                     <select
                       v-model="activeManufacturer"
                       class="w-full rounded-lg border border-default bg-default px-3 py-2.5 text-sm text-muted focus:border-brand-500 focus:outline-none focus:ring-1 focus:ring-brand-500"
                       @change="applyFilter"
                     >
                       <option value="">All Manufacturers</option>
-                      <option v-for="m in filters.manufacturers" :key="m" :value="m">{{ m }}</option>
+                      <option v-for="m in filters.manufacturers" :key="m" :value="m">
+                        {{ m }}
+                      </option>
                     </select>
                   </div>
 
                   <!-- Voltage -->
                   <div v-if="filters.voltages?.length">
-                    <label class="mb-1.5 block text-[11px] font-medium uppercase tracking-wider text-dimmed">Voltage</label>
+                    <label
+                      class="mb-1.5 block text-[11px] font-medium uppercase tracking-wider text-dimmed"
+                      >Voltage</label
+                    >
                     <select
                       v-model="activeVoltage"
                       class="w-full rounded-lg border border-default bg-default px-3 py-2.5 text-sm text-muted focus:border-brand-500 focus:outline-none focus:ring-1 focus:ring-brand-500"
@@ -380,7 +488,10 @@ function updateUrl() {
 
                   <!-- Amperage -->
                   <div v-if="filters.amperages?.length">
-                    <label class="mb-1.5 block text-[11px] font-medium uppercase tracking-wider text-dimmed">Amperage</label>
+                    <label
+                      class="mb-1.5 block text-[11px] font-medium uppercase tracking-wider text-dimmed"
+                      >Amperage</label
+                    >
                     <select
                       v-model="activeAmperage"
                       class="w-full rounded-lg border border-default bg-default px-3 py-2.5 text-sm text-muted focus:border-brand-500 focus:outline-none focus:ring-1 focus:ring-brand-500"
@@ -394,7 +505,11 @@ function updateUrl() {
 
                 <!-- Sort -->
                 <div class="border-t border-default pt-5">
-                  <h3 class="mb-2 font-display text-xs font-semibold uppercase tracking-wider text-dimmed">Sort By</h3>
+                  <h3
+                    class="mb-2 font-display text-xs font-semibold uppercase tracking-wider text-dimmed"
+                  >
+                    Sort By
+                  </h3>
                   <select
                     v-model="activeSort"
                     class="w-full rounded-lg border border-default bg-default px-3 py-2.5 text-sm text-muted focus:border-brand-500 focus:outline-none focus:ring-1 focus:ring-brand-500"
@@ -416,7 +531,10 @@ function updateUrl() {
                     variant="outline"
                     color="neutral"
                     size="lg"
-                    @click="resetFilters(); mobileFiltersOpen = false"
+                    @click="
+                      resetFilters()
+                      mobileFiltersOpen = false
+                    "
                   >
                     Clear All
                   </UButton>
@@ -439,7 +557,9 @@ function updateUrl() {
     <div class="grid gap-8 lg:grid-cols-4">
       <!-- Desktop Sidebar (hidden on mobile) -->
       <aside class="hidden lg:col-span-1 lg:block">
-        <div class="sticky top-24 max-h-[calc(100vh-7rem)] space-y-6 overflow-y-auto pr-1 scrollbar-thin">
+        <div
+          class="sticky top-24 max-h-[calc(100vh-7rem)] space-y-6 overflow-y-auto pr-1 scrollbar-thin"
+        >
           <!-- Search -->
           <div>
             <UInput
@@ -473,12 +593,20 @@ function updateUrl() {
 
           <!-- Categories (Hierarchical) -->
           <div class="light-card rounded-xl p-4">
-            <h3 class="mb-3 font-display text-xs font-semibold uppercase tracking-wider text-dimmed">Categories</h3>
+            <h3
+              class="mb-3 font-display text-xs font-semibold uppercase tracking-wider text-dimmed"
+            >
+              Categories
+            </h3>
             <ul class="space-y-1">
               <li>
                 <button
                   class="flex w-full items-center justify-between rounded-md px-2 py-1.5 text-sm transition-colors"
-                  :class="!activeCategory ? 'bg-brand-600/10 text-brand-600' : 'text-dimmed hover:text-default hover:bg-muted'"
+                  :class="
+                    !activeCategory
+                      ? 'bg-brand-600/10 text-brand-600'
+                      : 'text-dimmed hover:text-default hover:bg-muted'
+                  "
                   @click="clearCategory"
                 >
                   <span>All Products</span>
@@ -488,18 +616,29 @@ function updateUrl() {
               <li v-for="cat in categories" :key="cat.name">
                 <button
                   class="flex w-full items-center justify-between rounded-md px-2 py-1.5 text-sm transition-colors"
-                  :class="activeCategory === cat.name && !activeSubcategory ? 'bg-brand-50 text-brand-600 font-medium' : 'text-muted hover:text-default hover:bg-muted'"
+                  :class="
+                    activeCategory === cat.name && !activeSubcategory
+                      ? 'bg-brand-50 text-brand-600 font-medium'
+                      : 'text-muted hover:text-default hover:bg-muted'
+                  "
                   @click="selectCategory(cat.name)"
                 >
                   <span class="truncate">{{ cat.name }}</span>
                   <span class="ml-2 shrink-0 text-xs text-dimmed">{{ cat.count }}</span>
                 </button>
                 <!-- Subcategories -->
-                <ul v-if="activeCategory === cat.name && cat.subcategories?.length" class="ml-4 mt-1 space-y-0.5 border-l-2 border-brand-100 pl-2">
+                <ul
+                  v-if="activeCategory === cat.name && cat.subcategories?.length"
+                  class="ml-4 mt-1 space-y-0.5 border-l-2 border-brand-100 pl-2"
+                >
                   <li v-for="sub in cat.subcategories" :key="sub.name">
                     <button
                       class="flex w-full items-center justify-between rounded px-2 py-1 text-xs transition-colors"
-                      :class="activeSubcategory === sub.name ? 'bg-brand-600/10 text-brand-600' : 'text-dimmed hover:text-default hover:bg-muted'"
+                      :class="
+                        activeSubcategory === sub.name
+                          ? 'bg-brand-600/10 text-brand-600'
+                          : 'text-dimmed hover:text-default hover:bg-muted'
+                      "
                       @click="selectSubcategory(cat.name, sub.name)"
                     >
                       <span class="truncate">{{ sub.name }}</span>
@@ -513,11 +652,16 @@ function updateUrl() {
 
           <!-- Filters -->
           <div v-if="filters" class="light-card rounded-xl p-4 space-y-4">
-            <h3 class="font-display text-xs font-semibold uppercase tracking-wider text-dimmed">Filters</h3>
+            <h3 class="font-display text-xs font-semibold uppercase tracking-wider text-dimmed">
+              Filters
+            </h3>
 
             <!-- Manufacturer -->
             <div v-if="filters.manufacturers?.length">
-              <label class="mb-1.5 block text-[11px] font-medium uppercase tracking-wider text-dimmed">Manufacturer</label>
+              <label
+                class="mb-1.5 block text-[11px] font-medium uppercase tracking-wider text-dimmed"
+                >Manufacturer</label
+              >
               <select
                 v-model="activeManufacturer"
                 class="w-full rounded-lg border border-default bg-default px-3 py-2 text-sm text-muted focus:border-brand-500 focus:outline-none focus:ring-1 focus:ring-brand-500"
@@ -530,7 +674,10 @@ function updateUrl() {
 
             <!-- Voltage -->
             <div v-if="filters.voltages?.length">
-              <label class="mb-1.5 block text-[11px] font-medium uppercase tracking-wider text-dimmed">Voltage</label>
+              <label
+                class="mb-1.5 block text-[11px] font-medium uppercase tracking-wider text-dimmed"
+                >Voltage</label
+              >
               <select
                 v-model="activeVoltage"
                 class="w-full rounded-lg border border-default bg-default px-3 py-2 text-sm text-muted focus:border-brand-500 focus:outline-none focus:ring-1 focus:ring-brand-500"
@@ -543,7 +690,10 @@ function updateUrl() {
 
             <!-- Amperage -->
             <div v-if="filters.amperages?.length">
-              <label class="mb-1.5 block text-[11px] font-medium uppercase tracking-wider text-dimmed">Amperage</label>
+              <label
+                class="mb-1.5 block text-[11px] font-medium uppercase tracking-wider text-dimmed"
+                >Amperage</label
+              >
               <select
                 v-model="activeAmperage"
                 class="w-full rounded-lg border border-default bg-default px-3 py-2 text-sm text-muted focus:border-brand-500 focus:outline-none focus:ring-1 focus:ring-brand-500"
@@ -568,7 +718,11 @@ function updateUrl() {
 
           <!-- Sort -->
           <div class="light-card rounded-xl p-4">
-            <h3 class="mb-2 font-display text-xs font-semibold uppercase tracking-wider text-dimmed">Sort By</h3>
+            <h3
+              class="mb-2 font-display text-xs font-semibold uppercase tracking-wider text-dimmed"
+            >
+              Sort By
+            </h3>
             <select
               v-model="activeSort"
               class="w-full rounded-lg border border-default bg-default px-3 py-2 text-sm text-muted focus:border-brand-500 focus:outline-none focus:ring-1 focus:ring-brand-500"
@@ -588,27 +742,68 @@ function updateUrl() {
         <!-- Desktop Active Filter Tags -->
         <div v-if="hasActiveFilters" class="mb-4 hidden flex-wrap items-center gap-2 lg:flex">
           <span class="text-xs font-medium text-dimmed">Active filters:</span>
-          <span v-if="activeCategory" class="inline-flex items-center gap-1 rounded-full bg-brand-50 px-3 py-1 text-xs font-medium text-brand-700">
+          <span
+            v-if="activeCategory"
+            class="inline-flex items-center gap-1 rounded-full bg-brand-50 px-3 py-1 text-xs font-medium text-brand-700"
+          >
             {{ activeCategory }}
             <button class="ml-0.5 hover:text-brand-900" @click="clearCategory">&times;</button>
           </span>
-          <span v-if="activeSubcategory" class="inline-flex items-center gap-1 rounded-full bg-muted px-3 py-1 text-xs font-medium text-primary">
+          <span
+            v-if="activeSubcategory"
+            class="inline-flex items-center gap-1 rounded-full bg-muted px-3 py-1 text-xs font-medium text-primary"
+          >
             {{ activeSubcategory }}
             <button class="ml-0.5 hover:text-primary" @click="clearSubcategory">&times;</button>
           </span>
-          <span v-if="activeManufacturer" class="inline-flex items-center gap-1 rounded-full bg-muted px-3 py-1 text-xs font-medium text-primary">
+          <span
+            v-if="activeManufacturer"
+            class="inline-flex items-center gap-1 rounded-full bg-muted px-3 py-1 text-xs font-medium text-primary"
+          >
             {{ activeManufacturer }}
-            <button class="ml-0.5 hover:text-primary" @click="activeManufacturer = ''; applyFilter()">&times;</button>
+            <button
+              class="ml-0.5 hover:text-primary"
+              @click="
+                activeManufacturer = ''
+                applyFilter()
+              "
+            >
+              &times;
+            </button>
           </span>
-          <span v-if="activeVoltage" class="inline-flex items-center gap-1 rounded-full bg-muted px-3 py-1 text-xs font-medium text-primary">
+          <span
+            v-if="activeVoltage"
+            class="inline-flex items-center gap-1 rounded-full bg-muted px-3 py-1 text-xs font-medium text-primary"
+          >
             {{ activeVoltage }}
-            <button class="ml-0.5 hover:text-primary" @click="activeVoltage = ''; applyFilter()">&times;</button>
+            <button
+              class="ml-0.5 hover:text-primary"
+              @click="
+                activeVoltage = ''
+                applyFilter()
+              "
+            >
+              &times;
+            </button>
           </span>
-          <span v-if="activeAmperage" class="inline-flex items-center gap-1 rounded-full bg-purple-50 px-3 py-1 text-xs font-medium text-purple-700">
+          <span
+            v-if="activeAmperage"
+            class="inline-flex items-center gap-1 rounded-full bg-purple-50 px-3 py-1 text-xs font-medium text-purple-700"
+          >
             {{ activeAmperage }}
-            <button class="ml-0.5 hover:text-purple-900" @click="activeAmperage = ''; applyFilter()">&times;</button>
+            <button
+              class="ml-0.5 hover:text-purple-900"
+              @click="
+                activeAmperage = ''
+                applyFilter()
+              "
+            >
+              &times;
+            </button>
           </span>
-          <button class="text-xs text-dimmed underline hover:text-muted" @click="resetFilters">Clear all</button>
+          <button class="text-xs text-dimmed underline hover:text-muted" @click="resetFilters">
+            Clear all
+          </button>
         </div>
 
         <!-- Loading -->
@@ -626,11 +821,7 @@ function updateUrl() {
         <!-- Results -->
         <template v-else-if="data?.products?.length">
           <div class="grid gap-3 grid-cols-2 lg:gap-4 xl:grid-cols-3">
-            <ProductCard
-              v-for="product in data.products"
-              :key="product.slug"
-              :product="product"
-            />
+            <ProductCard v-for="product in data.products" :key="product.slug" :product="product" />
           </div>
 
           <!-- Pagination -->

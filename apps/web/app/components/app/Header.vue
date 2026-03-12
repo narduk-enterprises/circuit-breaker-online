@@ -14,9 +14,12 @@ const navLinks = [
 
 // Close mobile menu on route change
 const route = useRoute()
-watch(() => route.path, () => {
-  mobileMenuOpen.value = false
-})
+watch(
+  () => route.path,
+  () => {
+    mobileMenuOpen.value = false
+  },
+)
 </script>
 
 <template>
@@ -26,16 +29,28 @@ watch(() => route.path, () => {
       <!-- Top Info Strip — minimal, utility-focused -->
       <div class="border-b border-white/[0.06]">
         <div class="mx-auto flex max-w-7xl items-center justify-between px-4 py-1.5 sm:px-6">
-          <span class="hidden text-[11px] font-medium tracking-[0.15em] uppercase text-white/40 md:inline">
+          <span
+            class="hidden text-[11px] font-medium tracking-[0.15em] uppercase text-white/40 md:inline"
+          >
             A Group CBS Company — Trusted Since 1981
           </span>
-          <div class="flex items-center gap-4 sm:gap-6 max-sm:w-full max-sm:justify-center text-[12px]">
-            <ULink to="tel:8002325809" class="group flex items-center gap-1.5 text-white/45 transition-colors hover:text-white">
+          <div
+            class="flex items-center gap-4 sm:gap-6 max-sm:w-full max-sm:justify-center text-[12px]"
+          >
+            <ULink
+              to="tel:8002325809"
+              class="group flex items-center gap-1.5 text-white/45 transition-colors hover:text-white"
+            >
               <UIcon name="i-lucide-phone" class="size-3" />
-              <span class="font-semibold text-white/70 group-hover:text-white transition-colors">800-232-5809</span>
+              <span class="font-semibold text-white/70 group-hover:text-white transition-colors"
+                >800-232-5809</span
+              >
             </ULink>
             <span class="hidden text-white/15 sm:inline">|</span>
-            <ULink to="mailto:sales@circuitbreaker.com" class="hidden items-center gap-1.5 text-white/45 transition-colors hover:text-white sm:flex">
+            <ULink
+              to="mailto:sales@circuitbreaker.com"
+              class="hidden items-center gap-1.5 text-white/45 transition-colors hover:text-white sm:flex"
+            >
               <UIcon name="i-lucide-mail" class="size-3" />
               <span>sales@circuitbreaker.com</span>
             </ULink>
@@ -54,7 +69,7 @@ watch(() => route.path, () => {
             src="/images/branding/CBS-Service-Shop-Logo.png"
             alt="Circuit Breaker Sales"
             class="h-10 sm:h-12 w-auto object-contain"
-          >
+          />
         </NuxtLink>
 
         <!-- Desktop Links — refined spacing and hierarchy -->
@@ -116,7 +131,14 @@ watch(() => route.path, () => {
           {{ link.label }}
         </NuxtLink>
         <div class="mt-3 border-t border-white/[0.06] pt-3 pb-1">
-          <UButton to="/contact" color="primary" block size="lg" class="font-bold uppercase tracking-wider" @click="mobileMenuOpen = false">
+          <UButton
+            to="/contact"
+            color="primary"
+            block
+            size="lg"
+            class="font-bold uppercase tracking-wider"
+            @click="mobileMenuOpen = false"
+          >
             Request a Quote
           </UButton>
         </div>

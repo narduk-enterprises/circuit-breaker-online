@@ -32,14 +32,17 @@ const companyLinks = [
               src="/images/branding/CBS-Service-Shop-Logo.png"
               alt="Circuit Breaker Sales"
               class="h-9 w-auto object-contain"
-            >
+            />
           </NuxtLink>
           <p class="mt-4 text-sm leading-relaxed text-white/50">
-            A Group CBS company providing new and reconditioned electrical power equipment since 1981.
+            A Group CBS company providing new and reconditioned electrical power equipment since
+            1981.
           </p>
           <div class="mt-4 flex items-center gap-2 text-sm text-white/60">
             <UIcon name="i-lucide-phone" class="size-4 text-brand-400" />
-            <ULink to="tel:8002325809" class="font-semibold transition-colors hover:text-white">800-232-5809</ULink>
+            <ULink to="tel:8002325809" class="font-semibold transition-colors hover:text-white"
+              >800-232-5809</ULink
+            >
           </div>
           <!-- Trust Badges -->
           <div class="mt-4 flex items-center gap-3">
@@ -47,13 +50,15 @@ const companyLinks = [
               src="/images/branding/ISO-9001-badge.png"
               alt="ISO 9001:2008 Certified"
               class="size-11 rounded object-contain opacity-50"
-            >
+            />
           </div>
         </div>
 
         <!-- Equipment -->
         <div>
-          <h3 class="mb-4 font-display text-xs font-bold uppercase tracking-[0.2em] text-white/40">Equipment</h3>
+          <h3 class="mb-4 font-display text-xs font-bold uppercase tracking-[0.2em] text-white/40">
+            Equipment
+          </h3>
           <ul class="space-y-0.5">
             <li v-for="cat in equipmentLinks" :key="cat.to">
               <NuxtLink
@@ -68,7 +73,9 @@ const companyLinks = [
 
         <!-- Quick Links -->
         <div>
-          <h3 class="mb-4 font-display text-xs font-bold uppercase tracking-[0.2em] text-white/40">Company</h3>
+          <h3 class="mb-4 font-display text-xs font-bold uppercase tracking-[0.2em] text-white/40">
+            Company
+          </h3>
           <ul class="space-y-0.5">
             <li v-for="link in companyLinks" :key="link.to">
               <NuxtLink
@@ -83,18 +90,30 @@ const companyLinks = [
 
         <!-- Contact -->
         <div>
-          <h3 class="mb-4 font-display text-xs font-bold uppercase tracking-[0.2em] text-white/40">Contact</h3>
+          <h3 class="mb-4 font-display text-xs font-bold uppercase tracking-[0.2em] text-white/40">
+            Contact
+          </h3>
           <div class="space-y-3 text-sm text-white/50">
             <p>
-              <span class="font-semibold text-white/70">Main Office</span><br>
-              <ULink to="tel:8002325809" class="transition-colors hover:text-white">800-232-5809</ULink>
+              <span class="font-semibold text-white/70">Main Office</span><br />
+              <ULink to="tel:8002325809" class="transition-colors hover:text-white"
+                >800-232-5809</ULink
+              >
             </p>
             <p>
-              <span class="font-semibold text-white/70">Email</span><br>
-              <ULink to="mailto:sales@circuitbreaker.com" class="transition-colors hover:text-white">sales@circuitbreaker.com</ULink>
+              <span class="font-semibold text-white/70">Email</span><br />
+              <ULink to="mailto:sales@circuitbreaker.com" class="transition-colors hover:text-white"
+                >sales@circuitbreaker.com</ULink
+              >
             </p>
             <div class="pt-2">
-              <UButton to="/contact" variant="outline" color="primary" size="sm" class="font-bold uppercase tracking-wide">
+              <UButton
+                to="/contact"
+                variant="outline"
+                color="primary"
+                size="sm"
+                class="font-bold uppercase tracking-wide"
+              >
                 Get a Quote
               </UButton>
             </div>
@@ -105,14 +124,16 @@ const companyLinks = [
 
     <!-- Bottom Bar -->
     <div class="border-t border-white/10">
-      <div class="mx-auto flex max-w-7xl items-center justify-between px-4 py-4 text-xs text-white/30">
+      <div
+        class="mx-auto flex max-w-7xl items-center justify-between px-4 py-4 text-xs text-white/30"
+      >
         <p>© {{ new Date().getFullYear() }} Circuit Breaker Sales. All rights reserved.</p>
         <div class="flex items-center gap-3">
           <img
             src="/images/branding/Power-of-One-Logo-2026.png"
             alt="Group CBS — Power of One"
             class="h-8 w-auto object-contain opacity-40"
-          >
+          />
         </div>
       </div>
     </div>
