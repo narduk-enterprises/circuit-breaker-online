@@ -32,7 +32,7 @@ const companyLinks = [
               src="/images/branding/CBS-Service-Shop-Logo.png"
               alt="Circuit Breaker Sales"
               class="h-9 w-auto object-contain"
-            />
+            >
           </NuxtLink>
           <p class="mt-4 text-sm leading-relaxed text-white/50">
             A Group CBS company providing new and reconditioned electrical power equipment since 1981.
@@ -47,7 +47,7 @@ const companyLinks = [
               src="/images/branding/ISO-9001-badge.png"
               alt="ISO 9001:2008 Certified"
               class="size-11 rounded object-contain opacity-50"
-            />
+            >
           </div>
         </div>
 
@@ -112,7 +112,7 @@ const companyLinks = [
             src="/images/branding/Power-of-One-Logo-2026.png"
             alt="Group CBS — Power of One"
             class="h-8 w-auto object-contain opacity-40"
-          />
+          >
         </div>
       </div>
     </div>

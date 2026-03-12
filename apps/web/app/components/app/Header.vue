@@ -54,7 +54,7 @@ watch(() => route.path, () => {
             src="/images/branding/CBS-Service-Shop-Logo.png"
             alt="Circuit Breaker Sales"
             class="h-10 sm:h-12 w-auto object-contain"
-          />
+          >
         </NuxtLink>
 
         <!-- Desktop Links — refined spacing and hierarchy -->

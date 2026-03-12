@@ -141,7 +141,7 @@ useBreadcrumbSchema(breadcrumbItems)
               :src="absoluteImages[activeImage]"
               :alt="imageAlt"
               class="h-full w-full object-contain p-4"
-            />
+            >
             <div v-else class="flex h-full w-full items-center justify-center">
               <UIcon name="i-lucide-image" class="size-24 text-gray-200" />
             </div>
@@ -164,7 +164,7 @@ useBreadcrumbSchema(breadcrumbItems)
             :class="activeImage === Number(idx) ? 'border-brand-600' : 'border-default hover:border-brand-300'"
             @click="activeImage = Number(idx)"
           >
-            <img :src="img" :alt="`${imageAlt} - Image ${Number(idx) + 1}`" class="aspect-square object-cover" loading="lazy" />
+            <img :src="img" :alt="`${imageAlt} - Image ${Number(idx) + 1}`" class="aspect-square object-cover" loading="lazy" >
           </button>
         </div>
       </div>
@@ -315,7 +315,7 @@ useBreadcrumbSchema(breadcrumbItems)
               :alt="rp.name"
               class="h-full w-full object-contain p-3"
               loading="lazy"
-            />
+            >
             <div v-else class="flex h-full w-full items-center justify-center">
               <UIcon name="i-lucide-image" class="size-12 text-gray-200" />
             </div>
