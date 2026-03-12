@@ -6,7 +6,7 @@
   "scripts": {
     "build": "nuxt build",
     "dev": "nuxt dev",
-    "db:migrate": "wrangler d1 execute circuit-breaker-online-db --local --file=drizzle/0000_initial_schema.sql && wrangler d1 execute circuit-breaker-online-db --local --file=drizzle/seed-from-prod.sql",
+    "db:migrate": "bash ../../tools/db-migrate.sh circuit-breaker-online-db --local --dir drizzle",
     "db:seed": "wrangler d1 execute circuit-breaker-online-db --local --file=drizzle/seed-from-prod.sql",
     "db:pull": "wrangler d1 export circuit-breaker-online-db --remote --output=drizzle/seed-products.sql --table=products && wrangler d1 export circuit-breaker-online-db --remote --output=drizzle/seed-categories.sql --table=categories && cat drizzle/seed-categories.sql drizzle/seed-products.sql > drizzle/seed-from-prod.sql && rm drizzle/seed-categories.sql drizzle/seed-products.sql",
     "db:studio": "drizzle-kit studio",
@@ -19,17 +19,19 @@
     "test": "vitest run",
     "test:unit": "vitest run",
     "seo:check": "vitest run tests/sitemap-seo.test.ts",
-    "quality": "echo 'Turbo dependsOn handles lint + typecheck + format:check'"
+    "quality": "echo 'Turbo dependsOn handles lint + typecheck + format:check'",
+    "db:reset": "bash ../../tools/db-migrate.sh circuit-breaker-online-db --local --dir drizzle --reset && pnpm run db:seed",
+    "db:ready": "pnpm run db:migrate && pnpm run db:seed"
   },
   "dependencies": {
     "@narduk-enterprises/narduk-nuxt-template-layer": "workspace:*",
-    "@narduk/eslint-config": "workspace:*",
     "cheerio": "^1.2.0",
     "drizzle-orm": "^0.45.1",
     "jose": "^6.1.3",
     "nuxt": "^4.3.1",
     "posthog-js": "^1.356.1",
-    "zod": "^4.3.6"
+    "zod": "^4.3.6",
+    "@narduk-enterprises/eslint-config": "^1.0.11"
   },
   "devDependencies": {
     "@cloudflare/workers-types": "^4.20250620.0",

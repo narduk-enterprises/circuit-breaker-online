@@ -17,7 +17,7 @@ export default [
       'nuxt-guardrails/require-use-seo-on-pages': 'off',
       'nuxt-guardrails/require-schema-on-pages': 'off',
       'nuxt-guardrails/prefer-use-seo-over-bare-meta': 'off',
-      'vue-official/no-template-complex-expressions': 'off',
+      'narduk/no-template-complex-expressions': 'off',
       'vue/no-v-html': 'off',
       'vue/block-order': 'off',
       '@typescript-eslint/no-explicit-any': 'off',
