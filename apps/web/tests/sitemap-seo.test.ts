@@ -12,7 +12,11 @@ import { describe, it, expect } from 'vitest'
 import { useCategorySlug } from '../app/composables/useCategorySlug'
 import { buildSitemapEntries } from '../server/utils/buildSitemapEntries'
 import { getCanonicalUrl, getRobotsDirective } from '../app/utils/seo-helpers'
-import { toAbsoluteImageUrl, buildFallbackDescription, buildProductTitle } from '../app/utils/product-seo'
+import {
+  toAbsoluteImageUrl,
+  buildFallbackDescription,
+  buildProductTitle,
+} from '../app/utils/product-seo'
 
 // ---------------------------------------------------------------------------
 // Tests
@@ -46,24 +50,26 @@ describe('sitemap URL generation', () => {
   })
 
   it('includes only parent category paths, not child categories', () => {
-    const categoryLocs = entries.filter(e => e.loc.startsWith('/products/category/'))
+    const categoryLocs = entries.filter((e) => e.loc.startsWith('/products/category/'))
     expect(categoryLocs).toHaveLength(3) // Circuit Breakers, Switchgear, Transformers
-    expect(categoryLocs.map(e => e.loc)).toContain('/products/category/circuit-breakers')
-    expect(categoryLocs.map(e => e.loc)).toContain('/products/category/switchgear')
-    expect(categoryLocs.map(e => e.loc)).toContain('/products/category/transformers')
+    expect(categoryLocs.map((e) => e.loc)).toContain('/products/category/circuit-breakers')
+    expect(categoryLocs.map((e) => e.loc)).toContain('/products/category/switchgear')
+    expect(categoryLocs.map((e) => e.loc)).toContain('/products/category/transformers')
     // Low Voltage is a child — must NOT be in sitemap
-    expect(categoryLocs.map(e => e.loc)).not.toContain('/products/category/low-voltage')
+    expect(categoryLocs.map((e) => e.loc)).not.toContain('/products/category/low-voltage')
   })
 
   it('includes product detail pages by slug', () => {
-    const productLocs = entries.filter(e => e.loc.startsWith('/products/') && !e.loc.startsWith('/products/category/'))
+    const productLocs = entries.filter(
+      (e) => e.loc.startsWith('/products/') && !e.loc.startsWith('/products/category/'),
+    )
     expect(productLocs).toHaveLength(2)
-    expect(productLocs.map(e => e.loc)).toContain('/products/ge-akr-50-circuit-breaker')
-    expect(productLocs.map(e => e.loc)).toContain('/products/westinghouse-ds-416-breaker')
+    expect(productLocs.map((e) => e.loc)).toContain('/products/ge-akr-50-circuit-breaker')
+    expect(productLocs.map((e) => e.loc)).toContain('/products/westinghouse-ds-416-breaker')
   })
 
   it('includes static pages', () => {
-    const locs = entries.map(e => e.loc)
+    const locs = entries.map((e) => e.loc)
     expect(locs).toContain('/')
     expect(locs).toContain('/about')
     expect(locs).toContain('/products')
@@ -80,7 +86,9 @@ describe('useCategorySlug', () => {
   it('converts category names to URL-safe slugs', () => {
     expect(useCategorySlug('Circuit Breakers')).toBe('circuit-breakers')
     expect(useCategorySlug('Bus Duct & Busway')).toBe('bus-duct-busway')
-    expect(useCategorySlug('Variable Frequency Drives (VFDs)')).toBe('variable-frequency-drives-vfds')
+    expect(useCategorySlug('Variable Frequency Drives (VFDs)')).toBe(
+      'variable-frequency-drives-vfds',
+    )
     expect(useCategorySlug('Fuses & Fuse Holders')).toBe('fuses-fuse-holders')
     expect(useCategorySlug('Renewal & Replacement Parts')).toBe('renewal-replacement-parts')
   })
@@ -98,28 +106,33 @@ describe('useCategorySlug', () => {
 
 describe('SEO policy', () => {
   it('canonical URL strips query string', () => {
-    expect(getCanonicalUrl('https://circuitbreaker.online', '/products?category=breakers&page=2'))
-      .toBe('https://circuitbreaker.online/products')
+    expect(
+      getCanonicalUrl('https://circuitbreaker.online', '/products?category=breakers&page=2'),
+    ).toBe('https://circuitbreaker.online/products')
   })
 
   it('canonical URL strips hash fragment', () => {
-    expect(getCanonicalUrl('https://circuitbreaker.online', '/products#top'))
-      .toBe('https://circuitbreaker.online/products')
+    expect(getCanonicalUrl('https://circuitbreaker.online', '/products#top')).toBe(
+      'https://circuitbreaker.online/products',
+    )
   })
 
   it('canonical URL strips both query string and hash fragment', () => {
-    expect(getCanonicalUrl('https://circuitbreaker.online', '/products?category=X#section'))
-      .toBe('https://circuitbreaker.online/products')
+    expect(getCanonicalUrl('https://circuitbreaker.online', '/products?category=X#section')).toBe(
+      'https://circuitbreaker.online/products',
+    )
   })
 
   it('canonical URL preserves clean path', () => {
-    expect(getCanonicalUrl('https://circuitbreaker.online', '/products/category/circuit-breakers'))
-      .toBe('https://circuitbreaker.online/products/category/circuit-breakers')
+    expect(
+      getCanonicalUrl('https://circuitbreaker.online', '/products/category/circuit-breakers'),
+    ).toBe('https://circuitbreaker.online/products/category/circuit-breakers')
   })
 
   it('canonical URL normalises trailing slash on siteUrl', () => {
-    expect(getCanonicalUrl('https://circuitbreaker.online/', '/products'))
-      .toBe('https://circuitbreaker.online/products')
+    expect(getCanonicalUrl('https://circuitbreaker.online/', '/products')).toBe(
+      'https://circuitbreaker.online/products',
+    )
   })
 
   it('clean pages get index,follow', () => {
@@ -145,20 +158,24 @@ describe('toAbsoluteImageUrl', () => {
   })
 
   it('preserves already-absolute URLs', () => {
-    expect(toAbsoluteImageUrl(site, 'https://cdn.example.com/img.jpg'))
-      .toBe('https://cdn.example.com/img.jpg')
-    expect(toAbsoluteImageUrl(site, 'http://cdn.example.com/img.jpg'))
-      .toBe('http://cdn.example.com/img.jpg')
+    expect(toAbsoluteImageUrl(site, 'https://cdn.example.com/img.jpg')).toBe(
+      'https://cdn.example.com/img.jpg',
+    )
+    expect(toAbsoluteImageUrl(site, 'http://cdn.example.com/img.jpg')).toBe(
+      'http://cdn.example.com/img.jpg',
+    )
   })
 
   it('prefixes relative URLs starting with /', () => {
-    expect(toAbsoluteImageUrl(site, '/images/products/test.png'))
-      .toBe('https://circuitbreaker.online/images/products/test.png')
+    expect(toAbsoluteImageUrl(site, '/images/products/test.png')).toBe(
+      'https://circuitbreaker.online/images/products/test.png',
+    )
   })
 
   it('prefixes relative URLs without leading /', () => {
-    expect(toAbsoluteImageUrl(site, 'images/test.png'))
-      .toBe('https://circuitbreaker.online/images/test.png')
+    expect(toAbsoluteImageUrl(site, 'images/test.png')).toBe(
+      'https://circuitbreaker.online/images/test.png',
+    )
   })
 })
 

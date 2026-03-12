@@ -2,11 +2,21 @@
 const route = useRoute()
 const slug = route.params.slug as string
 
-const articlesData: Record<string, { title: string; category: string; excerpt: string; content: string; relatedLinks: { to: string; label: string }[] }> = {
+const articlesData: Record<
+  string,
+  {
+    title: string
+    category: string
+    excerpt: string
+    content: string
+    relatedLinks: { to: string; label: string }[]
+  }
+> = {
   'circuit-breaker-maintenance-guide': {
     title: 'The Complete Guide to Circuit Breaker Maintenance',
     category: 'Maintenance',
-    excerpt: 'Essential maintenance intervals, testing procedures, and best practices for extending circuit breaker life.',
+    excerpt:
+      'Essential maintenance intervals, testing procedures, and best practices for extending circuit breaker life.',
     content: `<h2>Why Circuit Breaker Maintenance Matters</h2>
 <p>Circuit breakers are the last line of defense in electrical power systems. When a fault occurs, the breaker must operate correctly — often after sitting idle for years or even decades. Without regular maintenance, mechanical linkages can seize, contacts can weld, and trip units can drift out of calibration.</p>
 <h2>Recommended Maintenance Intervals</h2>
@@ -26,7 +36,8 @@ const articlesData: Record<string, { title: string; category: string; excerpt: s
   'arc-flash-safety-guide': {
     title: 'Understanding Arc Flash Hazards & NFPA 70E Compliance',
     category: 'Safety',
-    excerpt: 'A practical guide to arc flash hazard analysis, PPE requirements, and engineering controls.',
+    excerpt:
+      'A practical guide to arc flash hazard analysis, PPE requirements, and engineering controls.',
     content: `<h2>What is Arc Flash?</h2>
 <p>An arc flash is an explosive release of energy caused by an electrical arc fault. Arc flash temperatures can reach 35,000°F — four times the surface temperature of the sun. The resulting blast can cause severe burns, hearing damage, and even fatalities. Understanding and mitigating arc flash hazards is a critical safety priority in any facility with electrical equipment.</p>
 <h2>NFPA 70E Requirements</h2>
@@ -45,7 +56,8 @@ const articlesData: Record<string, { title: string; category: string; excerpt: s
   'switchgear-modernization': {
     title: 'Switchgear Modernization: Retrofill vs. Replace',
     category: 'Engineering',
-    excerpt: 'Evaluate the costs, benefits, and technical considerations of retrofilling obsolete switchgear.',
+    excerpt:
+      'Evaluate the costs, benefits, and technical considerations of retrofilling obsolete switchgear.',
     content: `<h2>The Modernization Challenge</h2>
 <p>Millions of switchgear lineups across North America are reaching 30, 40, or even 50+ years of age. Many contain circuit breakers that are no longer manufactured, with replacement parts becoming increasingly scarce and expensive. Facility managers face a critical decision: retrofill the existing enclosures with modern breakers, or replace the entire lineup.</p>
 <h2>What is Retrofill?</h2>
@@ -126,7 +138,12 @@ useSeo({
   title: `${currentArticle.value.title} | Circuit Breaker Sales`,
   description: currentArticle.value.excerpt,
   type: 'article',
-  keywords: [currentArticle.value.category, 'circuit breaker', 'electrical equipment', 'technical guide'],
+  keywords: [
+    currentArticle.value.category,
+    'circuit breaker',
+    'electrical equipment',
+    'technical guide',
+  ],
   ogImage: {
     title: currentArticle.value.title,
     description: currentArticle.value.category,
@@ -147,7 +164,10 @@ const faqPairs = computed(() => {
   let match
   while ((match = h2Regex.exec(content)) !== null) {
     const question = (match[1] || '').replaceAll(/<[^>]*>/g, '').trim()
-    const answer = (match[2] || '').replaceAll(/<[^>]*>/g, ' ').replaceAll(/\s+/g, ' ').trim()
+    const answer = (match[2] || '')
+      .replaceAll(/<[^>]*>/g, ' ')
+      .replaceAll(/\s+/g, ' ')
+      .trim()
     if (question && answer) {
       pairs.push({ question, answer: answer.slice(0, 500) })
     }
@@ -165,25 +185,33 @@ useHead({
         headline: currentArticle.value.title,
         description: currentArticle.value.excerpt,
         author: { '@type': 'Organization', name: 'Circuit Breaker Sales' },
-        publisher: { '@type': 'Organization', name: 'Circuit Breaker Sales', url: 'https://circuitbreaker.online' },
+        publisher: {
+          '@type': 'Organization',
+          name: 'Circuit Breaker Sales',
+          url: 'https://circuitbreaker.online',
+        },
       }),
     },
     // FAQ schema — enables "People Also Ask" rich results
-    ...(faqPairs.value.length > 0 ? [{
-      type: 'application/ld+json',
-      innerHTML: JSON.stringify({
-        '@context': 'https://schema.org',
-        '@type': 'FAQPage',
-        mainEntity: faqPairs.value.map(faq => ({
-          '@type': 'Question',
-          name: faq.question,
-          acceptedAnswer: {
-            '@type': 'Answer',
-            text: faq.answer,
+    ...(faqPairs.value.length > 0
+      ? [
+          {
+            type: 'application/ld+json',
+            innerHTML: JSON.stringify({
+              '@context': 'https://schema.org',
+              '@type': 'FAQPage',
+              mainEntity: faqPairs.value.map((faq) => ({
+                '@type': 'Question',
+                name: faq.question,
+                acceptedAnswer: {
+                  '@type': 'Answer',
+                  text: faq.answer,
+                },
+              })),
+            }),
           },
-        })),
-      }),
-    }] : []),
+        ]
+      : []),
   ],
 })
 </script>
@@ -191,14 +219,25 @@ useHead({
 <template>
   <div>
     <section class="gradient-industrial hero-grid relative overflow-hidden">
-      <div class="absolute inset-0 bg-linear-to-b from-brand-950/20 via-transparent to-transparent" />
+      <div
+        class="absolute inset-0 bg-linear-to-b from-brand-950/20 via-transparent to-transparent"
+      />
       <div class="relative mx-auto max-w-7xl px-4 pb-16 pt-20 sm:pb-20 sm:pt-28">
         <div class="mb-4 flex items-center gap-2">
-          <NuxtLink to="/resources" class="font-display text-xs font-semibold uppercase tracking-[0.2em] text-brand-500 hover:text-brand-400">Resources</NuxtLink>
+          <NuxtLink
+            to="/resources"
+            class="font-display text-xs font-semibold uppercase tracking-[0.2em] text-brand-500 hover:text-brand-400"
+            >Resources</NuxtLink
+          >
           <UIcon name="i-lucide-chevron-right" class="size-3 text-white/70" />
-          <span class="font-display text-xs font-semibold uppercase tracking-[0.2em] text-white/60">{{ currentArticle?.category }}</span>
+          <span
+            class="font-display text-xs font-semibold uppercase tracking-[0.2em] text-white/60"
+            >{{ currentArticle?.category }}</span
+          >
         </div>
-        <h1 class="mb-6 max-w-4xl font-display text-3xl font-bold leading-[1.15] text-white sm:text-4xl">
+        <h1
+          class="mb-6 max-w-4xl font-display text-3xl font-bold leading-[1.15] text-white sm:text-4xl"
+        >
           {{ currentArticle?.title }}
         </h1>
         <p class="max-w-2xl text-lg leading-relaxed text-white/60">{{ currentArticle?.excerpt }}</p>
@@ -209,12 +248,19 @@ useHead({
       <div class="grid gap-12 lg:grid-cols-3">
         <article class="lg:col-span-2 prose prose-gray max-w-none">
           <!-- eslint-disable-next-line vue/no-v-html -->
-          <div class="light-card rounded-xl p-8 text-sm leading-relaxed text-muted" v-html="currentArticle?.content" />
+          <div
+            class="light-card rounded-xl p-8 text-sm leading-relaxed text-muted"
+            v-html="currentArticle?.content"
+          />
         </article>
 
         <aside class="space-y-6">
           <div class="light-card border-brand-600/20 rounded-xl p-6">
-            <h3 class="mb-4 font-display text-sm font-semibold uppercase tracking-wider text-brand-500">Related Services</h3>
+            <h3
+              class="mb-4 font-display text-sm font-semibold uppercase tracking-wider text-brand-500"
+            >
+              Related Services
+            </h3>
             <ul class="space-y-2 text-sm text-muted">
               <li v-for="link in currentArticle?.relatedLinks" :key="link.to">
                 <NuxtLink :to="link.to" class="flex items-center gap-2 hover:text-brand-600">
@@ -225,8 +271,14 @@ useHead({
             </ul>
           </div>
           <div class="light-card rounded-xl p-6">
-            <h3 class="mb-3 font-display text-sm font-semibold uppercase tracking-wider text-brand-500">Need Expert Help?</h3>
-            <p class="mb-4 text-sm text-dimmed">Our engineering team can help with your specific application.</p>
+            <h3
+              class="mb-3 font-display text-sm font-semibold uppercase tracking-wider text-brand-500"
+            >
+              Need Expert Help?
+            </h3>
+            <p class="mb-4 text-sm text-dimmed">
+              Our engineering team can help with your specific application.
+            </p>
             <UButton to="/contact" color="primary" block size="sm">Contact an Engineer</UButton>
           </div>
         </aside>
@@ -234,4 +286,3 @@ useHead({
     </section>
   </div>
 </template>
-

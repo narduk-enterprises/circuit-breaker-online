@@ -11,7 +11,9 @@ import { buildSitemapEntries } from '../../utils/buildSitemapEntries'
 export default defineEventHandler(async (event: H3Event) => {
   const db = useD1(event)
   const { results: products } = await db.prepare('SELECT slug FROM products').all()
-  const { results: categories } = await db.prepare("SELECT name, slug, parent FROM categories ORDER BY parent, name").all()
+  const { results: categories } = await db
+    .prepare('SELECT name, slug, parent FROM categories ORDER BY parent, name')
+    .all()
 
   return buildSitemapEntries(products || [], categories || [])
 })

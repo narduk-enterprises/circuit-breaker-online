@@ -1,7 +1,8 @@
 <script setup lang="ts">
 useSeoMeta({
   title: 'Circuit Breaker Sales | Industrial Power Equipment',
-  description: 'Your trusted source for new and reconditioned circuit breakers, switchgear, transformers, and industrial power equipment. A Group CBS company since 1981.',
+  description:
+    'Your trusted source for new and reconditioned circuit breakers, switchgear, transformers, and industrial power equipment. A Group CBS company since 1981.',
   ogType: 'website',
   ogSiteName: 'Circuit Breaker Sales',
   ogImage: 'https://circuitbreaker.online/images/branding/og-default.png',
@@ -35,12 +36,7 @@ useSeoMeta({
         </template>
         Call Now
       </UButton>
-      <UButton
-        to="/contact"
-        color="primary"
-        size="xl"
-        class="font-bold justify-center"
-      >
+      <UButton to="/contact" color="primary" size="xl" class="font-bold justify-center">
         <template #leading>
           <UIcon name="i-lucide-message-square" class="size-5" />
         </template>

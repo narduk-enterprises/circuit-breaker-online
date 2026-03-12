@@ -1,11 +1,15 @@
 export default defineEventHandler(async (event) => {
   const db = useD1(event)
 
-  const { results: categories } = await db.prepare(`
+  const { results: categories } = await db
+    .prepare(
+      `
     SELECT name, slug, parent, count
     FROM categories
     ORDER BY count DESC
-  `).all()
+  `,
+    )
+    .all()
 
   // Build hierarchical structure
   const parentCats = (categories || []).filter((c: any) => !c.parent)

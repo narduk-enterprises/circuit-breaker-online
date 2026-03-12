@@ -47,11 +47,17 @@ export function buildFallbackDescription(p: ProductSeoData): string {
   if (p.model) parts.push(`Model: ${p.model}.`)
 
   if (p.voltage && p.amperage) {
-    parts.push(`It is rated for ${p.voltage} and ${p.amperage}, making it suitable for a wide range of industrial and commercial applications.`)
+    parts.push(
+      `It is rated for ${p.voltage} and ${p.amperage}, making it suitable for a wide range of industrial and commercial applications.`,
+    )
   } else if (p.voltage) {
-    parts.push(`Rated for ${p.voltage}, this equipment is designed for demanding electrical environments.`)
+    parts.push(
+      `Rated for ${p.voltage}, this equipment is designed for demanding electrical environments.`,
+    )
   } else if (p.amperage) {
-    parts.push(`Rated at ${p.amperage}, it meets the requirements of various industrial installations.`)
+    parts.push(
+      `Rated at ${p.amperage}, it meets the requirements of various industrial installations.`,
+    )
   }
 
   if (p.type) parts.push(`Product type: ${p.type}.`)
@@ -59,12 +65,19 @@ export function buildFallbackDescription(p: ProductSeoData): string {
   if (p.condition) parts.push(`Condition: ${p.condition}.`)
   if (p.warranty) parts.push(`Backed by a ${p.warranty} warranty.`)
 
-  if (p.subcategory) parts.push(`Filed under ${p.subcategory} within our ${cat.toLowerCase()} catalog.`)
+  if (p.subcategory)
+    parts.push(`Filed under ${p.subcategory} within our ${cat.toLowerCase()} catalog.`)
 
-  parts.push('Circuit Breaker Sales has been a trusted source for industrial power distribution equipment since 1981.')
-  parts.push('All equipment is thoroughly inspected and tested by our experienced engineering team.')
+  parts.push(
+    'Circuit Breaker Sales has been a trusted source for industrial power distribution equipment since 1981.',
+  )
+  parts.push(
+    'All equipment is thoroughly inspected and tested by our experienced engineering team.',
+  )
   parts.push('Contact us at 800-232-5809 for pricing, availability, and custom quotes.')
-  parts.push(`We offer fast shipping, competitive pricing, and expert technical support for all ${cat.toLowerCase()}.`)
+  parts.push(
+    `We offer fast shipping, competitive pricing, and expert technical support for all ${cat.toLowerCase()}.`,
+  )
 
   return parts.join(' ')
 }

@@ -1,7 +1,8 @@
 <script setup lang="ts">
 useSeo({
   title: 'Contact Us — Request a Quote | Circuit Breaker Sales',
-  description: 'Get a quote on circuit breakers, switchgear, transformers, and industrial power equipment from Circuit Breaker Sales. Toll-free: 800-232-5809.',
+  description:
+    'Get a quote on circuit breakers, switchgear, transformers, and industrial power equipment from Circuit Breaker Sales. Toll-free: 800-232-5809.',
   ogImage: {
     title: 'Request a Quote',
     description: 'Toll-free: 800-232-5809',
@@ -9,7 +10,11 @@ useSeo({
   },
 })
 
-useWebPageSchema({ type: 'ContactPage', name: 'Contact Circuit Breaker Sales', description: 'Request a quote on industrial power equipment. Toll-free: 800-232-5809.' })
+useWebPageSchema({
+  type: 'ContactPage',
+  name: 'Contact Circuit Breaker Sales',
+  description: 'Request a quote on industrial power equipment. Toll-free: 800-232-5809.',
+})
 
 useBreadcrumbSchema([
   { name: 'Home', url: 'https://circuitbreaker.online/' },
@@ -46,7 +51,7 @@ const subjectOptions = [
 const handleSubmit = async () => {
   submitting.value = true
   // Simulate form submission
-  await new Promise(r => setTimeout(r, 1000))
+  await new Promise((r) => setTimeout(r, 1000))
   submitting.value = false
   submitted.value = true
 }
@@ -56,15 +61,22 @@ const handleSubmit = async () => {
   <div class="mx-auto max-w-7xl px-4 py-8 sm:py-12">
     <!-- Page Header -->
     <div class="mb-8">
-      <h1 class="mb-2 font-display text-3xl font-bold text-default">Contact Us / Request a Quote</h1>
+      <h1 class="mb-2 font-display text-3xl font-bold text-default">
+        Contact Us / Request a Quote
+      </h1>
       <div class="h-1 w-16 rounded bg-brand-600" />
-      <p class="mt-4 text-lg text-dimmed">Have a question or need pricing? Fill out the form below and our team will respond promptly.</p>
+      <p class="mt-4 text-lg text-dimmed">
+        Have a question or need pricing? Fill out the form below and our team will respond promptly.
+      </p>
     </div>
 
     <div class="grid gap-12 lg:grid-cols-3">
       <!-- Form -->
       <div class="lg:col-span-2">
-        <UForm class="light-card accent-border rounded-xl p-5 sm:p-8 lg:p-10" @submit.prevent="handleSubmit">
+        <UForm
+          class="light-card accent-border rounded-xl p-5 sm:p-8 lg:p-10"
+          @submit.prevent="handleSubmit"
+        >
           <!-- Name & Email row -->
           <div class="grid gap-6 sm:grid-cols-2">
             <UFormField label="Full Name" required>
@@ -87,7 +99,13 @@ const handleSubmit = async () => {
 
           <!-- Subject — full width -->
           <UFormField label="Subject" class="mt-6">
-            <USelect v-model="form.subject" :items="subjectOptions" placeholder="Select a subject..." size="xl" class="w-full" />
+            <USelect
+              v-model="form.subject"
+              :items="subjectOptions"
+              placeholder="Select a subject..."
+              size="xl"
+              class="w-full"
+            />
           </UFormField>
 
           <!-- Message — large textarea -->
@@ -101,9 +119,19 @@ const handleSubmit = async () => {
             />
           </UFormField>
 
-          <div class="mt-6 sm:mt-8 flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-4">
-            <p class="text-sm text-dimmed text-center sm:text-left">We typically respond within 24 hours.</p>
-            <UButton type="submit" color="primary" size="xl" :loading="submitting" class="w-full sm:w-auto justify-center">
+          <div
+            class="mt-6 sm:mt-8 flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-4"
+          >
+            <p class="text-sm text-dimmed text-center sm:text-left">
+              We typically respond within 24 hours.
+            </p>
+            <UButton
+              type="submit"
+              color="primary"
+              size="xl"
+              :loading="submitting"
+              class="w-full sm:w-auto justify-center"
+            >
               Send Message
             </UButton>
           </div>
@@ -120,18 +148,28 @@ const handleSubmit = async () => {
       <!-- Sidebar -->
       <div class="space-y-6">
         <div class="rounded-xl border border-default bg-muted p-6">
-          <h3 class="mb-4 font-display text-sm font-semibold uppercase tracking-wider text-brand-600">Direct Contact</h3>
+          <h3
+            class="mb-4 font-display text-sm font-semibold uppercase tracking-wider text-brand-600"
+          >
+            Direct Contact
+          </h3>
           <div class="space-y-4 text-base text-muted">
             <div>
               <p class="mb-1 font-medium text-default">Call Us (Toll Free)</p>
-              <ULink to="tel:8002325809" class="flex items-center gap-2 transition-colors hover:text-brand-600">
+              <ULink
+                to="tel:8002325809"
+                class="flex items-center gap-2 transition-colors hover:text-brand-600"
+              >
                 <UIcon name="i-lucide-phone" class="size-4 text-brand-600" />
                 800-232-5809
               </ULink>
             </div>
             <div>
               <p class="mb-1 font-medium text-default">Email</p>
-              <ULink to="mailto:sales@circuitbreaker.com" class="flex items-center gap-2 transition-colors hover:text-brand-600">
+              <ULink
+                to="mailto:sales@circuitbreaker.com"
+                class="flex items-center gap-2 transition-colors hover:text-brand-600"
+              >
                 <UIcon name="i-lucide-mail" class="size-4 text-brand-600" />
                 sales@circuitbreaker.com
               </ULink>
@@ -140,7 +178,9 @@ const handleSubmit = async () => {
         </div>
 
         <div class="rounded-xl border border-default bg-default p-6">
-          <h3 class="mb-3 font-display text-sm font-semibold uppercase tracking-wider text-brand-600">
+          <h3
+            class="mb-3 font-display text-sm font-semibold uppercase tracking-wider text-brand-600"
+          >
             Why Request a Quote?
           </h3>
           <ul class="space-y-2.5 text-sm text-dimmed">

@@ -20,9 +20,15 @@ export default defineEventHandler(async (event) => {
   }
 
   const gscSiteUrl = `sc-domain:${new URL(siteUrl).hostname}`
-  const query = (await getValidatedQuery(event, querySchema.parse)) as { startDate?: string; endDate?: string; dimension?: string }
+  const query = (await getValidatedQuery(event, querySchema.parse)) as {
+    startDate?: string
+    endDate?: string
+    dimension?: string
+  }
 
-  const endDate = (query?.endDate ? String(query.endDate) : new Date().toISOString().split('T')[0]) as string
+  const endDate = (
+    query?.endDate ? String(query.endDate) : new Date().toISOString().split('T')[0]
+  ) as string
   const start = new Date(endDate)
   start.setDate(start.getDate() - 30)
   const startDate = query?.startDate ? String(query.startDate) : start.toISOString().split('T')[0]

@@ -8,25 +8,37 @@ export const users = sqliteTable('users', {
   name: text('name'),
   appleId: text('apple_id').unique(),
   isAdmin: integer('is_admin', { mode: 'boolean' }).default(false),
-  createdAt: text('created_at').notNull().$defaultFn(() => new Date().toISOString()),
-  updatedAt: text('updated_at').notNull().$defaultFn(() => new Date().toISOString()),
+  createdAt: text('created_at')
+    .notNull()
+    .$defaultFn(() => new Date().toISOString()),
+  updatedAt: text('updated_at')
+    .notNull()
+    .$defaultFn(() => new Date().toISOString()),
 })
 
 // ─── Sessions ───────────────────────────────────────────────
 export const sessions = sqliteTable('sessions', {
   id: text('id').primaryKey(), // session token
-  userId: text('user_id').notNull().references(() => users.id, { onDelete: 'cascade' }),
+  userId: text('user_id')
+    .notNull()
+    .references(() => users.id, { onDelete: 'cascade' }),
   expiresAt: integer('expires_at').notNull(), // Unix timestamp
-  createdAt: text('created_at').notNull().$defaultFn(() => new Date().toISOString()),
+  createdAt: text('created_at')
+    .notNull()
+    .$defaultFn(() => new Date().toISOString()),
 })
 
 // ─── Todos (Demo) ───────────────────────────────────────────
 export const todos = sqliteTable('todos', {
   id: integer('id').primaryKey({ autoIncrement: true }),
-  userId: text('user_id').notNull().references(() => users.id, { onDelete: 'cascade' }),
+  userId: text('user_id')
+    .notNull()
+    .references(() => users.id, { onDelete: 'cascade' }),
   title: text('title').notNull(),
   completed: integer('completed', { mode: 'boolean' }).default(false),
-  createdAt: text('created_at').notNull().$defaultFn(() => new Date().toISOString()),
+  createdAt: text('created_at')
+    .notNull()
+    .$defaultFn(() => new Date().toISOString()),
 })
 
 // ─── Type helpers ───────────────────────────────────────────
