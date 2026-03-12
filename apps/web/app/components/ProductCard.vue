@@ -26,7 +26,7 @@ defineProps<{
         :alt="product.name"
         class="h-full w-full object-cover"
         loading="lazy"
-      />
+      >
       <div v-else class="flex h-full w-full items-center justify-center">
         <UIcon name="i-lucide-image" class="size-12 text-dimmed" />
       </div>

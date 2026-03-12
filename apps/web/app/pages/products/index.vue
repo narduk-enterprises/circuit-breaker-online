@@ -265,25 +265,25 @@ function updateUrl() {
     <div v-if="hasActiveFilters" class="mb-4 flex flex-wrap items-center gap-2 lg:hidden">
       <span v-if="activeCategory" class="inline-flex items-center gap-1 rounded-full bg-brand-50 px-2.5 py-1 text-xs font-medium text-brand-700">
         {{ activeCategory }}
-        <button @click="clearCategory" class="ml-0.5 hover:text-brand-900">&times;</button>
+        <button class="ml-0.5 hover:text-brand-900" @click="clearCategory">&times;</button>
       </span>
       <span v-if="activeSubcategory" class="inline-flex items-center gap-1 rounded-full bg-muted px-2.5 py-1 text-xs font-medium text-primary">
         {{ activeSubcategory }}
-        <button @click="clearSubcategory" class="ml-0.5 hover:text-primary">&times;</button>
+        <button class="ml-0.5 hover:text-primary" @click="clearSubcategory">&times;</button>
       </span>
       <span v-if="activeManufacturer" class="inline-flex items-center gap-1 rounded-full bg-muted px-2.5 py-1 text-xs font-medium text-primary">
         {{ activeManufacturer }}
-        <button @click="activeManufacturer = ''; applyFilter()" class="ml-0.5 hover:text-primary">&times;</button>
+        <button class="ml-0.5 hover:text-primary" @click="activeManufacturer = ''; applyFilter()">&times;</button>
       </span>
       <span v-if="activeVoltage" class="inline-flex items-center gap-1 rounded-full bg-muted px-2.5 py-1 text-xs font-medium text-primary">
         {{ activeVoltage }}
-        <button @click="activeVoltage = ''; applyFilter()" class="ml-0.5 hover:text-primary">&times;</button>
+        <button class="ml-0.5 hover:text-primary" @click="activeVoltage = ''; applyFilter()">&times;</button>
       </span>
       <span v-if="activeAmperage" class="inline-flex items-center gap-1 rounded-full bg-purple-50 px-2.5 py-1 text-xs font-medium text-purple-700">
         {{ activeAmperage }}
-        <button @click="activeAmperage = ''; applyFilter()" class="ml-0.5 hover:text-purple-900">&times;</button>
+        <button class="ml-0.5 hover:text-purple-900" @click="activeAmperage = ''; applyFilter()">&times;</button>
       </span>
-      <button @click="resetFilters" class="text-xs text-dimmed underline hover:text-muted">Clear all</button>
+      <button class="text-xs text-dimmed underline hover:text-muted" @click="resetFilters">Clear all</button>
     </div>
 
     <!-- Mobile Filter Drawer (Slide-over) -->
@@ -590,25 +590,25 @@ function updateUrl() {
           <span class="text-xs font-medium text-dimmed">Active filters:</span>
           <span v-if="activeCategory" class="inline-flex items-center gap-1 rounded-full bg-brand-50 px-3 py-1 text-xs font-medium text-brand-700">
             {{ activeCategory }}
-            <button @click="clearCategory" class="ml-0.5 hover:text-brand-900">&times;</button>
+            <button class="ml-0.5 hover:text-brand-900" @click="clearCategory">&times;</button>
           </span>
           <span v-if="activeSubcategory" class="inline-flex items-center gap-1 rounded-full bg-muted px-3 py-1 text-xs font-medium text-primary">
             {{ activeSubcategory }}
-            <button @click="clearSubcategory" class="ml-0.5 hover:text-primary">&times;</button>
+            <button class="ml-0.5 hover:text-primary" @click="clearSubcategory">&times;</button>
           </span>
           <span v-if="activeManufacturer" class="inline-flex items-center gap-1 rounded-full bg-muted px-3 py-1 text-xs font-medium text-primary">
             {{ activeManufacturer }}
-            <button @click="activeManufacturer = ''; applyFilter()" class="ml-0.5 hover:text-primary">&times;</button>
+            <button class="ml-0.5 hover:text-primary" @click="activeManufacturer = ''; applyFilter()">&times;</button>
           </span>
           <span v-if="activeVoltage" class="inline-flex items-center gap-1 rounded-full bg-muted px-3 py-1 text-xs font-medium text-primary">
             {{ activeVoltage }}
-            <button @click="activeVoltage = ''; applyFilter()" class="ml-0.5 hover:text-primary">&times;</button>
+            <button class="ml-0.5 hover:text-primary" @click="activeVoltage = ''; applyFilter()">&times;</button>
           </span>
           <span v-if="activeAmperage" class="inline-flex items-center gap-1 rounded-full bg-purple-50 px-3 py-1 text-xs font-medium text-purple-700">
             {{ activeAmperage }}
-            <button @click="activeAmperage = ''; applyFilter()" class="ml-0.5 hover:text-purple-900">&times;</button>
+            <button class="ml-0.5 hover:text-purple-900" @click="activeAmperage = ''; applyFilter()">&times;</button>
           </span>
-          <button @click="resetFilters" class="text-xs text-dimmed underline hover:text-muted">Clear all</button>
+          <button class="text-xs text-dimmed underline hover:text-muted" @click="resetFilters">Clear all</button>
         </div>
 
         <!-- Loading -->

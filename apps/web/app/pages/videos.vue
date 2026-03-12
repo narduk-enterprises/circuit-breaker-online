@@ -176,7 +176,7 @@ useHead({
                   :alt="featuredVideo?.title"
                   class="size-full object-cover transition-transform duration-500 group-hover:scale-105"
                   @error="(e: Event) => { const img = e.target as HTMLImageElement; img.src = `https://img.youtube.com/vi/${featuredVideo?.id}/hqdefault.jpg` }"
-                />
+                >
                 <div class="absolute inset-0 flex items-center justify-center bg-muted/30 transition-colors group-hover:bg-muted/20">
                   <div class="flex size-16 items-center justify-center rounded-full bg-brand-600 text-default shadow-lg shadow-brand-600/30 transition-transform group-hover:scale-110">
                     <UIcon v-if="featuredVideo" name="i-lucide-play" class="ml-1 size-7" />
@@ -233,7 +233,7 @@ useHead({
                 :src="`https://img.youtube.com/vi/${video.id}/mqdefault.jpg`"
                 :alt="video.title"
                 class="size-full object-cover transition-transform duration-500 group-hover:scale-105"
-              />
+              >
               <div class="absolute inset-0 flex items-center justify-center bg-muted/20 transition-colors group-hover:bg-muted/10">
                 <div class="flex size-12 items-center justify-center rounded-full bg-brand-600/90 text-default shadow-lg transition-transform group-hover:scale-110">
                   <UIcon name="i-lucide-play" class="ml-0.5 size-5" />
